@@ -1981,7 +1981,7 @@ const menuButton = {
                     }
                     else if(itemvalue == "filter"){
                         if($('#luckysheet-filter-options-sheet' + Store.currentSheetIndex).length > 0){
-                            $("#luckysheet-filter-initial").click();
+                           $("#luckysheet-filter-initial").click();
                         }
                         else{
                             createFilter();

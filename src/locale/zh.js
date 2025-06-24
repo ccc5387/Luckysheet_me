@@ -6264,7 +6264,7 @@ export default {
         sortByAsc:"以A-Z升序排列",
         sortByDesc:"以Z-A降序排列",
         filterByColor:"按颜色筛选",
-        filterByCondition:"按条件过滤",
+        filterByCondition:"条件一", // 按条件过滤
         filterByValues:"按值过滤",
 
         filiterInputNone:"无",

@@ -146,6 +146,7 @@ function createFilter() {
     if(Store.luckysheet_select_save.length > 1){
         $("#luckysheet-rightclick-menu").hide();
         $("#luckysheet-filter-menu, #luckysheet-filter-submenu").hide();
+        $("#luckysheet-filter-submenu-1").hide();
         $("#" + Store.container).attr("tabindex", 0).focus();
 
         const locale_splitText = locale().splitText;
@@ -218,6 +219,7 @@ function createFilter() {
 
 //创建筛选配置
 function createFilterOptions(luckysheet_filter_save, filterObj) {
+    //移除原来的
     $("#luckysheet-filter-selected-sheet" + Store.currentSheetIndex).remove();
     $("#luckysheet-filter-options-sheet" + Store.currentSheetIndex).remove();
 
@@ -281,7 +283,7 @@ function createFilterOptions(luckysheet_filter_save, filterObj) {
     $("#luckysheet-cell-main").append('<div id="luckysheet-filter-options-sheet'+ Store.currentSheetIndex +'" class="luckysheet-filter-options-c">' + optionHTML + '</div>');
     $("#luckysheet-rightclick-menu").hide();
     $("#luckysheet-filter-menu, #luckysheet-filter-submenu").hide();
-
+    $("#luckysheet-filter-submenu-1").hide();
     if ($("#luckysheet-cell-main").scrollTop() > luckysheet_filter_save["top_move"]) {
         $("#luckysheet-scrollbar-y").scrollTop(luckysheet_filter_save["top_move"]);
     }
@@ -342,6 +344,7 @@ function initialFilterHandler(){
 
         hidefilersubmenu = setTimeout(function () {
             $("#luckysheet-filter-submenu").hide();
+            $("#luckysheet-filter-submenu-1").hide();
         }, 500);
     });
 
@@ -383,6 +386,44 @@ function initialFilterHandler(){
         $("#luckysheet-filter-submenu").hide();
     });
 
+
+    $("#luckysheet-filter-submenu-1").mouseover(function () {
+        clearTimeout(hidefilersubmenu);
+    }).find(".luckysheet-cols-menuitem").click(function (e) {
+        $("#luckysheet-filter-selected-1 span").html($(this).find(".luckysheet-cols-menuitem-content").text()).data("value", $(this).data("value"));
+        $("#luckysheet-filter-menu .luckysheet-filter-selected-input-1").hide();
+
+        let $type = $(this).data("type");
+        let $value = $(this).attr("data-value");
+
+        if ($type == "2") {
+            $("#luckysheet-filter-selected-1 span").data("type", "2");
+            $("#luckysheet-filter-menu .luckysheet-filter-selected-input2-1").show();
+            $("#luckysheet-filter-menu .luckysheet-filter-selected-input-1 input").prop("type", "number");
+        }
+        else if ($type == "0") {
+            $("#luckysheet-filter-selected-1 span").data("type", "0");
+        }
+        else {
+            $("#luckysheet-filter-selected-1 span").data("type", "1");
+            $("#luckysheet-filter-menu .luckysheet-filter-selected-input-1").eq(0).show();
+
+            //若是日期 改变input type类型为dateluckysheet-filter-submenu
+            if($value == "dateequal" || $value == "datelessthan" || $value == "datemorethan"){
+                $("#luckysheet-filter-menu .luckysheet-filter-selected-input-1 input").prop("type", "date");
+            }
+            else if($value == "morethan" || $value == "moreequalthan" || $value == "lessthan" || $value == "lessequalthan" || $value == "equal" || $value == "noequal"){
+                $("#luckysheet-filter-menu .luckysheet-filter-selected-input-1 input").prop("type", "number");
+            }
+            else{
+                $("#luckysheet-filter-menu .luckysheet-filter-selected-input-1 input").prop("type", "text");
+            }
+        }
+
+        $("#luckysheet-filter-byvalue").next().slideUp();
+        $("#luckysheet-filter-submenu-1").hide();
+    });
+
     $("#luckysheet-filter-bycondition, #luckysheet-filter-byvalue").click(function () {
         let $t = $(this);
         $t.next().slideToggle(200);
@@ -401,6 +442,47 @@ function initialFilterHandler(){
             }
         }, 300);
     });
+    //条件2
+    $("#luckysheet-filter-bycondition-1").click(function () {
+        let $t = $(this);
+        $t.next().slideToggle(200);
+
+        setTimeout(function () {
+            if ($t.attr("id") == "luckysheet-filter-bycondition-1" && $("#luckysheet-filter-bycondition-1").next().is(":visible")) {
+                if ($("#luckysheet-filter-selected-1 span").text() != locale_filter.filiterInputNone) {
+                    $("#luckysheet-filter-byvalue").next().slideUp(200);
+                }
+            }
+
+            if ($t.is($("#luckysheet-filter-bycondition-1"))) {
+                if ($("#luckysheet-filter-bycondition-1").next().is(":hidden") && $("#luckysheet-filter-byvalue").next().is(":hidden")) {
+                    $("#luckysheet-filter-byvalue").next().slideDown(200);
+                }
+            }
+        }, 300);
+    });
+    // jxh-bycondition-radio
+    document.getElementById("jxh-bycondition-radio").addEventListener('click', (event) => {
+
+        if(document.getElementById('jxh-bycondition-radio-yu').checked){
+            document.getElementById('jxh-bycondition-radio-yu').checked =false;
+            document.getElementById('jxh-bycondition-radio-huo').checked =true;
+        }else {
+            document.getElementById('jxh-bycondition-radio-yu').checked =true;
+            document.getElementById('jxh-bycondition-radio-huo').checked =false;
+        }
+
+        event.stopPropagation(); // 阻止事件冒泡到父元素
+    });
+    document.getElementById("jxh-bycondition-radio-yu").addEventListener('click', (event) => {
+
+        event.stopPropagation(); // 阻止事件冒泡到父元素
+    });
+    document.getElementById("jxh-bycondition-radio-huo").addEventListener('click', (event) => {
+
+        event.stopPropagation(); // 阻止事件冒泡到父元素
+    });
+
 
     $("#luckysheet-filter-selected").click(function () {
         let $t = $(this), toffset = $t.offset(), $menu = $("#luckysheet-filter-submenu");
@@ -427,9 +509,35 @@ function initialFilterHandler(){
         $menu.css({ "top": top, "left": left, "height": mheight }).show();
         clearTimeout(hidefilersubmenu);
     });
+    $("#luckysheet-filter-selected-1").click(function () {
+        let $t = $(this), toffset = $t.offset(), $menu = $("#luckysheet-filter-submenu-1");
+        $menu.hide();
 
-    //筛选按钮点击事件
+        let winH = $(window).height(), winW = $(window).width();
+        let menuW = $menu.width(), menuH = $menu.height();
+        let top = toffset.top, left = toffset.left, mheight = winH - toffset.top - 20;
+
+        if (toffset.left + menuW > winW) {
+            left = toffset.left - menuW;
+        }
+
+        if (toffset.top > winH / 2) {
+            top = winH - toffset.top;
+
+            if (top < 0) {
+                top = 0;
+            }
+
+            mheight = toffset.top - 20;
+        }
+
+        $menu.css({ "top": top, "left": left, "height": mheight }).show();
+        clearTimeout(hidefilersubmenu);
+    });
+
+    //筛选按钮点击事件 列上面的筛选
     $("#luckysheet-cell-main").on("click", ".luckysheet-filter-options", function (e) {
+        console.log('点击了筛选!')
         if(!checkProtectionAuthorityNormal(Store.currentSheetIndex, "filter")){
             return;
         }
@@ -447,10 +555,11 @@ function initialFilterHandler(){
             rowhidden = $t.data("rowhidden") == "" ? {} : JSON.parse($t.data("rowhidden").replace(/\'/g, '"'));
 
         $("body .luckysheet-cols-menu").hide();
-        $("#luckysheet-filter-menu, #luckysheet-filter-submenu").hide();
+         $("#luckysheet-filter-menu, #luckysheet-filter-submenu").hide();
+        $("#luckysheet-filter-submenu-1").hide();
         $("#luckysheet-filter-byvalue-input").val("");
-        $("#luckysheet-filter-bycondition").next().hide();
-        $("#luckysheet-filter-byvalue").next().show();
+       // $("#luckysheet-filter-bycondition").next().hide();
+        $("#luckysheet-filter-byvalue").next().hide();
 
         $menu.data("str", st_r);
         $menu.data("edr", ed_r);
@@ -459,6 +568,7 @@ function initialFilterHandler(){
         $menu.data("edc", ed_c);
 
         $("#luckysheet-filter-menu .luckysheet-filter-selected-input").hide().find("input").val();
+    //    $("#luckysheet-filter-menu .luckysheet-filter-selected-input-1").hide().find("input").val();
         $("#luckysheet-filter-selected span").data("type", "0").data("type", null).text(locale_filter.filiterInputNone);
 
         let byconditiontype = $t.data("byconditiontype");
@@ -1275,6 +1385,7 @@ function initialFilterHandler(){
         }
 
         $("#luckysheet-filter-menu .luckysheet-filter-selected-input").hide().find("input").val();
+        $("#luckysheet-filter-menu .luckysheet-filter-selected-input-1").hide().find("input").val();
         $("#luckysheet-filter-selected span").data("type", "0").data("type", null).text(locale_filter.conditionNone);
 
         let redo = {};
@@ -1313,6 +1424,7 @@ function initialFilterHandler(){
 
         $('#luckysheet-filter-selected-sheet' + Store.currentSheetIndex + ', #luckysheet-filter-options-sheet' + Store.currentSheetIndex).remove();
         $("#luckysheet-filter-menu, #luckysheet-filter-submenu").hide();
+        $("#luckysheet-filter-submenu-1").hide();
 
         //清除筛选发送给后台
         Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)].filter = null;
@@ -1373,10 +1485,12 @@ function initialFilterHandler(){
     //筛选取消
     $("#luckysheet-filter-cancel").click(function () {
         $("#luckysheet-filter-menu, #luckysheet-filter-submenu").hide();
+        $("#luckysheet-filter-submenu-1").hide();
     });
 
     //筛选 确认
     $("#luckysheet-filter-confirm").click(function () {
+        console.log('点击了筛选 确认')
         let $menu = $("#luckysheet-filter-menu");
         let st_r = $menu.data("str"),
             ed_r = $menu.data("edr"),
@@ -1403,7 +1517,11 @@ function initialFilterHandler(){
         let rowhidden = {};
         let caljs = {};
 
-        if ($("#luckysheet-filter-bycondition").next().is(":visible") && $("#luckysheet-filter-byvalue").next().is(":hidden") && $("#luckysheet-filter-selected span").data("value") != "null") {
+        if (($("#luckysheet-filter-bycondition").next().is(":visible") || $("#luckysheet-filter-bycondition-1").next().is(":visible"))
+           // && $("#luckysheet-filter-byvalue").next().is(":hidden")
+            && ($("#luckysheet-filter-selected span").data("value") != "null"  ||
+                $("#luckysheet-filter-selected-1 span").data("value") != "null"
+            )) {
             let $t = $("#luckysheet-filter-selected span");
             let type = $t.data("type"), value = $t.data("value");
 
@@ -1424,6 +1542,8 @@ function initialFilterHandler(){
                 caljs["value1"] = $("#luckysheet-filter-menu .luckysheet-filter-selected-input").eq(0).find("input").val();
             }
 
+
+            // console.log('st_r:',st_r,' ed_r:',ed_r)
             for (let r = st_r + 1; r <= ed_r; r++) {
                 if(r in rowhiddenother){
                     continue;
@@ -1703,8 +1823,30 @@ function initialFilterHandler(){
                     }
                 }
             }
+
+
+            // 条件2的过滤
+            // jxh start 自定义 添加的 与 和 或  条件
+            let value_1 = $("#luckysheet-filter-selected-1 span").data("value");
+            let type_1 = $("#luckysheet-filter-selected-1 span").data("type");
+            caljs["value1-1"] = $("#luckysheet-filter-menu .luckysheet-filter-selected-input-1").eq(0).find("input").val();
+            if(type_1 == "2"){
+                let $input = $("#luckysheet-filter-menu .luckysheet-filter-selected-input2-2 input");
+                caljs["value1-1"] = $input.eq(0).val();
+                caljs["value2-1"] = $input.eq(1).val();
+            }
+            const iSyu  = document.getElementById('jxh-bycondition-radio-yu').checked;
+            // console.log('条件2的选项:',value_1, ' iSyu:', iSyu,' value1-1:',caljs["value1-1"]);
+            //填了值
+            // console.log('rowhidden:',rowhidden)
+            if(value_1){
+                tj2_filter(st_r, ed_r, rowhiddenother , cindex, value_1, caljs, rowhidden,iSyu);
+            }
+// console.log('rowhidden-AFTER:',rowhidden)
+
         }
         else {
+            // console.log('进这里了error')
             $("#luckysheet-filter-byvalue-select .ListBox input[type='checkbox']").each(function(i, e){
                 if($(e).is(":visible") && $(e).is(":checked")){
                     return true;
@@ -1809,8 +1951,300 @@ function initialFilterHandler(){
         jfrefreshgrid_rhcw(Store.flowdata.length, Store.flowdata[0].length);
 
         $("#luckysheet-filter-menu, #luckysheet-filter-submenu").hide();
+        $("#luckysheet-filter-submenu-1").hide();
         cleargridelement();
     });
+}
+
+/**
+ * 条件2 过滤
+ */
+function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden,iSyu) {
+    // console.log('st_r:',st_r,' ed_r:',ed_r, 'cindex:',cindex,' rowhiddenother:',rowhiddenother)
+    for (let r = st_r + 1; r <= ed_r; r++) {
+        if(r in rowhiddenother){
+            continue;
+        }
+        /**
+         *   rowhidden[r]   = 0    不会隐藏该行
+         *   rowhidden[r]   = XXXX 会隐藏该行
+         */
+        //与条件 rowhidden[r] == 0
+        if(iSyu &&  rowhidden[r] === 0){
+            // 已经被隐藏的数据不往下
+            continue;
+        }
+        //或条件
+        if(!iSyu&&  rowhidden[r] !==  0){
+            // 不会隐藏该行不往下
+            continue;
+        }
+        // console.log('检查:第',r,'行');
+
+        if(Store.flowdata[r] == null){
+            continue;
+        }
+
+        let cell = Store.flowdata[r][cindex];
+
+        if (value == "cellnull") { //单元格为空
+            if(cell != null && !isRealNull(cell.v)){
+                rowhidden[r] = 0;
+            }
+        }
+        else if (value == "cellnonull") { //单元格有数据
+            if(cell == null || isRealNull(cell.v)){
+                rowhidden[r] = 0;
+            }
+        }
+        else if (value == "textinclude") { //文本包含
+            let value1 = caljs["value1-1"];
+
+            if(cell == null || isRealNull(cell.v)){
+                rowhidden[r] = 0;
+            }
+            else{
+                if(cell.m.indexOf(value1) == -1){
+                    rowhidden[r] = 0;
+                }
+            }
+        }
+        else if (value == "textnotinclude") { //文本不包含
+            let value1 = caljs["value1-1"];
+
+            if(cell == null || isRealNull(cell.v)){
+
+            }
+            else{
+                if(cell.m.indexOf(value1) > -1){
+                    rowhidden[r] = 0;
+                }
+            }
+        }
+        else if (value == "textstart") { //文本开头为
+            let value1 = caljs["value1-1"], valuelen = value1.length;
+// console.log('value1-1:',value1)
+            if(cell == null || isRealNull(cell.v)){
+                // console.log('不会隐藏1:',r,' cell.m:',cell.v)
+                rowhidden[r] = 0;
+            }
+            else{
+                if(cell.m.substr(0, valuelen) != value1){
+                    // console.log('不会隐藏2:',r,' cell.m:',cell.m)
+                    rowhidden[r] = 0;
+                }
+            }
+        }
+        else if (value == "textend") { //文本结尾为
+            let value1 = caljs["value1-1"], valuelen = value1.length;
+
+            if(cell == null || isRealNull(cell.v)){
+                rowhidden[r] = 0;
+            }
+            else{
+                if(valuelen > cell.m.length || cell.m.substr(cell.m.length - valuelen, valuelen) != value1){
+                    rowhidden[r] = 0;
+                }
+            }
+        }
+        else if (value == "textequal") { //文本等于
+            let value1 = caljs["value1-1"];
+
+            if(cell == null || isRealNull(cell.v)){
+                rowhidden[r] = 0;
+            }
+            else{
+                if(cell.m != value1){
+                    rowhidden[r] = 0;
+                }
+            }
+        }
+        else if (value == "dateequal") { //日期等于
+            let value1 = genarate(caljs["value1-1"])[2];
+
+            if(cell == null || isRealNull(cell.v)){
+                rowhidden[r] = 0;
+            }
+            else if(cell.ct != null && cell.ct.t == "d"){
+                if(parseInt(cell.v) != value1){
+                    rowhidden[r] = 0;
+                }
+            }
+            else{
+                rowhidden[r] = 0;
+            }
+        }
+        else if (value == "datelessthan") { //日期早于
+            let value1 = genarate(caljs["value1-1"])[2];
+
+            if(cell == null || isRealNull(cell.v)){
+                rowhidden[r] = 0;
+            }
+            else if(cell.ct != null && cell.ct.t == "d"){
+                if(parseInt(cell.v) >= value1){
+                    rowhidden[r] = 0;
+                }
+            }
+            else{
+                rowhidden[r] = 0;
+            }
+        }
+        else if (value == "datemorethan") { //日期晚于
+            let value1 = genarate(caljs["value1-1"])[2];
+
+            if(cell == null || isRealNull(cell.v)){
+                rowhidden[r] = 0;
+            }
+            else if(cell.ct != null && cell.ct.t == "d"){
+                if(parseInt(cell.v) <= value1){
+                    rowhidden[r] = 0;
+                }
+            }
+            else{
+                rowhidden[r] = 0;
+            }
+        }
+        else if (value == "morethan") { //大于
+            let value1 = parseFloat(caljs["value1-1"]);
+
+            if(cell == null || isRealNull(cell.v)){
+                rowhidden[r] = 0;
+            }
+            else if(cell.ct != null && cell.ct.t == "n"){
+                if(cell.v <= value1){
+                    rowhidden[r] = 0;
+                }
+            }
+            else{
+                rowhidden[r] = 0;
+            }
+        }
+        else if (value == "moreequalthan") { //大于等于
+            let value1 = parseFloat(caljs["value1-1"]);
+
+            if(cell == null || isRealNull(cell.v)){
+                rowhidden[r] = 0;
+            }
+            else if(cell.ct != null && cell.ct.t == "n"){
+                if(cell.v < value1){
+                    rowhidden[r] = 0;
+                }
+            }
+            else{
+                rowhidden[r] = 0;
+            }
+        }
+        else if (value == "lessthan") { //小于
+            let value1 = parseFloat(caljs["value1-1"]);
+
+            if(cell == null || isRealNull(cell.v)){
+                rowhidden[r] = 0;
+            }
+            else if(cell.ct != null && cell.ct.t == "n"){
+                if(cell.v >= value1){
+                    rowhidden[r] = 0;
+                }
+            }
+            else{
+                rowhidden[r] = 0;
+            }
+        }
+        else if (value == "lessequalthan") { //小于等于
+            let value1 = parseFloat(caljs["value1-1"]);
+
+            if(cell == null || isRealNull(cell.v)){
+                rowhidden[r] = 0;
+            }
+            else if(cell.ct != null && cell.ct.t == "n"){
+                if(cell.v > value1){
+                    rowhidden[r] = 0;
+                }
+            }
+            else{
+                rowhidden[r] = 0;
+            }
+        }
+        else if (value == "equal") { //等于
+            let value1 = parseFloat(caljs["value1-1"]);
+
+            if(cell == null || isRealNull(cell.v)){
+                rowhidden[r] = 0;
+            }
+            else if(cell.ct != null && cell.ct.t == "n"){
+                if(cell.v != value1){
+                    rowhidden[r] = 0;
+                }
+            }
+            else{
+                rowhidden[r] = 0;
+            }
+        }
+        else if (value == "noequal") { //不等于
+            let value1 = parseFloat(caljs["value1-1"]);
+
+            if(cell == null || isRealNull(cell.v)){
+                rowhidden[r] = 0;
+            }
+            else if(cell.ct != null && cell.ct.t == "n"){
+                if(cell.v == value1){
+                    rowhidden[r] = 0;
+                }
+            }
+            else{
+                rowhidden[r] = 0;
+            }
+        }
+        else if (value == "include") { //介于
+            let value1 = parseFloat(caljs["value1-1"]), value2 = parseFloat(caljs["value2-1"]);
+
+            let min, max;
+            if(value1 < value2){
+                min = value1;
+                max = value2;
+            }
+            else{
+                max = value1;
+                min = value2;
+            }
+
+            if(cell == null || isRealNull(cell.v)){
+                rowhidden[r] = 0;
+            }
+            else if(cell.ct != null && cell.ct.t == "n"){
+                if(cell.v < min || cell.v > max){
+                    rowhidden[r] = 0;
+                }
+            }
+            else{
+                rowhidden[r] = 0;
+            }
+        }
+        else if (value == "noinclude") { //不在其中
+            let value1 = parseFloat(caljs["value1-1"]), value2 = parseFloat(caljs["value2-1"]);
+
+            let min, max;
+            if(value1 < value2){
+                min = value1;
+                max = value2;
+            }
+            else{
+                max = value1;
+                min = value2;
+            }
+
+            if(cell == null || isRealNull(cell.v)){
+                rowhidden[r] = 0;
+            }
+            else if(cell.ct != null && cell.ct.t == "n"){
+                if(cell.v >= min && cell.v <= max){
+                    rowhidden[r] = 0;
+                }
+            }
+            else{
+                rowhidden[r] = 0;
+            }
+        }
+    }
 }
 
 export {
