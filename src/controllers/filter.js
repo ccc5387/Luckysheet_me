@@ -1836,13 +1836,13 @@ function initialFilterHandler(){
                 caljs["value2-1"] = $input.eq(1).val();
             }
             const iSyu  = document.getElementById('jxh-bycondition-radio-yu').checked;
-            // console.log('条件2的选项:',value_1, ' iSyu:', iSyu,' value1-1:',caljs["value1-1"]);
+              console.log('条件2的选项:',value_1, ' iSyu:', iSyu,' value1-1:',caljs["value1-1"]);
             //填了值
-            // console.log('rowhidden:',rowhidden)
+             console.log('rowhidden:',rowhidden)
             if(value_1){
                 tj2_filter(st_r, ed_r, rowhiddenother , cindex, value_1, caljs, rowhidden,iSyu);
             }
-// console.log('rowhidden-AFTER:',rowhidden)
+ console.log('rowhidden-AFTER:',rowhidden)
 
         }
         else {
@@ -1960,7 +1960,7 @@ function initialFilterHandler(){
  * 条件2 过滤
  */
 function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden,iSyu) {
-    // console.log('st_r:',st_r,' ed_r:',ed_r, 'cindex:',cindex,' rowhiddenother:',rowhiddenother)
+      console.log('st_r:',st_r,' ed_r:',ed_r, 'cindex:',cindex,' rowhiddenother:',rowhiddenother)
     for (let r = st_r + 1; r <= ed_r; r++) {
         if(r in rowhiddenother){
             continue;
@@ -1979,7 +1979,7 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
             // 不会隐藏该行不往下
             continue;
         }
-        // console.log('检查:第',r,'行');
+       console.log('检查:第',r,'行');
 
         if(Store.flowdata[r] == null){
             continue;
@@ -1990,22 +1990,47 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
         if (value == "cellnull") { //单元格为空
             if(cell != null && !isRealNull(cell.v)){
                 rowhidden[r] = 0;
+            }else {
+                //如果是或重新可见!
+                if(!iSyu){
+                    delete rowhidden[r];
+                }
             }
         }
         else if (value == "cellnonull") { //单元格有数据
             if(cell == null || isRealNull(cell.v)){
                 rowhidden[r] = 0;
+            }else {
+                //如果是或重新可见!
+                if(!iSyu){
+                    delete rowhidden[r];
+                }
             }
         }
         else if (value == "textinclude") { //文本包含
             let value1 = caljs["value1-1"];
+            if(cell!=null){
+                console.log('cell.v:',cell.v,' cell.m:',cell.m,' value1:',value1,' cell.m.indexOf(value1) == -1:',(cell.m?.indexOf(value1) == -1))
+
+            }
 
             if(cell == null || isRealNull(cell.v)){
                 rowhidden[r] = 0;
+                console.log('进了1')
             }
             else{
                 if(cell.m.indexOf(value1) == -1){
                     rowhidden[r] = 0;
+                    console.log('进了2')
+                }
+                else {
+                    console.log('进了3')
+                    //如果是或重新可见!
+                    if(!iSyu){
+                        console.log('进了4:',rowhidden)
+                        delete rowhidden[r];
+                        console.log('进了5:',rowhidden)
+                    }
                 }
             }
         }
@@ -2013,11 +2038,16 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
             let value1 = caljs["value1-1"];
 
             if(cell == null || isRealNull(cell.v)){
-
+                rowhidden[r] = 0;
             }
             else{
                 if(cell.m.indexOf(value1) > -1){
                     rowhidden[r] = 0;
+                }else {
+                    //如果是或重新可见!
+                    if(!iSyu){
+                        delete rowhidden[r];
+                    }
                 }
             }
         }
@@ -2032,6 +2062,11 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
                 if(cell.m.substr(0, valuelen) != value1){
                     // console.log('不会隐藏2:',r,' cell.m:',cell.m)
                     rowhidden[r] = 0;
+                }else {
+                    //如果是或重新可见!
+                    if(!iSyu){
+                        delete rowhidden[r];
+                    }
                 }
             }
         }
@@ -2044,6 +2079,11 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
             else{
                 if(valuelen > cell.m.length || cell.m.substr(cell.m.length - valuelen, valuelen) != value1){
                     rowhidden[r] = 0;
+                }else {
+                    //如果是或重新可见!
+                    if(!iSyu){
+                        delete rowhidden[r];
+                    }
                 }
             }
         }
@@ -2056,6 +2096,11 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
             else{
                 if(cell.m != value1){
                     rowhidden[r] = 0;
+                }else {
+                    //如果是或重新可见!
+                    if(!iSyu){
+                        delete rowhidden[r];
+                    }
                 }
             }
         }
@@ -2068,6 +2113,11 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
             else if(cell.ct != null && cell.ct.t == "d"){
                 if(parseInt(cell.v) != value1){
                     rowhidden[r] = 0;
+                }else {
+                    //如果是或重新可见!
+                    if(!iSyu){
+                        delete rowhidden[r];
+                    }
                 }
             }
             else{
@@ -2083,6 +2133,11 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
             else if(cell.ct != null && cell.ct.t == "d"){
                 if(parseInt(cell.v) >= value1){
                     rowhidden[r] = 0;
+                }else {
+                    //如果是或重新可见!
+                    if(!iSyu){
+                        delete rowhidden[r];
+                    }
                 }
             }
             else{
@@ -2098,6 +2153,11 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
             else if(cell.ct != null && cell.ct.t == "d"){
                 if(parseInt(cell.v) <= value1){
                     rowhidden[r] = 0;
+                }else {
+                    //如果是或重新可见!
+                    if(!iSyu){
+                        delete rowhidden[r];
+                    }
                 }
             }
             else{
@@ -2113,6 +2173,11 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
             else if(cell.ct != null && cell.ct.t == "n"){
                 if(cell.v <= value1){
                     rowhidden[r] = 0;
+                }else {
+                    //如果是或重新可见!
+                    if(!iSyu){
+                        delete rowhidden[r];
+                    }
                 }
             }
             else{
@@ -2128,6 +2193,11 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
             else if(cell.ct != null && cell.ct.t == "n"){
                 if(cell.v < value1){
                     rowhidden[r] = 0;
+                }else {
+                    //如果是或重新可见!
+                    if(!iSyu){
+                        delete rowhidden[r];
+                    }
                 }
             }
             else{
@@ -2143,6 +2213,11 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
             else if(cell.ct != null && cell.ct.t == "n"){
                 if(cell.v >= value1){
                     rowhidden[r] = 0;
+                }else {
+                    //如果是或重新可见!
+                    if(!iSyu){
+                        delete rowhidden[r];
+                    }
                 }
             }
             else{
@@ -2158,6 +2233,11 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
             else if(cell.ct != null && cell.ct.t == "n"){
                 if(cell.v > value1){
                     rowhidden[r] = 0;
+                }else {
+                    //如果是或重新可见!
+                    if(!iSyu){
+                        delete rowhidden[r];
+                    }
                 }
             }
             else{
@@ -2173,6 +2253,11 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
             else if(cell.ct != null && cell.ct.t == "n"){
                 if(cell.v != value1){
                     rowhidden[r] = 0;
+                }else {
+                    //如果是或重新可见!
+                    if(!iSyu){
+                        delete rowhidden[r];
+                    }
                 }
             }
             else{
@@ -2188,6 +2273,11 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
             else if(cell.ct != null && cell.ct.t == "n"){
                 if(cell.v == value1){
                     rowhidden[r] = 0;
+                }else {
+                    //如果是或重新可见!
+                    if(!iSyu){
+                        delete rowhidden[r];
+                    }
                 }
             }
             else{
@@ -2213,6 +2303,11 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
             else if(cell.ct != null && cell.ct.t == "n"){
                 if(cell.v < min || cell.v > max){
                     rowhidden[r] = 0;
+                }else {
+                    //如果是或重新可见!
+                    if(!iSyu){
+                        delete rowhidden[r];
+                    }
                 }
             }
             else{
@@ -2238,6 +2333,11 @@ function tj2_filter(st_r, ed_r, rowhiddenother , cindex, value, caljs, rowhidden
             else if(cell.ct != null && cell.ct.t == "n"){
                 if(cell.v >= min && cell.v <= max){
                     rowhidden[r] = 0;
+                }else {
+                    //如果是或重新可见!
+                    if(!iSyu){
+                        delete rowhidden[r];
+                    }
                 }
             }
             else{
