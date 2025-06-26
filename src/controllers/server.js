@@ -21,7 +21,7 @@ import json from '../global/json';
 import luckysheetConfigsetting from './luckysheetConfigsetting';
 import {customImageUpdate} from './imageUpdateCtrl';
 import method from '../global/method';
-
+let shsPageInit =[];
 const server = {
     gridKey: null,
     loadUrl: null,
@@ -101,8 +101,19 @@ const server = {
 	    d.v = value;
 
 		//切换sheet页不发后台，TODO：改为发后台+后台不广播
-		if(type === 'shs'){
-			return;
+		if(type === 'shs-ok'){
+		 console.log('value:',value)
+
+			if(value!=0 && !shsPageInit.includes(_this.gridKey+'-'+value) ){
+				// 子页面还没初始化
+				console.log('子页面还没初始化:',shsPageInit)
+				shsPageInit.push(_this.gridKey+'-'+value)
+
+
+			}else {
+				return;
+			}
+
 		}
 
 	    if (type == "rv") { //单元格批量更新

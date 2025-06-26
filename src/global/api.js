@@ -6885,7 +6885,7 @@ export function updataSheet (options = {}) {
             success();
         }
     }, 1);
-    server.saveParam("shs", null, Store.currentSheetIndex);
+    server.saveParam("shs-ok", null, Store.currentSheetIndex);
 
 }
 

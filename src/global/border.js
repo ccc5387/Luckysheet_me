@@ -6,7 +6,7 @@ import Store from '../store';
 function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,dataset_col_ed,sheetIndex) {
     let borderInfoCompute = {};
 
-    let cfg, data; 
+    let cfg, data;
     if(sheetIndex == null){
         cfg = Store.config;
         data = Store.flowdata;
@@ -16,7 +16,7 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
         data = Store.luckysheetfile[getSheetIndex(sheetIndex)].data;
     }
 
-    let borderInfo = cfg["borderInfo"];
+    let borderInfo =cfg? cfg["borderInfo"]:null;
 
     if(borderInfo != null && borderInfo.length > 0){
         for(let i = 0; i < borderInfo.length; i++){
@@ -54,7 +54,7 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                             if (cfg["rowhidden"] != null && cfg["rowhidden"][bd_r] != null) {
                                 continue;
                             }
-                            
+
                             if(borderInfoCompute[bd_r + "_" + bd_c1] == null){
                                 borderInfoCompute[bd_r + "_" + bd_c1] = {};
                             }
@@ -70,15 +70,15 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                     let mc = cfg["merge"][cell_left.mc.r + "_" + cell_left.mc.c];
 
                                     if(mc.c + mc.cs - 1 == bd_c_left){
-                                        borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": borderColor, "style": borderStyle }; 
+                                        borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": borderColor, "style": borderStyle };
                                     }
                                 }
                                 else{
-                                    borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": borderColor, "style": borderStyle }; 
+                                    borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": borderColor, "style": borderStyle };
                                 }
                             }
 
-                            let mc = cfg["merge"] || {};  
+                            let mc = cfg["merge"] || {};
                             for (const key in mc) {
                                 let {c,r,cs,rs} = mc[key];
                                 if(bd_c1 <= c + cs - 1 && bd_c1 > c && bd_r >= r && bd_r <= r + rs -1){
@@ -92,7 +92,7 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                             if (cfg["rowhidden"] != null && cfg["rowhidden"][bd_r] != null) {
                                 continue;
                             }
-                            
+
                             if(borderInfoCompute[bd_r + "_" + bd_c2] == null){
                                 borderInfoCompute[bd_r + "_" + bd_c2] = {};
                             }
@@ -108,14 +108,14 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                     let mc = cfg["merge"][cell_right.mc.r + "_" + cell_right.mc.c];
 
                                     if(mc.c == bd_c_right){
-                                        borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": borderColor, "style": borderStyle }; 
+                                        borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": borderColor, "style": borderStyle };
                                     }
                                 }
                                 else{
-                                    borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": borderColor, "style": borderStyle }; 
+                                    borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": borderColor, "style": borderStyle };
                                 }
                             }
-                            let mc = cfg["merge"] || {};  
+                            let mc = cfg["merge"] || {};
                             for (const key in mc) {
                                 let {c,r,cs,rs} = mc[key];
                                 if(bd_c2 < c + cs - 1 && bd_c2 >= c && bd_r >= r && bd_r <= r + rs -1){
@@ -153,7 +153,7 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                 }
                             }
 
-                            let mc = cfg["merge"] || {};  
+                            let mc = cfg["merge"] || {};
                             for (const key in mc) {
                                 let {c,r,cs,rs} = mc[key];
                                 if(bd_r1 <= r + rs - 1 && bd_r1 > r && bd_c >= c && bd_c <= c + cs -1){
@@ -183,15 +183,15 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                     let mc = cfg["merge"][cell_bottom.mc.r + "_" + cell_bottom.mc.c];
 
                                     if(mc.r == bd_r_bottom){
-                                        borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": borderColor, "style": borderStyle }; 
+                                        borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": borderColor, "style": borderStyle };
                                     }
                                 }
                                 else{
-                                    borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": borderColor, "style": borderStyle }; 
+                                    borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": borderColor, "style": borderStyle };
                                 }
                             }
 
-                            let mc = cfg["merge"] || {};  
+                            let mc = cfg["merge"] || {};
                             for (const key in mc) {
                                 let {c,r,cs,rs} = mc[key];
                                 if(bd_r2 < r + rs - 1 && bd_r2 >= r && bd_c >= c && bd_c <= c + cs -1){
@@ -219,7 +219,7 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
 
                                         borderInfoCompute[bd_r + "_" + bd_c].t = { "color": borderColor, "style": borderStyle };
                                     }
-                                    
+
                                     if(mc.r + mc.rs - 1 == bd_r){
                                         if(borderInfoCompute[bd_r + "_" + bd_c] == null){
                                             borderInfoCompute[bd_r + "_" + bd_c] = {};
@@ -235,7 +235,7 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
 
                                         borderInfoCompute[bd_r + "_" + bd_c].l = { "color": borderColor, "style": borderStyle };
                                     }
-                                    
+
                                     if(mc.c + mc.cs - 1 == bd_c){
                                         if(borderInfoCompute[bd_r + "_" + bd_c] == null){
                                             borderInfoCompute[bd_r + "_" + bd_c] = {};
@@ -273,7 +273,7 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                         }
                                     }
                                 }
-                                
+
                                 if(bd_r == bd_r2){
                                     let bd_r_bottom = bd_r2 + 1;
 
@@ -284,15 +284,15 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                             let mc = cfg["merge"][cell_bottom.mc.r + "_" + cell_bottom.mc.c];
 
                                             if(mc.r == bd_r_bottom){
-                                                borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": borderColor, "style": borderStyle }; 
+                                                borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": borderColor, "style": borderStyle };
                                             }
                                         }
                                         else{
-                                            borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": borderColor, "style": borderStyle }; 
+                                            borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": borderColor, "style": borderStyle };
                                         }
                                     }
                                 }
-                                
+
                                 if(bd_c == bd_c1){
                                     let bd_c_left = bd_c1 - 1;
 
@@ -303,15 +303,15 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                             let mc = cfg["merge"][cell_left.mc.r + "_" + cell_left.mc.c];
 
                                             if(mc.c + mc.cs - 1 == bd_c_left){
-                                                borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": borderColor, "style": borderStyle }; 
+                                                borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": borderColor, "style": borderStyle };
                                             }
                                         }
                                         else{
-                                            borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": borderColor, "style": borderStyle }; 
+                                            borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": borderColor, "style": borderStyle };
                                         }
                                     }
                                 }
-                                
+
                                 if(bd_c == bd_c2){
                                     let bd_c_right = bd_c2 + 1;
 
@@ -322,11 +322,11 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                             let mc = cfg["merge"][cell_right.mc.r + "_" + cell_right.mc.c];
 
                                             if(mc.c == bd_c_right){
-                                                borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": borderColor, "style": borderStyle }; 
+                                                borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": borderColor, "style": borderStyle };
                                             }
                                         }
                                         else{
-                                            borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": borderColor, "style": borderStyle }; 
+                                            borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": borderColor, "style": borderStyle };
                                         }
                                     }
                                 }
@@ -385,11 +385,11 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                             let mc = cfg["merge"][cell_bottom.mc.r + "_" + cell_bottom.mc.c];
 
                                             if(mc.r == bd_r_bottom){
-                                                borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": borderColor, "style": borderStyle }; 
+                                                borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": borderColor, "style": borderStyle };
                                             }
                                         }
                                         else{
-                                            borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": borderColor, "style": borderStyle }; 
+                                            borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": borderColor, "style": borderStyle };
                                         }
                                     }
                                 }
@@ -410,11 +410,11 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                             let mc = cfg["merge"][cell_left.mc.r + "_" + cell_left.mc.c];
 
                                             if(mc.c + mc.cs - 1 == bd_c_left){
-                                                borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": borderColor, "style": borderStyle }; 
+                                                borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": borderColor, "style": borderStyle };
                                             }
                                         }
                                         else{
-                                            borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": borderColor, "style": borderStyle }; 
+                                            borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": borderColor, "style": borderStyle };
                                         }
                                     }
                                 }
@@ -435,11 +435,11 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                             let mc = cfg["merge"][cell_right.mc.r + "_" + cell_right.mc.c];
 
                                             if(mc.c == bd_c_right){
-                                                borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": borderColor, "style": borderStyle }; 
+                                                borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": borderColor, "style": borderStyle };
                                             }
                                         }
                                         else{
-                                            borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": borderColor, "style": borderStyle }; 
+                                            borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": borderColor, "style": borderStyle };
                                         }
                                     }
                                 }
@@ -675,7 +675,7 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                         borderInfoCompute[bd_r + "_" + bd_c].t = { "color": borderColor, "style": borderStyle };
                                         borderInfoCompute[bd_r + "_" + bd_c].b = { "color": borderColor, "style": borderStyle };
                                     }
-                                }    
+                                }
                             }
                         }
                     }
@@ -825,7 +825,7 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                         delete borderInfoCompute[bd_r_top + "_" + bd_c].b;
                                     }
                                 }
-                                
+
                                 if(bd_r == bd_r2){
                                     let bd_r_bottom = bd_r2 + 1;
 
@@ -833,7 +833,7 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                         delete borderInfoCompute[bd_r_bottom + "_" + bd_c].t;
                                     }
                                 }
-                                
+
                                 if(bd_c == bd_c1){
                                     let bd_c_left = bd_c1 - 1;
 
@@ -841,7 +841,7 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                         delete borderInfoCompute[bd_r + "_" + bd_c_left].r;
                                     }
                                 }
-                                
+
                                 if(bd_c == bd_c2){
                                     let bd_c_right = bd_c2 + 1;
 
@@ -888,11 +888,11 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                     let mc_l = cfg["merge"][cell_left.mc.r + "_" + cell_left.mc.c];
 
                                     if(mc_l.c + mc_l.cs - 1 == bd_c_left){
-                                        borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": value.l.color, "style": value.l.style }; 
+                                        borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": value.l.color, "style": value.l.style };
                                     }
                                 }
                                 else{
-                                    borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": value.l.color, "style": value.l.style }; 
+                                    borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": value.l.color, "style": value.l.style };
                                 }
                             }
                         }
@@ -912,11 +912,11 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                     let mc_r = cfg["merge"][cell_right.mc.r + "_" + cell_right.mc.c];
 
                                     if(mc_r.c == bd_c_right){
-                                        borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": value.r.color, "style": value.r.style }; 
+                                        borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": value.r.color, "style": value.r.style };
                                     }
                                 }
                                 else{
-                                    borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": value.r.color, "style": value.r.style }; 
+                                    borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": value.r.color, "style": value.r.style };
                                 }
                             }
                         }
@@ -956,15 +956,15 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                             if(bd_r_bottom < data.length && borderInfoCompute[bd_r_bottom + "_" + bd_c]){
                                 if(data[bd_r_bottom] != null && getObjType(data[bd_r_bottom][bd_c]) == "object" && data[bd_r_bottom][bd_c].mc != null){
                                     let cell_bottom = data[bd_r_bottom][bd_c];
-                                    
+
                                     let mc_b = cfg["merge"][cell_bottom.mc.r + "_" + cell_bottom.mc.c];
 
                                     if(mc_b.r == bd_r_bottom){
-                                        borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": value.b.color, "style": value.b.style }; 
+                                        borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": value.b.color, "style": value.b.style };
                                     }
                                 }
                                 else{
-                                    borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": value.b.color, "style": value.b.style }; 
+                                    borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": value.b.color, "style": value.b.style };
                                 }
                             }
                         }
@@ -985,11 +985,11 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                     let mc_l = cfg["merge"][cell_left.mc.r + "_" + cell_left.mc.c];
 
                                     if(mc_l.c + mc_l.cs - 1 == bd_c_left){
-                                        borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": value.l.color, "style": value.l.style }; 
+                                        borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": value.l.color, "style": value.l.style };
                                     }
                                 }
                                 else{
-                                    borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": value.l.color, "style": value.l.style }; 
+                                    borderInfoCompute[bd_r + "_" + bd_c_left].r = { "color": value.l.color, "style": value.l.style };
                                 }
                             }
                         }
@@ -1009,11 +1009,11 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                                     let mc_r = cfg["merge"][cell_right.mc.r + "_" + cell_right.mc.c];
 
                                     if(mc_r.c == bd_c_right){
-                                        borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": value.r.color, "style": value.r.style }; 
+                                        borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": value.r.color, "style": value.r.style };
                                     }
                                 }
                                 else{
-                                    borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": value.r.color, "style": value.r.style }; 
+                                    borderInfoCompute[bd_r + "_" + bd_c_right].l = { "color": value.r.color, "style": value.r.style };
                                 }
                             }
                         }
@@ -1053,15 +1053,15 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
                             if(bd_r_bottom < data.length && borderInfoCompute[bd_r_bottom + "_" + bd_c]){
                                 if(data[bd_r_bottom] != null && getObjType(data[bd_r_bottom][bd_c]) == "object" && data[bd_r_bottom][bd_c].mc != null){
                                     let cell_bottom = data[bd_r_bottom][bd_c];
-                                    
+
                                     let mc_b = cfg["merge"][cell_bottom.mc.r + "_" + cell_bottom.mc.c];
 
                                     if(mc_b.r == bd_r_bottom){
-                                        borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": value.b.color, "style": value.b.style }; 
+                                        borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": value.b.color, "style": value.b.style };
                                     }
                                 }
                                 else{
-                                    borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": value.b.color, "style": value.b.style }; 
+                                    borderInfoCompute[bd_r_bottom + "_" + bd_c].t = { "color": value.b.color, "style": value.b.style };
                                 }
                             }
                         }
@@ -1083,7 +1083,7 @@ function getBorderInfoComputeRange(dataset_row_st,dataset_row_ed,dataset_col_st,
 function getBorderInfoCompute(sheetIndex) {
     let borderInfoCompute = {};
 
-    let cfg, data; 
+    let cfg, data;
     if(sheetIndex == null){
         cfg = Store.config;
         data = Store.flowdata;
