@@ -138,6 +138,10 @@ function orderbydatafiler(str, stc, edr, edc, index, asc) {
 
 //创建筛选按钮
 function createFilter() {
+ console.log('点击了创建筛选按钮')
+    //JXH START
+    localStorage.setItem(`scrollLeft-createFilter`, document.getElementById("luckysheet-scrollbar-x")?.scrollLeft); //横向滚动条
+    localStorage.setItem(`scrollTop-createFilter`,  document.getElementById("luckysheet-scrollbar-y")?.scrollTop);
 
     if(!checkProtectionAuthorityNormal(Store.currentSheetIndex, "filter")){
         return;
@@ -193,11 +197,11 @@ function createFilter() {
         selectHightlightShow();
 
         Store.luckysheet_shiftpositon = $.extend(true, {}, last);
-        luckysheetMoveEndCell("down", "range");
+         luckysheetMoveEndCell("down", "range");
     }
     else if (last["row"][1] - last["row"][0] < 2) {
         Store.luckysheet_shiftpositon = $.extend(true, {}, last);
-        luckysheetMoveEndCell("down", "range");
+         luckysheetMoveEndCell("down", "range");
     }
 
     Store.luckysheet_filter_save = $.extend(true, {}, Store.luckysheet_select_save[0]);
@@ -215,6 +219,24 @@ function createFilter() {
             "filter_save": Store.luckysheet_filter_save
         });
     }
+
+    // JXH START
+    setTimeout(()=>{
+        const scrollLeft = localStorage.getItem(`scrollLeft-createFilter`);
+        const scrollTop = localStorage.getItem(`scrollTop-createFilter`);
+        const elementX = document.getElementById("luckysheet-scrollbar-x");
+
+        console.log('elementX:',elementX)
+        if(elementX){
+            elementX.scrollLeft  =  Number(scrollLeft);
+        }
+        const elementY = document.getElementById("luckysheet-scrollbar-y");
+        console.log('elementY:',elementY)
+        if(elementY){
+            elementY.scrollTop  =  Number(scrollTop);
+        }
+    },20)
+
 }
 
 //创建筛选配置
@@ -285,7 +307,7 @@ function createFilterOptions(luckysheet_filter_save, filterObj) {
     $("#luckysheet-filter-menu, #luckysheet-filter-submenu").hide();
     $("#luckysheet-filter-submenu-1").hide();
     if ($("#luckysheet-cell-main").scrollTop() > luckysheet_filter_save["top_move"]) {
-        $("#luckysheet-scrollbar-y").scrollTop(luckysheet_filter_save["top_move"]);
+       $("#luckysheet-scrollbar-y").scrollTop(luckysheet_filter_save["top_move"]);
     }
 
     let file = Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)];
@@ -535,7 +557,7 @@ function initialFilterHandler(){
         clearTimeout(hidefilersubmenu);
     });
 
-    //筛选按钮点击事件 列上面的筛选
+    //筛选按钮点击事件 列上面的筛选 筛选列点击事件
     $("#luckysheet-cell-main").on("click", ".luckysheet-filter-options", function (e) {
         console.log('点击了筛选!')
         if(!checkProtectionAuthorityNormal(Store.currentSheetIndex, "filter")){
