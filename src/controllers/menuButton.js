@@ -1952,7 +1952,7 @@ const menuButton = {
                     // {"text": locale_sort.desc, "value": "desc", "example": '<i class="iconfont luckysheet-iconfont-jiangxu" aria-hidden="true"></i>'},
                     // {"text": locale_sort.custom+"...", "value": "diysort", "example": '<i class="iconfont luckysheet-iconfont-zidingyipaixu" aria-hidden="true"></i>'},
                     // {"text": "", "value": "split", "example": ""},
-
+                    //筛选
                     {"text": locale_filter.filter, "value": "filter", "example": '<i class="iconfont luckysheet-iconfont-shaixuan2" aria-hidden="true"></i>'},
                     {"text": locale_filter.clearFilter, "value": "clearfilter", "example": '<i class="iconfont luckysheet-iconfont-qingchushaixuan" aria-hidden="true"></i>'}
                 ];
@@ -1981,9 +1981,11 @@ const menuButton = {
                     }
                     else if(itemvalue == "filter"){
                         if($('#luckysheet-filter-options-sheet' + Store.currentSheetIndex).length > 0){
+                            //清除筛选
                            $("#luckysheet-filter-initial").click();
                         }
                         else{
+                            //创建筛选按钮
                             createFilter();
                         }
                     }

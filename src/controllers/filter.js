@@ -138,7 +138,7 @@ function orderbydatafiler(str, stc, edr, edc, index, asc) {
 
 //创建筛选按钮
 function createFilter() {
- console.log('点击了创建筛选按钮')
+ console.log('点击了创建筛选按钮:',Store);
     //JXH START
     localStorage.setItem(`scrollLeft-createFilter`, document.getElementById("luckysheet-scrollbar-x")?.scrollLeft); //横向滚动条
     localStorage.setItem(`scrollTop-createFilter`,  document.getElementById("luckysheet-scrollbar-y")?.scrollTop);

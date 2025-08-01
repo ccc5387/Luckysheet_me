@@ -159,6 +159,10 @@ const server = {
 			if(params.k =='frozen' ){
 				return;
 			}
+			//数据验证 不广播
+			if(params.k =='dataVerification' ){
+				return;
+			}
 	        d.k = params.k;
 	        // d.s = params.s;
 	    }
