@@ -33,21 +33,23 @@ import method from '../global/method';
 
 const sheetmanage = {
     generateRandomSheetIndex: function(prefix) {
-        if(prefix == null){
-            prefix = "Sheet";
-        }
-
-        let userAgent = window.navigator.userAgent.replace(/[^a-zA-Z0-9]/g, "").split("");
-
-        let mid = "";
-
-        for(let i = 0; i < 12; i++){
-            mid += userAgent[Math.round(Math.random() * (userAgent.length - 1))];
-        }
-
-        let time = new Date().getTime();
-
-        return prefix + "_" + mid + "_" + time;
+         // jxh start index 序号自增 取最大的序号 + 1
+         return Store.luckysheetfile[Store.luckysheetfile.length-1]?.index + 1;
+        // if(prefix == null){
+        //     prefix = "Sheet";
+        // }
+        //
+        // let userAgent = window.navigator.userAgent.replace(/[^a-zA-Z0-9]/g, "").split("");
+        //
+        // let mid = "";
+        //
+        // for(let i = 0; i < 12; i++){
+        //     mid += userAgent[Math.round(Math.random() * (userAgent.length - 1))];
+        // }
+        //
+        // let time = new Date().getTime();
+        //
+        // return prefix + "_" + mid + "_" + time;
     },
     generateRandomSheetName: function(file, isPivotTable) {
         let index = file.length;

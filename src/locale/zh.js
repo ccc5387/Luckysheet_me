@@ -6509,7 +6509,7 @@ export default {
         tipNameRepeat:"标签页的名称不能重复！请重新修改",
         noMoreSheet:"工作薄内至少含有一张可视工作表。若需删除选定的工作表，请先插入一张新工作表或显示一张隐藏的工作表。",
         confirmDelete:"是否删除",
-        redoDelete:"可以通过Ctrl+Z撤销删除",
+        redoDelete:"",//可以通过Ctrl+Z撤销删除
         noHide:"不能隐藏, 至少保留一个sheet标签",
         chartEditNoOpt:"图表编辑模式下不允许该操作！",
         sheetNameSpecCharError:"名称不能超过31个字符，首尾不能是' 且名称不能包含:\r\n[ ] : \\ ? * /",

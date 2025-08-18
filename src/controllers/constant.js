@@ -674,33 +674,44 @@ function sheetconfigHTML(){
     }
 
 
-    const sheetconfigModel = `<div id="luckysheet-rightclick-sheet-menu" class="luckysheet-cols-menu luckysheet-rightgclick-menu luckysheet-mousedown-cancel"> 
+    const sheetconfigModel =
+
+
+        `<div id="luckysheet-rightclick-sheet-menu" class="luckysheet-cols-menu luckysheet-rightgclick-menu luckysheet-mousedown-cancel">
+            <div id="luckysheetsheetconfigdelete" class="luckysheet-cols-menuitem luckysheet-mousedown-cancel" style="display:${config.delete ? 'block' : 'none'};">
+                 <div class="luckysheet-cols-menuitem-content luckysheet-mousedown-cancel">${sheetconfig.delete}</div>
+                 </div>
      
-                <div id="luckysheetsheetconfigrename" class="luckysheet-cols-menuitem luckysheet-mousedown-cancel" style="display:${config.rename ? 'block' : 'none'};"> 
-                    <div class="luckysheet-cols-menuitem-content luckysheet-mousedown-cancel">${sheetconfig.rename}</div> 
-                </div> 
-                <div id="luckysheetsheetconfigcolor" class="luckysheet-cols-menuitem luckysheet-cols-submenu luckysheet-mousedown-cancel" style="display:${config.color ? 'block' : 'none'};"> 
-                    <div class="luckysheet-cols-menuitem-content luckysheet-mousedown-cancel"> 
-                        ${sheetconfig.changeColor} <span class="luckysheet-submenu-arrow iconfont luckysheet-iconfont-youjiantou" style="user-select: none;"></span> 
-                    </div> 
-                </div> 
-              
-          
-            <div id="luckysheetsheetconfigcolor_sub" class="luckysheet-cols-menu luckysheet-rightgclick-menu luckysheet-rightgclick-menu-sub luckysheet-mousedown-cancel">
-                <div id="luckysheetsheetconfigcolorreset" class="luckysheet-cols-menuitem luckysheet-mousedown-cancel">
-                    <div class="luckysheet-cols-menuitem-content luckysheet-mousedown-cancel">${sheetconfig.resetColor}</div>
-                </div> 
-                <div class="luckysheet-mousedown-cancel"> 
-                    <div class="luckysheet-mousedown-cancel"> 
-                        <input type="text" id="luckysheetsheetconfigcolorur" /> 
-                    </div> 
-                </div> 
-            </div>`;
+         </div> 
+         
+         `
+    ;
 
 
     /**
      * jxh start 从SHEET 菜单 移除了  部分功能
      *
+       //
+        //         <div id="luckysheetsheetconfigrename" class="luckysheet-cols-menuitem luckysheet-mousedown-cancel" style="display:${config.rename ? 'block' : 'none'};">
+        //             <div class="luckysheet-cols-menuitem-content luckysheet-mousedown-cancel">${sheetconfig.rename}</div>
+        //         </div>
+        //         <div id="luckysheetsheetconfigcolor" class="luckysheet-cols-menuitem luckysheet-cols-submenu luckysheet-mousedown-cancel" style="display:${config.color ? 'block' : 'none'};">
+        //             <div class="luckysheet-cols-menuitem-content luckysheet-mousedown-cancel">
+        //                 ${sheetconfig.changeColor} <span class="luckysheet-submenu-arrow iconfont luckysheet-iconfont-youjiantou" style="user-select: none;"></span>
+        //             </div>
+        //         </div>
+        //
+        //
+        //     <div id="luckysheetsheetconfigcolor_sub" class="luckysheet-cols-menu luckysheet-rightgclick-menu luckysheet-rightgclick-menu-sub luckysheet-mousedown-cancel">
+        //         <div id="luckysheetsheetconfigcolorreset" class="luckysheet-cols-menuitem luckysheet-mousedown-cancel">
+        //             <div class="luckysheet-cols-menuitem-content luckysheet-mousedown-cancel">${sheetconfig.resetColor}</div>
+        //         </div>
+        //         <div class="luckysheet-mousedown-cancel">
+        //             <div class="luckysheet-mousedown-cancel">
+        //                 <input type="text" id="luckysheetsheetconfigcolorur" />
+        //             </div>
+        //         </div>
+
      <div id="luckysheetsheetconfigdelete" class="luckysheet-cols-menuitem luckysheet-mousedown-cancel" style="display:${config.delete ? 'block' : 'none'};">
      <div class="luckysheet-cols-menuitem-content luckysheet-mousedown-cancel">${sheetconfig.delete}</div>
      </div>

@@ -772,6 +772,7 @@ const selection = {
                     "cfg": cfg,
                     "RowlChange": true
                 }
+                console.log('pasteHandler d: ',d)
                 jfrefreshgrid(d, Store.luckysheet_select_save, allParam);
             }
             else{

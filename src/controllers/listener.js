@@ -25,6 +25,7 @@ const initListener = function(){
     // createProxy(Store,['jfredo']);
     createProxy(Store, 'jfredo',(target, property, val, receiver)=>{
         if (property !== 'length') {
+            // console.log('createHookFunction updated: target',target,' ', ' property:',property,' val:',val)
             //  钩子函数
             method.createHookFunction('updated',val)
         }
@@ -33,7 +34,7 @@ const initListener = function(){
     createProxy(Store, 'jfundo',(target, property, val, receiver)=>{
         redoAccessible(Store.jfundo.length);
     } );
-    
+
 
 
     createProxy(Store, 'asyncLoad', (target, property, val, receiver)=>{

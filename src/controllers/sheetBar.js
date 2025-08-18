@@ -23,7 +23,7 @@ import method from '../global/method';
 //表格底部名称栏区域 相关事件（增、删、改、隐藏显示、颜色等等）
 let isInitialSheetConfig = false, luckysheetcurrentSheetitem = null, jfdbclicklagTimeout = null,oldSheetFileName = "";
 function showsheetconfigmenu() {
-    return; // jxh start 隐藏 sheet上的菜单防止移动
+   // return; // jxh start 隐藏 sheet上的菜单防止移动
     if (!isInitialSheetConfig) {
         isInitialSheetConfig = true;
         const _locale = locale();
@@ -378,6 +378,11 @@ export function initialSheetBar(){
     });
 
     $("#luckysheetsheetconfigdelete").click(function (e) {
+        // JXH START 主表不允许删除!
+         console.log('luckysheetsheetconfigdelete ',Store.currentSheetIndex)
+        if(Store.currentSheetIndex==0){
+            alert('主表不允许删除!');
+        }
         $("#luckysheet-sheet-list, #luckysheet-rightclick-sheet-menu").hide();
 
         if($("#luckysheet-sheet-container-c .luckysheet-sheets-item:visible").length <= 1){

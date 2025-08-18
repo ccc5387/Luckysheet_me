@@ -173,6 +173,11 @@ luckysheet.create = function (setting) {
         sheetmanage.initialjfFile(menu, title);
         // luckysheetsizeauto();
         initialWorkBook();
+
+        //需要更新数据给后台时，建立WebSocket连接
+        if(server.allowUpdate){
+            server.openWebSocket();
+        }
     }
     else {
         $.post(loadurl, {"gridKey" : server.gridKey}, function (d) {
@@ -188,28 +193,7 @@ luckysheet.create = function (setting) {
                 server.openWebSocket();
             }
         });
-       // JXH strat gzip 解压
-       //  fetch(loadurl, {
-       //      method: 'POST',
-       //      headers: {
-       //          'Content-Type': 'application/json'
-       //      },
-       //      body: JSON.stringify({ gridKey: server.gridKey })
-       //  })
-       //      .then(res => res.json())
-       //      .then(d => {
-       //          let data = new Function("return " + d)();
-       //          Store.luckysheetfile = data;
-       //
-       //          sheetmanage.initialjfFile(menu, title);
-       //          // luckysheetsizeauto();
-       //          initialWorkBook();
-       //
-       //          //需要更新数据给后台时，建立WebSocket连接
-       //          if(server.allowUpdate){
-       //              server.openWebSocket();
-       //          }
-       //      });
+
     }
 }
 

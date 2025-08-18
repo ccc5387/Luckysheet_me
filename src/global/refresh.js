@@ -19,7 +19,7 @@ import { selectHightlightShow, selectionCopyShow, collaborativeEditBox } from '.
 import { createFilterOptions } from '../controllers/filter';
 import { getSheetIndex } from '../methods/get';
 import Store from '../store';
-
+import _ from 'lodash';
 let refreshCanvasTimeOut = null;
 
 function runExecFunction(range, index, data){
@@ -611,7 +611,7 @@ function jfrefreshgrid_adRC(data, cfg, ctrlType, ctrlValue, calc, filterObj, cf,
     hyperlinkCtrl.hyperlink = hyperlink;
     file.hyperlink = hyperlink;
     server.saveParam("all", Store.currentSheetIndex, file.hyperlink, { "k": "hyperlink" });
-
+    console.log('触发jfrefreshgrid_rhcw')
     //行高、列宽刷新
     jfrefreshgrid_rhcw(Store.flowdata.length, Store.flowdata[0].length);
 }
@@ -1144,14 +1144,23 @@ function jfrefreshgrid_rhcw(rowheight, colwidth, isRefreshCanvas=true){
 
     if(isRefreshCanvas){
         refreshCanvasTimeOut = setTimeout(function () {
+            console.log('触发refreshCanvasTimeOut')
             luckysheetrefreshgrid();
         }, 1);
     }
 
 }
-
-//Refresh the canvas display data according to scrollHeight and scrollWidth
+// 创建一个防抖版本的 refreshGrid 函数
+const debouncedRefreshGrid = _.debounce((scrollWidth, scrollHeight) => {
+    console.log('触发debouncedRefreshGrid')
+    luckysheetrefreshgrid_0(scrollWidth, scrollHeight);
+}, 16); // 延迟 16ms，约等于一帧的时间
 function luckysheetrefreshgrid(scrollWidth, scrollHeight) {
+    debouncedRefreshGrid(scrollWidth,scrollHeight)
+}
+//Refresh the canvas display data according to scrollHeight and scrollWidth
+function luckysheetrefreshgrid_0(scrollWidth, scrollHeight) {
+    console.log('触发luckysheetrefreshgrid_0,',Store.luckysheetfile)
     formula.groupValuesRefresh();
 
     if (scrollWidth == null) {
