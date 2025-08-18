@@ -18,7 +18,7 @@ import Store from '../store';
  * @param {number} value 插入 多少 行（列）
  * @param {string} direction 哪个方向插入 ['lefttop','rightbottom'] 之一
  * @param {string | number} sheetIndex 操作的 sheet 的 index 属性
- * @returns 
+ * @returns
  */
 function luckysheetextendtable(type, index, value, direction, sheetIndex) {
     sheetIndex = sheetIndex || Store.currentSheetIndex;
@@ -182,10 +182,10 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
         if(type == "row"){
             if(f_r1 < index){
                 if(f_r2 == index && direction == "lefttop"){
-                    f_r2 += value; 
+                    f_r2 += value;
                 }
                 else if(f_r2 > index){
-                    f_r2 += value;   
+                    f_r2 += value;
                 }
             }
             else if(f_r1 == index){
@@ -238,10 +238,10 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
         else if(type == "column"){
             if(f_c1 < index){
                 if(f_c2 == index && direction == "lefttop"){
-                    f_c2 += value; 
+                    f_c2 += value;
                 }
                 else if(f_c2 > index){
-                    f_c2 += value;   
+                    f_c2 += value;
                 }
             }
             else if(f_c1 == index){
@@ -313,10 +313,10 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
                 if(type == "row"){
                     if(CFr1 < index){
                         if(CFr2 == index && direction == "lefttop"){
-                            CFr2 += value; 
+                            CFr2 += value;
                         }
                         else if(CFr2 > index){
-                            CFr2 += value;   
+                            CFr2 += value;
                         }
                     }
                     else if(CFr1 == index){
@@ -336,10 +336,10 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
                 else if(type == "column"){
                     if(CFc1 < index){
                         if(CFc2 == index && direction == "lefttop"){
-                            CFc2 += value; 
+                            CFc2 += value;
                         }
                         else if(CFc2 > index){
-                            CFc2 += value;   
+                            CFc2 += value;
                         }
                     }
                     else if(CFc1 == index){
@@ -382,10 +382,10 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
             if(type == "row"){
                 if(AFr1 < index){
                     if(AFr2 == index && direction == "lefttop"){
-                        AFr2 += value; 
+                        AFr2 += value;
                     }
                     else if(AFr2 > index){
-                        AFr2 += value;   
+                        AFr2 += value;
                     }
                 }
                 else if(AFr1 == index){
@@ -405,10 +405,10 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
             else if(type == "column"){
                 if(AFc1 < index){
                     if(AFc2 == index && direction == "lefttop"){
-                        AFc2 += value; 
+                        AFc2 += value;
                     }
                     else if(AFc2 > index){
-                        AFc2 += value;   
+                        AFc2 += value;
                     }
                 }
                 else if(AFc1 == index){
@@ -448,10 +448,10 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
         let freezen_top = Store.visibledatarow[freezen_row_st] - 2 - freezen_scrollTop + Store.columnHeaderHeight;
 
         newFreezen.freezenhorizontaldata = [
-            Store.visibledatarow[freezen_row_st], 
-            freezen_row_st + 1, 
-            freezen_scrollTop, 
-            luckysheetFreezen.cutVolumn(Store.visibledatarow, freezen_row_st + 1), 
+            Store.visibledatarow[freezen_row_st],
+            freezen_row_st + 1,
+            freezen_scrollTop,
+            luckysheetFreezen.cutVolumn(Store.visibledatarow, freezen_row_st + 1),
             freezen_top
         ];
     }
@@ -473,10 +473,10 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
         let freezen_left = Store.visibledatacolumn[freezen_col_st] - 2 - freezen_scrollLeft + Store.rowHeaderWidth;
 
         newFreezen.freezenverticaldata = [
-            Store.visibledatacolumn[freezen_col_st], 
-            freezen_col_st + 1, 
-            freezen_scrollLeft, 
-            luckysheetFreezen.cutVolumn(Store.visibledatacolumn, freezen_col_st + 1), 
+            Store.visibledatacolumn[freezen_col_st],
+            freezen_col_st + 1,
+            freezen_scrollLeft,
+            luckysheetFreezen.cutVolumn(Store.visibledatacolumn, freezen_col_st + 1),
             freezen_left
         ];
     }
@@ -492,7 +492,7 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
             let r = Number(key.split('_')[0]),
                 c = Number(key.split('_')[1]);
             let item = dataVerification[key];
-            
+
             if(type == "row"){
                 if(index < r){
                     newDataVerification[(r + value) + "_" + c] = item;
@@ -552,7 +552,7 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
             let r = Number(key.split('_')[0]),
                 c = Number(key.split('_')[1]);
             let item = hyperlink[key];
-            
+
             if(type == "row"){
                 if(index < r){
                     newHyperlink[(r + value) + "_" + c] = item;
@@ -653,7 +653,7 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
         var cellBorderConfig = [];
         //边框
         if(cfg["borderInfo"] && cfg["borderInfo"].length > 0){
-            let borderInfo = []; 
+            let borderInfo = [];
 
             for(let i = 0; i < cfg["borderInfo"].length; i++){
                 let rangeType = cfg["borderInfo"][i].rangeType;
@@ -688,7 +688,7 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
 
                         if(bd_r2 >= bd_r1){
                             emptyRange.push({ "row": [bd_r1, bd_r2], "column": borderRange[j].column });
-                        }   
+                        }
                     }
 
                     if(emptyRange.length > 0){
@@ -720,7 +720,7 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
                             row_index += value;
                         }
                     }
-                    
+
                     cfg["borderInfo"][i].value.row_index = row_index;
                     borderInfo.push(cfg["borderInfo"][i]);
                 }
@@ -728,7 +728,7 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
 
             cfg["borderInfo"] = borderInfo;
         }
-        
+
         let arr = [];
         for (let r = 0; r < value; r++) {
             arr.push(JSON.stringify(row));
@@ -756,8 +756,8 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
                 new Function("d","return " + 'd.splice(' + index + ', 0, ' + arr.join(",") + ')')(d);
             }
         }
-        else{ 
-            new Function("d","return " + 'd.splice(' + (index + 1) + ', 0, ' + arr.join(",") + ')')(d); 
+        else{
+            new Function("d","return " + 'd.splice(' + (index + 1) + ', 0, ' + arr.join(",") + ')')(d);
         }
     }
     else {
@@ -769,7 +769,7 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
 
             for(let c in cfg["columnlen"]){
                 c = parseFloat(c);
-                
+
                 if(c < index){
                     columnlen_new[c] = cfg["columnlen"][c];
                 }
@@ -795,7 +795,7 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
 
             for(let c in cfg["colhidden"]){
                 c = parseFloat(c);
-                
+
                 if(c < index){
                     colhidden_new[c] = cfg["colhidden"][c];
                 }
@@ -824,7 +824,7 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
         var cellBorderConfig = [];
         //边框
         if(cfg["borderInfo"] && cfg["borderInfo"].length > 0){
-            let borderInfo = []; 
+            let borderInfo = [];
 
             for(let i = 0; i < cfg["borderInfo"].length; i++){
                 let rangeType = cfg["borderInfo"][i].rangeType;
@@ -859,7 +859,7 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
 
                         if(bd_c2 >= bd_c1){
                             emptyRange.push({ "row": borderRange[j].row, "column": [bd_c1, bd_c2] });
-                        }   
+                        }
                     }
 
                     if(emptyRange.length > 0){
@@ -891,7 +891,7 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
                             col_index += value;
                         }
                     }
-                    
+
                     cfg["borderInfo"][i].value.col_index = col_index;
                     borderInfo.push(cfg["borderInfo"][i]);
                 }
@@ -916,7 +916,7 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
                 cfg["borderInfo"].push(...cellBorderConfigCopy);
             }
         }
-        
+
         for (let r = 0; r < d.length; r++) {
             let row = d[r];
 
@@ -941,14 +941,14 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
     // 修改当前sheet页时刷新
     if (file.index == Store.currentSheetIndex) {
         jfrefreshgrid_adRC(
-            d, 
-            cfg, 
-            "addRC", 
-            { "index": index, "len": value, "direction": direction, "rc": type1, "restore": false }, 
-            newCalcChain, 
-            newFilterObj, 
-            newCFarr, 
-            newAFarr, 
+            d,
+            cfg,
+            "addRC",
+            { "index": index, "len": value, "direction": direction, "rc": type1, "restore": false },
+            newCalcChain,
+            newFilterObj,
+            newCFarr,
+            newAFarr,
             newFreezen,
             newDataVerification,
             newHyperlink
@@ -966,7 +966,7 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
         file.dataVerification = newDataVerification;
         file.hyperlink = newHyperlink;
     }
-    
+
     let range = null;
     if(type == "row"){
         if(direction == "lefttop"){
@@ -984,7 +984,7 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
             range = [{ "row": [0, d.length - 1], "column": [index + 1, index + value] }];
         }
     }
-    
+
     file.luckysheet_select_save = range;
     if (file.index == Store.currentSheetIndex) {
         Store.luckysheet_select_save = range;
@@ -992,12 +992,12 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
     }
 
     if (type == "row"){
-        let scrollLeft = $("#luckysheet-cell-main").scrollLeft(), 
+        let scrollLeft = $("#luckysheet-cell-main").scrollLeft(),
             scrollTop = $("#luckysheet-cell-main").scrollTop();
-        let winH = $("#luckysheet-cell-main").height(), 
+        let winH = $("#luckysheet-cell-main").height(),
             winW = $("#luckysheet-cell-main").width();
 
-        let row = Store.visibledatarow[range[0].row[1]], 
+        let row = Store.visibledatarow[range[0].row[1]],
             row_pre = range[0].row[0] - 1 == -1 ? 0 : Store.visibledatarow[range[0].row[0] - 1];
 
         if (row - scrollTop - winH + 20 > 0) {
@@ -1042,7 +1042,7 @@ function luckysheetextendData(rowlen, newData) {
     //luckysheet.flowdata
     Store.flowdata = d;
     editor.webWorkerFlowDataCache(Store.flowdata);//worker存数据
-    Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)].data = d;           
+    Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)].data = d;
 
     //config
     Store.config = cfg;
@@ -1056,7 +1056,7 @@ function luckysheetextendData(rowlen, newData) {
 function luckysheetdeletetable(type, st, ed, sheetIndex) {
 
     sheetIndex = sheetIndex || Store.currentSheetIndex;
-    
+
     if(type=='row' && !checkProtectionAuthorityNormal(sheetIndex, "deleteRows")){
         return;
     }
@@ -1514,10 +1514,10 @@ function luckysheetdeletetable(type, st, ed, sheetIndex) {
         let freezen_top = Store.visibledatarow[freezen_row_st] - 2 - freezen_scrollTop + Store.columnHeaderHeight;
 
         newFreezen.freezenhorizontaldata = [
-            Store.visibledatarow[freezen_row_st], 
-            freezen_row_st + 1, 
-            freezen_scrollTop, 
-            luckysheetFreezen.cutVolumn(Store.visibledatarow, freezen_row_st + 1), 
+            Store.visibledatarow[freezen_row_st],
+            freezen_row_st + 1,
+            freezen_scrollTop,
+            luckysheetFreezen.cutVolumn(Store.visibledatarow, freezen_row_st + 1),
             freezen_top
         ];
     }
@@ -1550,10 +1550,10 @@ function luckysheetdeletetable(type, st, ed, sheetIndex) {
         let freezen_left = Store.visibledatacolumn[freezen_col_st] - 2 - freezen_scrollLeft + Store.rowHeaderWidth;
 
         newFreezen.freezenverticaldata = [
-            Store.visibledatacolumn[freezen_col_st], 
-            freezen_col_st + 1, 
-            freezen_scrollLeft, 
-            luckysheetFreezen.cutVolumn(Store.visibledatacolumn, freezen_col_st + 1), 
+            Store.visibledatacolumn[freezen_col_st],
+            freezen_col_st + 1,
+            freezen_scrollLeft,
+            luckysheetFreezen.cutVolumn(Store.visibledatacolumn, freezen_col_st + 1),
             freezen_left
         ];
     }
@@ -1569,7 +1569,7 @@ function luckysheetdeletetable(type, st, ed, sheetIndex) {
             let r = Number(key.split('_')[0]),
                 c = Number(key.split('_')[1]);
             let item = dataVerification[key];
-            
+
             if(type == "row"){
                 if(r < st){
                     newDataVerification[r + "_" + c] = item;
@@ -1597,7 +1597,7 @@ function luckysheetdeletetable(type, st, ed, sheetIndex) {
             let r = Number(key.split('_')[0]),
                 c = Number(key.split('_')[1]);
             let item = hyperlink[key];
-            
+
             if(type == "row"){
                 if(r < st){
                     newHyperlink[r + "_" + c] = item;
@@ -1658,7 +1658,7 @@ function luckysheetdeletetable(type, st, ed, sheetIndex) {
 
         //边框配置变动
         if(cfg["borderInfo"] && cfg["borderInfo"].length > 0){
-            let borderInfo = []; 
+            let borderInfo = [];
 
             for(let i = 0; i < cfg["borderInfo"].length; i++){
                 let rangeType = cfg["borderInfo"][i].rangeType;
@@ -1680,11 +1680,11 @@ function luckysheetdeletetable(type, st, ed, sheetIndex) {
                             else if(r <= borderRange[j].row[1]){
                                 bd_r2 -= 1;
                             }
-                        } 
+                        }
 
                         if(bd_r2 >= bd_r1){
                             emptyRange.push({ "row": [bd_r1, bd_r2], "column": borderRange[j].column });
-                        }   
+                        }
                     }
 
                     if(emptyRange.length > 0){
@@ -1726,7 +1726,7 @@ function luckysheetdeletetable(type, st, ed, sheetIndex) {
         // //删除选中行
         // d.splice(st, slen);
 
-        // //删除多少行，增加多少行空白行                
+        // //删除多少行，增加多少行空白行
         // for (let r = 0; r < slen; r++) {
         //     d.push(row);
         // }
@@ -1734,14 +1734,14 @@ function luckysheetdeletetable(type, st, ed, sheetIndex) {
         //删除选中行
         d.splice(st, slen);
 
-        //删除多少行，增加多少行空白行                
-        for (let r = 0; r < slen; r++) {
-            let row = [];
-            for (let c = 0; c < d[0].length; c++) {
-                row.push(null);
-            }
-            d.push(row);
-        }
+        //删除多少行，增加多少行空白行
+        // for (let r = 0; r < slen; r++) {
+        //     let row = [];
+        //     for (let c = 0; c < d[0].length; c++) {
+        //         row.push(null);
+        //     }
+        //     d.push(row);
+        // }
     }
     else {
         type1 = "c";
@@ -1804,11 +1804,11 @@ function luckysheetdeletetable(type, st, ed, sheetIndex) {
                             else if(c <= borderRange[j].column[1]){
                                 bd_c2 -= 1;
                             }
-                        } 
+                        }
 
                         if(bd_c2 >= bd_c1){
                             emptyRange.push({ "row": borderRange[j].row, "column": [bd_c1, bd_c2] });
-                        }   
+                        }
                     }
 
                     if(emptyRange.length > 0){
@@ -1838,7 +1838,7 @@ function luckysheetdeletetable(type, st, ed, sheetIndex) {
 
             cfg["borderInfo"] = borderInfo;
         }
-        
+
         //空白列模板
         let addcol = [];
         for (let r = 0; r < slen; r++) {
@@ -1847,10 +1847,10 @@ function luckysheetdeletetable(type, st, ed, sheetIndex) {
 
         for (let r = 0; r < d.length; r++) {
             let row = [].concat(d[r]);
-            
+
             //删除选中列
             row.splice(st, slen);
-            
+
             d[r] = row.concat(addcol);
         }
     }
@@ -1858,14 +1858,14 @@ function luckysheetdeletetable(type, st, ed, sheetIndex) {
     // 修改当前sheet页时刷新
     if (file.index == Store.currentSheetIndex) {
         jfrefreshgrid_adRC(
-            d, 
-            cfg, 
-            "delRC", 
-            { "index": st, "len": ed - st + 1, "rc": type1 }, 
-            newCalcChain, 
-            newFilterObj, 
-            newCFarr, 
-            newAFarr, 
+            d,
+            cfg,
+            "delRC",
+            { "index": st, "len": ed - st + 1, "rc": type1 },
+            newCalcChain,
+            newFilterObj,
+            newCFarr,
+            newAFarr,
             newFreezen,
             newDataVerification,
             newHyperlink
@@ -1960,14 +1960,14 @@ function luckysheetDeleteCell(type, str, edr, stc, edc, sheetIndex) {
 
                 if(type == 'moveLeft'){
                     functionStr = "=" + formula.functionStrChange(calc_funcStr, "del", "col", null, stc, clen);
-                
+
                     if(calc_c > edc && calc_r >= str && calc_r <= edr){
                         calc.c = calc_c - clen;
                     }
                 }
                 else if(type == 'moveUp'){
                     functionStr = "=" + formula.functionStrChange(calc_funcStr, "del", "row", null, str, rlen);
-                
+
                     if(calc_r > edr && calc_c >= stc && calc_c <= edc){
                         calc.r = calc_r - rlen;
                     }
@@ -1991,7 +1991,7 @@ function luckysheetDeleteCell(type, str, edr, stc, edc, sheetIndex) {
 
         let f_r1 = filter_select.row[0], f_r2 = filter_select.row[1];
         let f_c1 = filter_select.column[0], f_c2 = filter_select.column[1];
-        
+
         if(type == 'moveUp'){
             if(f_c1 >= stc && f_c2 <= edc){
                 if(f_r1 > edr){
@@ -2025,7 +2025,7 @@ function luckysheetDeleteCell(type, str, edr, stc, edc, sheetIndex) {
                     for(let k in filter){
                         let f_rowhidden = filter[k].rowhidden;
                         let f_rowhidden_new = {};
-        
+
                         for(let n in f_rowhidden){
                             if(n < str){
                                 f_rowhidden_new[n] = 0;
@@ -2039,11 +2039,11 @@ function luckysheetDeleteCell(type, str, edr, stc, edc, sheetIndex) {
                             newFilterObj.filter = {};
                         }
                         newFilterObj.filter[k] = $.extend(true, {}, filter[k]);
-        
+
                         if(JSON.stringify(f_rowhidden_new) != "{}"){
                             newFilterObj.filter[k].rowhidden = f_rowhidden_new;
                         }
-        
+
                         newFilterObj.filter[k].str = newFilterObj.filter_select.row[0];
                         newFilterObj.filter[k].edr = newFilterObj.filter_select.row[1];
                     }
@@ -2227,7 +2227,7 @@ function luckysheetDeleteCell(type, str, edr, stc, edc, sheetIndex) {
                     CFr2 = cf_range[j].row[1],
                     CFc1 = cf_range[j].column[0],
                     CFc2 = cf_range[j].column[1];
-                
+
                 if(!(str <= CFr1 && edr >= CFr2 && stc <= CFc1 && edc >= CFc2)){
                     cf_new_range = getMoveRange(type, str, edr, stc, edc, CFr1, CFr2, CFc1, CFc2, rlen, clen);
                 }
@@ -2304,7 +2304,7 @@ function luckysheetDeleteCell(type, str, edr, stc, edc, sheetIndex) {
 
     //边框配置变动
     if(cfg["borderInfo"] && cfg["borderInfo"].length > 0){
-        let borderInfo = []; 
+        let borderInfo = [];
 
         for(let i = 0; i < cfg["borderInfo"].length; i++){
             let rangeType = cfg["borderInfo"][i].rangeType;
@@ -2354,7 +2354,7 @@ function luckysheetDeleteCell(type, str, edr, stc, edc, sheetIndex) {
                             cfg["borderInfo"][i].value.row_index = row_index;
                         }
                     }
-    
+
                     borderInfo.push(cfg["borderInfo"][i]);
                 }
             }
@@ -2362,7 +2362,7 @@ function luckysheetDeleteCell(type, str, edr, stc, edc, sheetIndex) {
 
         cfg["borderInfo"] = borderInfo;
     }
-    
+
     //空白列模板
     let addcol = [];
     for (let c = stc; c <= edc; c++) {
