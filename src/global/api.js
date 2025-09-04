@@ -4,6 +4,7 @@ import { getSheetIndex, getluckysheet_select_save, getluckysheetfile } from "../
 import locale from "../locale/locale";
 import method from './method';
 import formula from './formula';
+import formulaInit from './formulaInit';
 import func_methods from "./func_methods";
 import tooltip from "./tooltip";
 import json from "./json";
@@ -6907,10 +6908,11 @@ export function pagerInit (config) {
 
 /**
  * 刷新公式
+ *     formula.execFunctionGroupForce(true);
  * @param {Function} success 回调函数
  */
 export function refreshFormula (success) {
-    formula.execFunctionGroupForce(true);
+    formula.recalcAllFormulas(0);
     luckysheetrefreshgrid()
     setTimeout(() => {
       if (success && typeof success === 'function') {
@@ -6919,6 +6921,19 @@ export function refreshFormula (success) {
     })
 }
 
+/**
+ * 初始化公式链
+ * @param success
+ */
+export function refreshFormulaInit (success) {
+    formulaInit.execFunctionGroupForce(true);
+    luckysheetrefreshgrid()
+    setTimeout(() => {
+        if (success && typeof success === 'function') {
+            success();
+        }
+    })
+}
 function createCalcChainFromSheetData() {
     const allSheets = getAllSheets();
     console.log('allSheets:',allSheets)

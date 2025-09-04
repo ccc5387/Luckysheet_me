@@ -346,23 +346,11 @@ function rightclickHTML(){
                 </div>
                 <div id="luckysheet-cols-rows-add">
                     <div class="luckysheet-menuseparator luckysheet-mousedown-cancel" role="separator"></div>
-                    <div id="luckysheet-top-left-add-selected" class="luckysheet-cols-menuitem luckysheet-mousedown-cancel">
-                        <div class="luckysheet-cols-menuitem-content luckysheet-mousedown-cancel">
-                            ${rightclick.to}
-                            <span class="luckysheet-cols-rows-shift-left">${rightclick.left}</span>
-                            ${rightclick.add}
-                            <input type="text" class="luckysheet-mousedown-cancel" placeholder="${rightclick.number}" value="1" style="width:40px;height:20px;box-sizing:border-box;text-align:center;margin-left:5px;"/>
-                            <span class="luckysheet-cols-rows-shift-word luckysheet-mousedown-cancel">${rightclick.column}</span>
-                        </div>
+                    <div id="luckysheet-top-left-add-selected" style="display: none;" class="luckysheet-cols-menuitem luckysheet-mousedown-cancel">
+                        
                     </div>
-                    <div id="luckysheet-bottom-right-add-selected" class="luckysheet-cols-menuitem luckysheet-mousedown-cancel">
-                        <div class="luckysheet-cols-menuitem-content luckysheet-mousedown-cancel">
-                            ${rightclick.to}
-                            <span class="luckysheet-cols-rows-shift-right">${rightclick.right}</span>
-                            ${rightclick.add}
-                            <input type="text" class="luckysheet-mousedown-cancel" placeholder="${rightclick.number}" value="1" style="width:40px;height:20px;box-sizing:border-box;text-align: center;margin-left:5px;"/>
-                            <span class="luckysheet-cols-rows-shift-word luckysheet-mousedown-cancel">${rightclick.column}</span>
-                        </div>
+                    <div id="luckysheet-bottom-right-add-selected" style="display: none;" class="luckysheet-cols-menuitem luckysheet-mousedown-cancel">
+                      
                     </div>
                     <div id="luckysheet-del-selected" class="luckysheet-cols-menuitem luckysheet-mousedown-cancel">
                         <div class="luckysheet-cols-menuitem-content luckysheet-mousedown-cancel">
@@ -382,13 +370,13 @@ function rightclickHTML(){
                             <span class="luckysheet-cols-rows-shift-word luckysheet-mousedown-cancel">${rightclick.column}</span>
                         </div>
                     </div>
-                    <div id="luckysheet-column-row-width-selected" class="luckysheet-cols-menuitem luckysheet-mousedown-cancel">
+                    <div id="luckysheet-show-sendOrder" class="luckysheet-cols-menuitem luckysheet-mousedown-cancel">
                         <div class="luckysheet-cols-menuitem-content luckysheet-mousedown-cancel">
-                            <span class="luckysheet-cols-rows-shift-word luckysheet-mousedown-cancel">${rightclick.column}</span>
-                            <span class="luckysheet-cols-rows-shift-size luckysheet-mousedown-cancel">${rightclick.width}</span>
-                            <input type="number" class="luckysheet-mousedown-cancel rcsize" min="0" max="255" placeholder="${rightclick.number}" value="" style="width:50px;height:20px;box-sizing:border-box;text-align: center;margin-left:5px;">
-                            px
+                               推送
                         </div>
+                    </div>
+                    <div id="luckysheet-column-row-width-selected" style="display: none;" class="luckysheet-cols-menuitem luckysheet-mousedown-cancel">
+                        
                     </div>
                 </div>
                 <div id="luckysheet-cols-rows-shift">

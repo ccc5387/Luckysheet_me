@@ -36,7 +36,7 @@ import {
     showrightclickmenu,
     luckysheetactiveCell,
     luckysheetContainerFocus,
-    $$
+    $$, showLoading, hideLoading
 } from '../utils/util';
 import { getSheetIndex, getRangetxt } from '../methods/get';
 import {
@@ -5413,28 +5413,37 @@ export default function luckysheetHandler() {
                 return;
             }
             //整行剪切没清空 jxh start
-            if (Store.luckysheet_paste_iscut) {
-                Store.luckysheet_paste_iscut = false;
-
-                selection.pasteHandlerOfCutPaste(Store.luckysheet_copy_save);
-                selection.clearcopy(e);
-            }
-            else {
-                selection.pasteHandlerOfCopyPaste(Store.luckysheet_copy_save);
-            }
+            // if (Store.luckysheet_paste_iscut) {
+            //     Store.luckysheet_paste_iscut = false;
+            //
+            //     selection.pasteHandlerOfCutPaste(Store.luckysheet_copy_save);
+            //     selection.clearcopy(e);
+            // }
+            // else {
+            //     selection.pasteHandlerOfCopyPaste(Store.luckysheet_copy_save);
+            // }
             //整行剪切没清空 jxh start
-            if (txtdata.indexOf("luckysheet_copy_action_table") > - 1 && Store.luckysheet_copy_save["copyRange"] != null && Store.luckysheet_copy_save["copyRange"].length > 0 && isEqual) {
+            if (
+                true
+              //  txtdata.indexOf("luckysheet_copy_action_table") > - 1 && Store.luckysheet_copy_save["copyRange"] != null && Store.luckysheet_copy_save["copyRange"].length > 0 && isEqual
+            ) {
                 //剪切板内容 和 luckysheet本身复制的内容 一致
+                console.log('粘贴:',Store.luckysheet_copy_save,' 选择:',Store.luckysheet_select_save)
+                // showLoading('粘贴中...')
                 //  jxh start
-                // if (Store.luckysheet_paste_iscut) {
-                //     Store.luckysheet_paste_iscut = false;
-                //
-                //     selection.pasteHandlerOfCutPaste(Store.luckysheet_copy_save);
-                //     selection.clearcopy(e);
-                // }
-                // else {
-                //     selection.pasteHandlerOfCopyPaste(Store.luckysheet_copy_save);
-                // }
+                if (Store.luckysheet_paste_iscut) {
+                     Store.luckysheet_paste_iscut = false;
+
+                    selection.pasteHandlerOfCutPaste(Store.luckysheet_copy_save);
+                     selection.clearcopy(e);
+                    Store.luckysheet_copy_save.copyRange[0].column = Store.luckysheet_select_save[0].column;
+                    Store.luckysheet_copy_save.copyRange[0].row = Store.luckysheet_select_save[0].row;
+                }
+                else {
+                    selection.pasteHandlerOfCopyPaste(Store.luckysheet_copy_save);
+                }
+                // hideLoading()
+                // method.createHookFunction('rangePasteAfter',Store.luckysheet_copy_save)
             }
             else if(txtdata.indexOf("luckysheet_copy_action_image") > - 1){
                 imageCtrl.pasteImgItem();
@@ -5501,7 +5510,7 @@ export default function luckysheetHandler() {
                                 const v = formula.execfunction(translatedFormula, rowIndex, columnIndex);
                                 cell.f = v[2];
                                 cell.v = v[1];
-                                cell.ct = genarate(originalText)[1];
+                               cell.ct = genarate(originalText)[1];
                                 if (cell.ct && cell.ct.fa) {
                                     cell.m = update(cell.ct.fa, cell.v);
                                 }
@@ -5705,6 +5714,8 @@ export default function luckysheetHandler() {
 
                     Store.luckysheet_selection_range = [];
                     selection.pasteHandler(data, borderInfo);
+
+                    console.log('---粘贴0:',data)
                 }
                 //复制的是图片
                 else if(clipboardData.files.length == 1 && clipboardData.files[0].type.indexOf('image') > -1){
@@ -5713,7 +5724,9 @@ export default function luckysheetHandler() {
                     return;
                 }
                 else {
+
                     txtdata = clipboardData.getData("text/plain");
+                    console.log('---粘贴1:',txtdata)
                     selection.pasteHandler(txtdata);
                 }
                 $("#luckysheet-copy-content").empty();
@@ -5729,6 +5742,7 @@ export default function luckysheetHandler() {
                 clipboardData = e.originalEvent.clipboardData;
             }
             let text =  clipboardData.getData('text/plain');
+            console.log('---粘贴2:',text)
             // 插入
             document.execCommand("insertText", false, text);
         }

@@ -6,28 +6,28 @@ import menuButton from './menuButton';
 import server from './server';
 import method from '../global/method';
 import { selectHightlightShow, luckysheet_count_show,selectHelpboxFill } from './select';
-import { 
-    getObjType, 
+import {
+    getObjType,
     showrightclickmenu,
-    luckysheetContainerFocus, 
+    luckysheetContainerFocus,
     luckysheetfontformat,
     $$
 } from '../utils/util';
 import { getSheetIndex, getRangetxt } from '../methods/get';
-import { 
-    rowLocation, 
-    rowLocationByIndex, 
-    colLocation, 
-    colLocationByIndex, 
-    mouseposition 
+import {
+    rowLocation,
+    rowLocationByIndex,
+    colLocation,
+    colLocationByIndex,
+    mouseposition
 } from '../global/location';
 import { isRealNull, isRealNum, hasPartMC, isEditMode, checkIsAllowEdit } from '../global/validate';
 import { countfunc } from '../global/count';
 import formula from '../global/formula';
 import { luckysheetextendtable, luckysheetdeletetable, luckysheetDeleteCell } from '../global/extend';
-import { 
-    jfrefreshgrid, 
-    jfrefreshgridall, 
+import {
+    jfrefreshgrid,
+    jfrefreshgridall,
     jfrefreshgrid_rhcw,
 } from '../global/refresh';
 import { getcellvalue } from '../global/getdata';
@@ -59,11 +59,11 @@ export function rowColumnOperationInitial(){
         let mouse = mouseposition(event.pageX, event.pageY);
         let y = mouse[1] + $("#luckysheet-rows-h").scrollTop();
 
-        let row_location = rowLocation(y), 
-            row = row_location[1], 
-            row_pre = row_location[0], 
+        let row_location = rowLocation(y),
+            row = row_location[1],
+            row_pre = row_location[0],
             row_index = row_location[2];
-        let col_index = Store.visibledatacolumn.length - 1, 
+        let col_index = Store.visibledatacolumn.length - 1,
             col = Store.visibledatacolumn[col_index], col_pre = 0;
 
         $("#luckysheet-rightclick-menu").hide();
@@ -163,7 +163,7 @@ export function rowColumnOperationInitial(){
                         if (window.getSelection) { // all browsers, except IE before version 9
                             let currSelection = window.getSelection();
                             formula.functionRangeIndex = [$(currSelection.anchorNode).parent().index(), currSelection.anchorOffset];
-                        } 
+                        }
                         else { // Internet Explorer before version 9
                             let textRange = document.selection.createRange();
                             formula.functionRangeIndex = textRange;
@@ -189,13 +189,13 @@ export function rowColumnOperationInitial(){
                         "width": colLocationByIndex(0)[1] - colLocationByIndex(0)[0] - 1,
                         "top": top,
                         "height": height,
-                        "left_move": col_pre, 
-                        "width_move": col - col_pre - 1, 
-                        "top_move": top, 
-                        "height_move": height, 
-                        "row": rowseleted, 
-                        "column": [0, col_index], 
-                        "row_focus": row_index, 
+                        "left_move": col_pre,
+                        "width_move": col - col_pre - 1,
+                        "top_move": top,
+                        "height_move": height,
+                        "row": rowseleted,
+                        "column": [0, col_index],
+                        "row_focus": row_index,
                         "column_focus": 0
                     }
                 }
@@ -205,13 +205,13 @@ export function rowColumnOperationInitial(){
                         "width": colLocationByIndex(0)[1] - colLocationByIndex(0)[0] - 1,
                         "top": top,
                         "height": height,
-                        "left_move": col_pre, 
-                        "width_move": col - col_pre - 1, 
-                        "top_move": top, 
-                        "height_move": height, 
-                        "row": rowseleted, 
-                        "column": [0, col_index], 
-                        "row_focus": row_index, 
+                        "left_move": col_pre,
+                        "width_move": col - col_pre - 1,
+                        "top_move": top,
+                        "height_move": height,
+                        "row": rowseleted,
+                        "column": [0, col_index],
+                        "row_focus": row_index,
                         "column_focus": 0
                     }
                 }
@@ -228,11 +228,11 @@ export function rowColumnOperationInitial(){
                 formula.rangestart = false;
                 formula.rangedrag_column_start = false;
 
-                $("#luckysheet-formula-functionrange-select").css({ 
-                    "left": col_pre, 
-                    "width": col - col_pre - 1, 
-                    "top": top, 
-                    "height": height 
+                $("#luckysheet-formula-functionrange-select").css({
+                    "left": col_pre,
+                    "width": col - col_pre - 1,
+                    "top": top,
+                    "height": height
                 }).show();
                 $("#luckysheet-formula-help-c").hide();
 
@@ -241,7 +241,7 @@ export function rowColumnOperationInitial(){
                 setTimeout(function(){
                     let currSelection = window.getSelection();
                     let anchorOffset = currSelection.anchorNode;
-                    
+
                     let $editor;
                     if($("#luckysheet-search-formula-parm").is(":visible")||$("#luckysheet-search-formula-parm-select").is(":visible")){
                         $editor = $("#luckysheet-rich-text-editor");
@@ -307,7 +307,7 @@ export function rowColumnOperationInitial(){
                 Store.luckysheet_select_save[Store.luckysheet_select_save.length - 1] = last;
             }
             else if(event.ctrlKey){
-                Store.luckysheet_select_save.push({ 
+                Store.luckysheet_select_save.push({
                     "left": colLocationByIndex(0)[0],
                     "width": colLocationByIndex(0)[1] - colLocationByIndex(0)[0] - 1,
                     "top": top,
@@ -325,18 +325,18 @@ export function rowColumnOperationInitial(){
             }
             else{
                 Store.luckysheet_select_save.length = 0;
-                Store.luckysheet_select_save.push({ 
+                Store.luckysheet_select_save.push({
                     "left": colLocationByIndex(0)[0],
                     "width": colLocationByIndex(0)[1] - colLocationByIndex(0)[0] - 1,
                     "top": top,
                     "height": height,
-                    "left_move": col_pre, 
-                    "width_move": col - col_pre - 1, 
-                    "top_move": top, 
-                    "height_move": height, 
-                    "row": rowseleted, 
-                    "column": [0, col_index], 
-                    "row_focus": row_index, 
+                    "left_move": col_pre,
+                    "width_move": col - col_pre - 1,
+                    "top_move": top,
+                    "height_move": height,
+                    "row": rowseleted,
+                    "column": [0, col_index],
+                    "row_focus": row_index,
                     "column_focus": 0,
                     "row_select": true
                 });
@@ -363,9 +363,9 @@ export function rowColumnOperationInitial(){
         let mouse = mouseposition(event.pageX, event.pageY);
         let y = mouse[1] + $("#luckysheet-rows-h").scrollTop();
 
-        let row_location = rowLocation(y), 
-            row = row_location[1], 
-            row_pre = row_location[0], 
+        let row_location = rowLocation(y),
+            row = row_location[1],
+            row_pre = row_location[0],
             row_index = row_location[2];
 
         $("#luckysheet-rows-h-hover").css({ "top": row_pre, "height": row - row_pre - 1, "display": "block" });
@@ -437,7 +437,7 @@ export function rowColumnOperationInitial(){
             if(!cellRightClickConfig.clear && !cellRightClickConfig.matrix && !cellRightClickConfig.sort && !cellRightClickConfig.filter && !cellRightClickConfig.chart && !cellRightClickConfig.image && !cellRightClickConfig.link && !cellRightClickConfig.data && !cellRightClickConfig.cellFormat){
                 $$('#luckysheet-cols-rows-data .luckysheet-menuseparator').style.display = 'none';
             }
-            
+
             showrightclickmenu($("#luckysheet-rightclick-menu"), $(this).offset().left + 46, event.pageY);
             Store.luckysheet_cols_menu_status = true;
 
@@ -472,7 +472,7 @@ export function rowColumnOperationInitial(){
             }
         }
     });
-    
+
     //表格列标题 mouse事件
     $("#luckysheet-cols-h-c").mousedown(function (event) {
         if(!checkProtectionAllSelected(Store.currentSheetIndex)){
@@ -489,11 +489,11 @@ export function rowColumnOperationInitial(){
         let mouse = mouseposition(event.pageX, event.pageY);
         let x = mouse[0] + $(this).scrollLeft();
 
-        let row_index = Store.visibledatarow.length - 1, 
+        let row_index = Store.visibledatarow.length - 1,
             row = Store.visibledatarow[row_index], row_pre = 0;
-        let col_location = colLocation(x), 
-            col = col_location[1], 
-            col_pre = col_location[0], 
+        let col_location = colLocation(x),
+            col = col_location[1],
+            col_pre = col_location[0],
             col_index = col_location[2];
 
         Store.orderbyindex = col_index;//排序全局函数
@@ -596,7 +596,7 @@ export function rowColumnOperationInitial(){
                         if (window.getSelection) { // all browsers, except IE before version 9
                             let currSelection = window.getSelection();
                             formula.functionRangeIndex = [$(currSelection.anchorNode).parent().index(), currSelection.anchorOffset];
-                        } 
+                        }
                         else { // Internet Explorer before version 9
                             let textRange = document.selection.createRange();
                             formula.functionRangeIndex = textRange;
@@ -618,34 +618,34 @@ export function rowColumnOperationInitial(){
                     //再进行 选区的选择
                     formula.israngeseleciton();
                     formula.func_selectedrange = {
-                        "left": left, 
-                        "width": width, 
-                        "top": rowLocationByIndex(0)[0], 
-                        "height": rowLocationByIndex(0)[1] - rowLocationByIndex(0)[0] - 1, 
-                        "left_move": left, 
-                        "width_move": width, 
-                        "top_move": row_pre, 
-                        "height_move": row - row_pre - 1, 
-                        "row": [0, row_index], 
+                        "left": left,
+                        "width": width,
+                        "top": rowLocationByIndex(0)[0],
+                        "height": rowLocationByIndex(0)[1] - rowLocationByIndex(0)[0] - 1,
+                        "left_move": left,
+                        "width_move": width,
+                        "top_move": row_pre,
+                        "height_move": row - row_pre - 1,
+                        "row": [0, row_index],
                         "column": columnseleted,
-                        "row_focus": 0, 
-                        "column_focus": col_index 
+                        "row_focus": 0,
+                        "column_focus": col_index
                     }
                 }
                 else{
                     formula.func_selectedrange = {
-                        "left": left, 
-                        "width": width, 
-                        "top": rowLocationByIndex(0)[0], 
-                        "height": rowLocationByIndex(0)[1] - rowLocationByIndex(0)[0] - 1, 
-                        "left_move": left, 
-                        "width_move": width, 
-                        "top_move": row_pre, 
-                        "height_move": row - row_pre - 1, 
-                        "row": [0, row_index], 
+                        "left": left,
+                        "width": width,
+                        "top": rowLocationByIndex(0)[0],
+                        "height": rowLocationByIndex(0)[1] - rowLocationByIndex(0)[0] - 1,
+                        "left_move": left,
+                        "width_move": width,
+                        "top_move": row_pre,
+                        "height_move": row - row_pre - 1,
+                        "row": [0, row_index],
                         "column": columnseleted,
-                        "row_focus": 0, 
-                        "column_focus": col_index 
+                        "row_focus": 0,
+                        "column_focus": col_index
                     }
                 }
 
@@ -661,11 +661,11 @@ export function rowColumnOperationInitial(){
                 formula.rangestart = false;
                 formula.rangedrag_row_start = false;
 
-                $("#luckysheet-formula-functionrange-select").css({ 
-                    "left": left, 
-                    "width": width, 
-                    "top": row_pre, 
-                    "height": row - row_pre - 1 
+                $("#luckysheet-formula-functionrange-select").css({
+                    "left": left,
+                    "width": width,
+                    "top": row_pre,
+                    "height": row - row_pre - 1
                 }).show();
                 $("#luckysheet-formula-help-c").hide();
 
@@ -723,36 +723,36 @@ export function rowColumnOperationInitial(){
             }
             else if(event.ctrlKey){
                 //选区添加
-                Store.luckysheet_select_save.push({ 
-                    "left": left, 
-                    "width": width, 
-                    "top": rowLocationByIndex(0)[0], 
-                    "height": rowLocationByIndex(0)[1] - rowLocationByIndex(0)[0] - 1, 
-                    "left_move": left, 
-                    "width_move": width, 
-                    "top_move": row_pre, 
-                    "height_move": row - row_pre - 1, 
-                    "row": [0, row_index], 
+                Store.luckysheet_select_save.push({
+                    "left": left,
+                    "width": width,
+                    "top": rowLocationByIndex(0)[0],
+                    "height": rowLocationByIndex(0)[1] - rowLocationByIndex(0)[0] - 1,
+                    "left_move": left,
+                    "width_move": width,
+                    "top_move": row_pre,
+                    "height_move": row - row_pre - 1,
+                    "row": [0, row_index],
                     "column": columnseleted,
-                    "row_focus": 0,  
+                    "row_focus": 0,
                     "column_focus": col_index,
                     "column_select": true
                 });
             }
             else{
                 Store.luckysheet_select_save.length = 0;
-                Store.luckysheet_select_save.push({ 
-                    "left": left, 
-                    "width": width, 
-                    "top": rowLocationByIndex(0)[0], 
-                    "height": rowLocationByIndex(0)[1] - rowLocationByIndex(0)[0] - 1, 
-                    "left_move": left, 
-                    "width_move": width, 
-                    "top_move": row_pre, 
-                    "height_move": row - row_pre - 1, 
-                    "row": [0, row_index], 
+                Store.luckysheet_select_save.push({
+                    "left": left,
+                    "width": width,
+                    "top": rowLocationByIndex(0)[0],
+                    "height": rowLocationByIndex(0)[1] - rowLocationByIndex(0)[0] - 1,
+                    "left_move": left,
+                    "width_move": width,
+                    "top_move": row_pre,
+                    "height_move": row - row_pre - 1,
+                    "row": [0, row_index],
                     "column": columnseleted,
-                    "row_focus": 0, 
+                    "row_focus": 0,
                     "column_focus": col_index,
                     "column_select": true
                 });
@@ -763,7 +763,7 @@ export function rowColumnOperationInitial(){
             //允许编辑后的后台更新时
             server.saveParam("mv", Store.currentSheetIndex, Store.luckysheet_select_save);
         }
-        
+
         selectHelpboxFill();
 
         setTimeout(function () {
@@ -792,9 +792,9 @@ export function rowColumnOperationInitial(){
         let mouse = mouseposition(event.pageX, event.pageY);
         let x = mouse[0] + $("#luckysheet-cols-h-c").scrollLeft();
 
-        let col_location = colLocation(x), 
-            col = col_location[1], 
-            col_pre = col_location[0], 
+        let col_location = colLocation(x),
+            col = col_location[1],
+            col_pre = col_location[0],
             col_index = col_location[2];
 
         $("#luckysheet-cols-h-hover").css({ "left": col_pre, "width": col - col_pre - 1, "display": "block" });
@@ -874,7 +874,7 @@ export function rowColumnOperationInitial(){
             if(!cellRightClickConfig.clear && !cellRightClickConfig.matrix && !cellRightClickConfig.sort && !cellRightClickConfig.filter && !cellRightClickConfig.chart && !cellRightClickConfig.image && !cellRightClickConfig.link && !cellRightClickConfig.data && !cellRightClickConfig.cellFormat){
                 $$('#luckysheet-cols-rows-data .luckysheet-menuseparator').style.display = 'none';
             }
-            
+
             showrightclickmenu($("#luckysheet-rightclick-menu"), event.pageX, $(this).offset().top + 18);
             Store.luckysheet_cols_menu_status = true;
 
@@ -923,7 +923,7 @@ export function rowColumnOperationInitial(){
         if($("#luckysheet-modal-dialog-activeImage").is(":visible") || $("#luckysheet-modal-dialog-cropping").is(":visible")){
             imageCtrl.cancelActiveImgItem();
         }
-        
+
         $("#luckysheet-input-box").hide();
         $("#luckysheet-rows-change-size").css({ "opacity": 1 });
 
@@ -933,22 +933,22 @@ export function rowColumnOperationInitial(){
         let scrollLeft = $("#luckysheet-cell-main").scrollLeft();
         let winW = $("#luckysheet-cell-main").width();
 
-        let row_location = rowLocation(y), 
-            row = row_location[1], 
-            row_pre = row_location[0], 
+        let row_location = rowLocation(y),
+            row = row_location[1],
+            row_pre = row_location[0],
             row_index = row_location[2];
 
         Store.luckysheet_rows_change_size = true;
         Store.luckysheet_scroll_status = true;
-        $("#luckysheet-change-size-line").css({ 
-            "height": "1px", 
-            "border-width": 
-            "0 0px 1px 0", 
-            "top": row - 3, 
-            "left": 0, 
-            "width": scrollLeft + winW, 
-            "display": "block", 
-            "cursor": "ns-resize" 
+        $("#luckysheet-change-size-line").css({
+            "height": "1px",
+            "border-width":
+            "0 0px 1px 0",
+            "top": row - 3,
+            "left": 0,
+            "width": scrollLeft + winW,
+            "display": "block",
+            "cursor": "ns-resize"
         });
         $("#luckysheet-sheettable, #luckysheet-rows-h, #luckysheet-rows-h canvas").css("cursor", "ns-resize");
         Store.luckysheet_rows_change_size_start = [row_pre, row_index];
@@ -981,23 +981,23 @@ export function rowColumnOperationInitial(){
         let winH = $("#luckysheet-cell-main").height();
         let x = mouse[0] + scrollLeft;
 
-        let row_index = Store.visibledatarow.length - 1, 
+        let row_index = Store.visibledatarow.length - 1,
             row = Store.visibledatarow[row_index], row_pre = 0;
-        let col_location = colLocation(x), 
-            col = col_location[1], 
-            col_pre = col_location[0], 
+        let col_location = colLocation(x),
+            col = col_location[1],
+            col_pre = col_location[0],
             col_index = col_location[2];
 
         Store.luckysheet_cols_change_size = true;
         Store.luckysheet_scroll_status = true;
-        $("#luckysheet-change-size-line").css({ 
-            "height": winH + scrollTop, 
-            "border-width": "0 1px 0 0", 
-            "top": 0, 
-            "left": col - 3, 
-            "width": "1px", 
-            "display": "block", 
-            "cursor": "ew-resize" 
+        $("#luckysheet-change-size-line").css({
+            "height": winH + scrollTop,
+            "border-width": "0 1px 0 0",
+            "top": 0,
+            "left": col - 3,
+            "width": "1px",
+            "display": "block",
+            "cursor": "ew-resize"
         });
         $("#luckysheet-sheettable, #luckysheet-cols-h-c, .luckysheet-cols-h-cells, .luckysheet-cols-h-cells canvas").css("cursor", "ew-resize");
         Store.luckysheet_cols_change_size_start = [col_pre, col_index];
@@ -1075,18 +1075,18 @@ export function rowColumnOperationInitial(){
     // $("#luckysheet-add-lefttop, #luckysheet-add-lefttop_t").click(function (event) {
     $("#luckysheet-top-left-add-selected").click(function (event) {
 
-        // Click input element, don't comfirm 
+        // Click input element, don't comfirm
         if(event.target.nodeName === 'INPUT'){
             return;
         }
 
         $("#luckysheet-rightclick-menu").hide();
         luckysheetContainerFocus();
-        
+
         const _locale = locale();
         const locale_drag = _locale.drag;
         const locale_info = _locale.info;
-        
+
         if(Store.luckysheet_select_save.length > 1){
             if(isEditMode()){
                 alert(locale_drag.noMulti);
@@ -1098,7 +1098,7 @@ export function rowColumnOperationInitial(){
             return;
         }
 
-        
+
 
         let $t = $(this), value = $t.find("input").val();
         if (!isRealNum(value)) {
@@ -1119,14 +1119,14 @@ export function rowColumnOperationInitial(){
                 alert(locale_info.tipInputNumberLimit);
             }
             else{
-                tooltip.info(locale_info.tipInputNumberLimit, ""); 
+                tooltip.info(locale_info.tipInputNumberLimit, "");
             }
             return;
         }
 
         let st_index = Store.luckysheet_select_save[0][Store.luckysheetRightHeadClickIs][0];
-		if(!method.createHookFunction("rowInsertBefore",  st_index, value, "lefttop")){ 
-			return; 
+		if(!method.createHookFunction("rowInsertBefore",  st_index, value, "lefttop")){
+			return;
 		}
 		luckysheetextendtable(Store.luckysheetRightHeadClickIs, st_index, value, "lefttop");
     });
@@ -1142,8 +1142,8 @@ export function rowColumnOperationInitial(){
         }
 
         let st_index = Store.luckysheet_select_save[0].row[0];
-		if(!method.createHookFunction("rowInsertBefore",  st_index, 1, "lefttop")){ 
-			return; 
+		if(!method.createHookFunction("rowInsertBefore",  st_index, 1, "lefttop")){
+			return;
 		}
         luckysheetextendtable('row', st_index, 1, "lefttop");
 
@@ -1183,13 +1183,13 @@ export function rowColumnOperationInitial(){
             console.error("custom click error", e);
           }
         }
-        
+
     });
     // Add the row up, and click the text area to trigger the confirmation instead of clicking the confirmation button to enhance the experience
     // $("#luckysheet-addTopRows").click(function (event) {
     // $("#luckysheetColsRowsHandleAdd_sub .luckysheet-cols-menuitem:first-child").click(function (event) {
 
-    //     // Click input element, don't comfirm 
+    //     // Click input element, don't comfirm
     //     if(event.target.nodeName === 'INPUT'){
     //         return;
     //     }
@@ -1200,7 +1200,7 @@ export function rowColumnOperationInitial(){
     //     const _locale = locale();
     //     const locale_drag = _locale.drag;
     //     const locale_info = _locale.info;
-        
+
     //     if(Store.luckysheet_select_save.length > 1){
     //         if(isEditMode()){
     //             alert(locale_drag.noMulti);
@@ -1231,7 +1231,7 @@ export function rowColumnOperationInitial(){
     //             alert(locale_info.tipInputNumberLimit);
     //         }
     //         else{
-    //             tooltip.info(locale_info.tipInputNumberLimit, ""); 
+    //             tooltip.info(locale_info.tipInputNumberLimit, "");
     //         }
     //         return;
     //     }
@@ -1251,7 +1251,7 @@ export function rowColumnOperationInitial(){
     // $("#luckysheet-addLeftCols").click(function (event) {
     // $("#luckysheetColsRowsHandleAdd_sub .luckysheet-cols-menuitem:nth-child(3)").click(function (event) {
 
-    //     // Click input element, don't comfirm 
+    //     // Click input element, don't comfirm
     //     if(event.target.nodeName === 'INPUT'){
     //         return;
     //     }
@@ -1262,7 +1262,7 @@ export function rowColumnOperationInitial(){
     //     const _locale = locale();
     //     const locale_drag = _locale.drag;
     //     const locale_info = _locale.info;
-        
+
     //     if(Store.luckysheet_select_save.length > 1){
     //         if(isEditMode()){
     //             alert(locale_drag.noMulti);
@@ -1293,7 +1293,7 @@ export function rowColumnOperationInitial(){
     //             alert(locale_info.tipInputNumberLimit);
     //         }
     //         else{
-    //             tooltip.info(locale_info.tipInputNumberLimit, ""); 
+    //             tooltip.info(locale_info.tipInputNumberLimit, "");
     //         }
     //         return;
     //     }
@@ -1302,14 +1302,14 @@ export function rowColumnOperationInitial(){
     //     luckysheetextendtable('column', st_index, value, "lefttop");
 
     //     $("#luckysheetColsRowsHandleAdd_sub").hide();
-        
+
     // })
 
     //向右增加列，向下增加行
     // $("#luckysheet-add-rightbottom, #luckysheet-add-rightbottom_t").click(function (event) {
     $("#luckysheet-bottom-right-add-selected").click(function (event) {
 
-        // Click input element, don't comfirm 
+        // Click input element, don't comfirm
         if(event.target.nodeName === 'INPUT'){
             return;
         }
@@ -1338,7 +1338,7 @@ export function rowColumnOperationInitial(){
                 alert(locale_info.tipInputNumber);
             }
             else{
-                tooltip.info(locale_info.tipInputNumber, ""); 
+                tooltip.info(locale_info.tipInputNumber, "");
             }
 
             return;
@@ -1359,7 +1359,7 @@ export function rowColumnOperationInitial(){
 
         let st_index = Store.luckysheet_select_save[0][Store.luckysheetRightHeadClickIs][1];
 		if(!method.createHookFunction("rowInsertBefore",  st_index, value, "rightbottom")){
-			return; 
+			return;
 		}
         luckysheetextendtable(Store.luckysheetRightHeadClickIs, st_index, value, "rightbottom");
     });
@@ -1367,7 +1367,7 @@ export function rowColumnOperationInitial(){
     // $("#luckysheet-addBottomRows").click(function (event) {
     // $("#luckysheetColsRowsHandleAdd_sub .luckysheet-cols-menuitem:nth-child(2)").click(function (event) {
 
-    //      // Click input element, don't comfirm 
+    //      // Click input element, don't comfirm
     //      if(event.target.nodeName === 'INPUT'){
     //         return;
     //     }
@@ -1396,7 +1396,7 @@ export function rowColumnOperationInitial(){
     //             alert(locale_info.tipInputNumber);
     //         }
     //         else{
-    //             tooltip.info(locale_info.tipInputNumber, ""); 
+    //             tooltip.info(locale_info.tipInputNumber, "");
     //         }
 
     //         return;
@@ -1424,7 +1424,7 @@ export function rowColumnOperationInitial(){
     // $("#luckysheet-addRightCols").click(function (event) {
     // $("#luckysheetColsRowsHandleAdd_sub .luckysheet-cols-menuitem:nth-child(4)").click(function (event) {
 
-    //     // Click input element, don't comfirm 
+    //     // Click input element, don't comfirm
     //     if(event.target.nodeName === 'INPUT'){
     //         return;
     //     }
@@ -1452,7 +1452,7 @@ export function rowColumnOperationInitial(){
     //             alert(locale_info.tipInputNumber);
     //         }
     //         else{
-    //             tooltip.info(locale_info.tipInputNumber, ""); 
+    //             tooltip.info(locale_info.tipInputNumber, "");
     //         }
 
     //         return;
@@ -1477,9 +1477,9 @@ export function rowColumnOperationInitial(){
     //     $("#luckysheetColsRowsHandleAdd_sub").hide();
 
     // });
-    
+
     //删除选中行列
-    $("#luckysheet-del-selected, #luckysheet-del-selected_t").click(function (event) {
+    $("#luckysheet-del-selected, #luckysheet-del-selected_t").click(async function (event) {
         $("#luckysheet-rightclick-menu").hide();
         luckysheetContainerFocus();
 
@@ -1499,20 +1499,20 @@ export function rowColumnOperationInitial(){
                     alert(locale_drag.noMulti);
                 }
                 else{
-                    tooltip.info(locale_drag.noMulti, ""); 
+                    tooltip.info(locale_drag.noMulti, "");
                 }
             }
             return;
         }
 
-        let st_index = Store.luckysheet_select_save[0][Store.luckysheetRightHeadClickIs][0], 
+        let st_index = Store.luckysheet_select_save[0][Store.luckysheetRightHeadClickIs][0],
             ed_index = Store.luckysheet_select_save[0][Store.luckysheetRightHeadClickIs][1];
-        if(!method.createHookFunction("rowDeleteBefore", st_index, ed_index)){
-        	return; 
+        if(! await method.createHookFunctionAsync("rowDeleteBefore", st_index, ed_index)){
+        	return;
         }
-		luckysheetdeletetable(Store.luckysheetRightHeadClickIs, st_index, ed_index);
+	   luckysheetdeletetable(Store.luckysheetRightHeadClickIs, st_index, ed_index);
     });
-    $("#luckysheet-delRows").click(function (event) {
+    $("#luckysheet-delRows").click(async function (event) {
         $("#luckysheet-rightclick-menu").hide();
         luckysheetContainerFocus();
 
@@ -1532,16 +1532,16 @@ export function rowColumnOperationInitial(){
                     alert(locale_drag.noMulti);
                 }
                 else{
-                    tooltip.info(locale_drag.noMulti, ""); 
+                    tooltip.info(locale_drag.noMulti, "");
                 }
             }
             return;
         }
 
-        let st_index = Store.luckysheet_select_save[0].row[0], 
+        let st_index = Store.luckysheet_select_save[0].row[0],
             ed_index = Store.luckysheet_select_save[0].row[1];
-		if(!method.createHookFunction("rowDeleteBefore", st_index, ed_index)){
-			return; 
+		if(!await method.createHookFunctionAsync("rowDeleteBefore", st_index, ed_index)){
+			return;
 		}
         luckysheetdeletetable('row', st_index, ed_index);
     })
@@ -1565,13 +1565,13 @@ export function rowColumnOperationInitial(){
                     alert(locale_drag.noMulti);
                 }
                 else{
-                    tooltip.info(locale_drag.noMulti, ""); 
+                    tooltip.info(locale_drag.noMulti, "");
                 }
             }
             return;
         }
 
-        let st_index = Store.luckysheet_select_save[0].column[0], 
+        let st_index = Store.luckysheet_select_save[0].column[0],
             ed_index = Store.luckysheet_select_save[0].column[1];
         luckysheetdeletetable('column', st_index, ed_index);
     })
@@ -1579,7 +1579,7 @@ export function rowColumnOperationInitial(){
     //隐藏选中行列
     $("#luckysheet-hide-selected").click(function (event) {
 
-       
+
         $("#luckysheet-rightclick-menu").hide();
         luckysheetContainerFocus();
 
@@ -1599,7 +1599,7 @@ export function rowColumnOperationInitial(){
                     alert(locale_drag.noMulti);
                 }
                 else{
-                    tooltip.info(locale_drag.noMulti, ""); 
+                    tooltip.info(locale_drag.noMulti, "");
                 }
             }
             return;
@@ -1607,11 +1607,11 @@ export function rowColumnOperationInitial(){
 
         // 隐藏行
         if(Store.luckysheetRightHeadClickIs == "row"){
-            
+
             if(!checkProtectionAuthorityNormal(Store.currentSheetIndex, "formatRows")){
                 return;
             }
-            
+
             let cfg = $.extend(true, {}, Store.config);
             if(cfg["rowhidden"] == null){
                 cfg["rowhidden"] = {};
@@ -1625,7 +1625,7 @@ export function rowColumnOperationInitial(){
                     cfg["rowhidden"][r] = 0;
                 }
             }
-        
+
             //保存撤销
             if(Store.clearjfundo){
                 let redo = {};
@@ -1633,18 +1633,18 @@ export function rowColumnOperationInitial(){
                 redo["sheetIndex"] = Store.currentSheetIndex;
                 redo["config"] = $.extend(true, {}, Store.config);
                 redo["curconfig"] = cfg;
-        
+
                 Store.jfundo.length  = 0;
                 Store.jfredo.push(redo);
             }
-        
+
             //config
             Store.config = cfg;
             Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)].config = Store.config;
-        
+
             server.saveParam("cg", Store.currentSheetIndex, cfg["rowhidden"], { "k": "rowhidden" });
-        
-            //行高、列宽 刷新  
+
+            //行高、列宽 刷新
             jfrefreshgrid_rhcw(Store.flowdata.length, Store.flowdata[0].length);
 
         }
@@ -1654,7 +1654,7 @@ export function rowColumnOperationInitial(){
             if(!checkProtectionAuthorityNormal(Store.currentSheetIndex, "formatColumns")){
                 return;
             }
-            
+
             let cfg = $.extend(true, {}, Store.config);
             if(cfg["colhidden"] == null){
                 cfg["colhidden"] = {};
@@ -1668,7 +1668,7 @@ export function rowColumnOperationInitial(){
                     cfg["colhidden"][c] = 0;
                 }
             }
-        
+
             //保存撤销
             if(Store.clearjfundo){
                 let redo = {};
@@ -1676,21 +1676,21 @@ export function rowColumnOperationInitial(){
                 redo["sheetIndex"] = Store.currentSheetIndex;
                 redo["config"] = $.extend(true, {}, Store.config);
                 redo["curconfig"] = cfg;
-        
+
                 Store.jfundo.length  = 0;
                 Store.jfredo.push(redo);
             }
-        
+
             //config
             Store.config = cfg;
             Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)].config = Store.config;
-        
+
             server.saveParam("cg", Store.currentSheetIndex, cfg["colhidden"], { "k": "colhidden" });
-        
-            //行高、列宽 刷新  
+
+            //行高、列宽 刷新
             jfrefreshgrid_rhcw(Store.flowdata.length, Store.flowdata[0].length);
         }
-        
+
     });
 
      //取消隐藏选中行列
@@ -1715,7 +1715,7 @@ export function rowColumnOperationInitial(){
                     alert(locale_drag.noMulti);
                 }
                 else{
-                    tooltip.info(locale_drag.noMulti, ""); 
+                    tooltip.info(locale_drag.noMulti, "");
                 }
             }
             return;
@@ -1726,21 +1726,21 @@ export function rowColumnOperationInitial(){
             if(!checkProtectionAuthorityNormal(Store.currentSheetIndex, "formatRows")){
                 return;
             }
-    
+
             let cfg = $.extend(true, {}, Store.config);
             if(cfg["rowhidden"] == null){
                 return;
             }
-    
+
             for(let s = 0; s < Store.luckysheet_select_save.length; s++){
                 let r1 = Store.luckysheet_select_save[s].row[0],
                     r2 = Store.luckysheet_select_save[s].row[1];
-    
+
                 for(let r = r1; r <= r2; r++){
                     delete cfg["rowhidden"][r];
                 }
             }
-        
+
             //保存撤销
             if(Store.clearjfundo){
                 let redo = {};
@@ -1748,39 +1748,39 @@ export function rowColumnOperationInitial(){
                 redo["sheetIndex"] = Store.currentSheetIndex;
                 redo["config"] = $.extend(true, {}, Store.config);
                 redo["curconfig"] = cfg;
-        
+
                 Store.jfundo.length  = 0;
                 Store.jfredo.push(redo);
             }
-        
+
             //config
             Store.config = cfg;
             Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)].config = Store.config;
-        
+
             server.saveParam("cg", Store.currentSheetIndex, cfg["rowhidden"], { "k": "rowhidden" });
-        
-            //行高、列宽 刷新  
+
+            //行高、列宽 刷新
             jfrefreshgrid_rhcw(Store.flowdata.length, Store.flowdata[0].length);
         }
         else if(Store.luckysheetRightHeadClickIs == "column"){
             if(!checkProtectionAuthorityNormal(Store.currentSheetIndex, "formatColumns")){
                 return;
             }
-    
+
             let cfg = $.extend(true, {}, Store.config);
             if(cfg["colhidden"] == null){
                 return;
             }
-    
+
             for(let s = 0; s < Store.luckysheet_select_save.length; s++){
                 let c1 = Store.luckysheet_select_save[s].column[0],
                     c2 = Store.luckysheet_select_save[s].column[1];
-    
+
                 for(let c = c1; c <= c2; c++){
                     delete cfg["colhidden"][c];
                 }
             }
-        
+
             //保存撤销
             if(Store.clearjfundo){
                 let redo = {};
@@ -1788,18 +1788,18 @@ export function rowColumnOperationInitial(){
                 redo["sheetIndex"] = Store.currentSheetIndex;
                 redo["config"] = $.extend(true, {}, Store.config);
                 redo["curconfig"] = cfg;
-        
+
                 Store.jfundo.length  = 0;
                 Store.jfredo.push(redo);
             }
-        
+
             //config
             Store.config = cfg;
             Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)].config = Store.config;
-        
+
             server.saveParam("cg", Store.currentSheetIndex, cfg["colhidden"], { "k": "colhidden" });
-        
-            //行高、列宽 刷新  
+
+            //行高、列宽 刷新
             jfrefreshgrid_rhcw(Store.flowdata.length, Store.flowdata[0].length);
         }
 
@@ -1826,7 +1826,7 @@ export function rowColumnOperationInitial(){
     //             cfg["rowhidden"][r] = 0;
     //         }
     //     }
-    
+
     //     //保存撤销
     //     if(Store.clearjfundo){
     //         let redo = {};
@@ -1834,18 +1834,18 @@ export function rowColumnOperationInitial(){
     //         redo["sheetIndex"] = Store.currentSheetIndex;
     //         redo["config"] = $.extend(true, {}, Store.config);
     //         redo["curconfig"] = cfg;
-    
+
     //         Store.jfundo.length  = 0;
     //         Store.jfredo.push(redo);
     //     }
-    
+
     //     //config
     //     Store.config = cfg;
     //     Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)].config = Store.config;
-    
+
     //     server.saveParam("cg", Store.currentSheetIndex, cfg["rowhidden"], { "k": "rowhidden" });
-    
-    //     //行高、列宽 刷新  
+
+    //     //行高、列宽 刷新
     //     jfrefreshgrid_rhcw(Store.flowdata.length, Store.flowdata[0].length);
     // })
     // $("#luckysheet-showHidRows").click(function (event) {
@@ -1868,7 +1868,7 @@ export function rowColumnOperationInitial(){
     //             delete cfg["rowhidden"][r];
     //         }
     //     }
-    
+
     //     //保存撤销
     //     if(Store.clearjfundo){
     //         let redo = {};
@@ -1876,18 +1876,18 @@ export function rowColumnOperationInitial(){
     //         redo["sheetIndex"] = Store.currentSheetIndex;
     //         redo["config"] = $.extend(true, {}, Store.config);
     //         redo["curconfig"] = cfg;
-    
+
     //         Store.jfundo.length  = 0;
     //         Store.jfredo.push(redo);
     //     }
-    
+
     //     //config
     //     Store.config = cfg;
     //     Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)].config = Store.config;
-    
+
     //     server.saveParam("cg", Store.currentSheetIndex, cfg["rowhidden"], { "k": "rowhidden" });
-    
-    //     //行高、列宽 刷新  
+
+    //     //行高、列宽 刷新
     //     jfrefreshgrid_rhcw(Store.flowdata.length, Store.flowdata[0].length);
     // })
 
@@ -1912,7 +1912,7 @@ export function rowColumnOperationInitial(){
     //             cfg["colhidden"][c] = 0;
     //         }
     //     }
-    
+
     //     //保存撤销
     //     if(Store.clearjfundo){
     //         let redo = {};
@@ -1920,18 +1920,18 @@ export function rowColumnOperationInitial(){
     //         redo["sheetIndex"] = Store.currentSheetIndex;
     //         redo["config"] = $.extend(true, {}, Store.config);
     //         redo["curconfig"] = cfg;
-    
+
     //         Store.jfundo.length  = 0;
     //         Store.jfredo.push(redo);
     //     }
-    
+
     //     //config
     //     Store.config = cfg;
     //     Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)].config = Store.config;
-    
+
     //     server.saveParam("cg", Store.currentSheetIndex, cfg["colhidden"], { "k": "colhidden" });
-    
-    //     //行高、列宽 刷新  
+
+    //     //行高、列宽 刷新
     //     jfrefreshgrid_rhcw(Store.flowdata.length, Store.flowdata[0].length);
     // })
     // $("#luckysheet-showHidCols").click(function (event) {
@@ -1954,7 +1954,7 @@ export function rowColumnOperationInitial(){
     //             delete cfg["colhidden"][c];
     //         }
     //     }
-    
+
     //     //保存撤销
     //     if(Store.clearjfundo){
     //         let redo = {};
@@ -1962,18 +1962,18 @@ export function rowColumnOperationInitial(){
     //         redo["sheetIndex"] = Store.currentSheetIndex;
     //         redo["config"] = $.extend(true, {}, Store.config);
     //         redo["curconfig"] = cfg;
-    
+
     //         Store.jfundo.length  = 0;
     //         Store.jfredo.push(redo);
     //     }
-    
+
     //     //config
     //     Store.config = cfg;
     //     Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)].config = Store.config;
-    
+
     //     server.saveParam("cg", Store.currentSheetIndex, cfg["colhidden"], { "k": "colhidden" });
-    
-    //     //行高、列宽 刷新  
+
+    //     //行高、列宽 刷新
     //     jfrefreshgrid_rhcw(Store.flowdata.length, Store.flowdata[0].length);
     // })
 
@@ -1989,7 +1989,7 @@ export function rowColumnOperationInitial(){
                 alert(locale_drag.noMulti);
             }
             else{
-                tooltip.info(locale_drag.noMulti, ""); 
+                tooltip.info(locale_drag.noMulti, "");
             }
             return;
         }
@@ -2012,7 +2012,7 @@ export function rowColumnOperationInitial(){
                 alert(locale_drag.noMulti);
             }
             else{
-                tooltip.info(locale_drag.noMulti, ""); 
+                tooltip.info(locale_drag.noMulti, "");
             }
             return;
         }
@@ -2045,9 +2045,9 @@ export function rowColumnOperationInitial(){
             let has_PartMC = false;
 
             for(let s = 0; s < Store.luckysheet_select_save.length; s++){
-                let r1 = Store.luckysheet_select_save[s].row[0], 
+                let r1 = Store.luckysheet_select_save[s].row[0],
                     r2 = Store.luckysheet_select_save[s].row[1];
-                let c1 = Store.luckysheet_select_save[s].column[0], 
+                let c1 = Store.luckysheet_select_save[s].column[0],
                     c2 = Store.luckysheet_select_save[s].column[1];
 
                 if(hasPartMC(Store.config, r1, r2, c1, c2)){
@@ -2074,9 +2074,9 @@ export function rowColumnOperationInitial(){
             let hyperlinkUpdated;
 
             for(let s = 0; s < Store.luckysheet_select_save.length; s++){
-                let r1 = Store.luckysheet_select_save[s].row[0], 
+                let r1 = Store.luckysheet_select_save[s].row[0],
                     r2 = Store.luckysheet_select_save[s].row[1];
-                let c1 = Store.luckysheet_select_save[s].column[0], 
+                let c1 = Store.luckysheet_select_save[s].column[0],
                     c2 = Store.luckysheet_select_save[s].column[1];
 
                 for(let r = r1; r <= r2; r++){
@@ -2124,17 +2124,17 @@ export function rowColumnOperationInitial(){
     // $("#luckysheet-rows-cols-changesize").click(function(){
     $("#luckysheet-column-row-width-selected").click(function (event) {
 
-        // Click input element, don't comfirm 
+        // Click input element, don't comfirm
         if(event.target.nodeName === 'INPUT'){
             return;
         }
-        
+
         $("#luckysheet-rightclick-menu").hide();
         luckysheetContainerFocus();
 
         // let size = parseInt($(this).siblings("input[type='number']").val().trim());
         let size = parseInt($(this).closest('.luckysheet-cols-menuitem').find("input[type='number']").val().trim());
-        
+
         const locale_info = locale().info;
 
           /* 对异常情况进行判断：NaN */
@@ -2193,7 +2193,7 @@ export function rowColumnOperationInitial(){
                 }
                 return;
             }
-            
+
             type = "resizeC";
 
             if(cfg["columnlen"] == null){
@@ -2221,7 +2221,7 @@ export function rowColumnOperationInitial(){
                 "config": $.extend(true, {}, Store.config),
                 "curconfig": $.extend(true, {}, cfg),
                 "images": $.extend(true, {}, imageCtrl.images),
-                "curImages": $.extend(true, {}, images) 
+                "curImages": $.extend(true, {}, images)
             });
         }
 
@@ -2257,7 +2257,7 @@ function luckysheetcolsdbclick() {
     let mouse = mouseposition(event.pageX, event.pageY);
     let scrollLeft = $("#luckysheet-cols-h-c").scrollLeft();
     let x = mouse[0] + scrollLeft;
-    
+
     let colIndex = colLocation(x)[2];
     let d = editor.deepCopyFlowData(Store.flowdata);
     let canvas = $("#luckysheetTableContent").get(0).getContext("2d");
@@ -2277,7 +2277,7 @@ function luckysheetcolsdbclick() {
     }
 
     for(let s = 0; s < Store.luckysheet_select_save.length; s++){
-        let c1 = Store.luckysheet_select_save[s].column[0], 
+        let c1 = Store.luckysheet_select_save[s].column[0],
             c2 = Store.luckysheet_select_save[s].column[1];
 
         if (colIndex < c1 || colIndex > c2) {
@@ -2286,10 +2286,10 @@ function luckysheetcolsdbclick() {
             }
 
             let currentColLen = Store.defaultcollen;
-            
+
             for(let r = dataset_row_st; r <= dataset_row_ed; r++){
                 let cell = d[r][colIndex];
-                
+
                 if(cell == null || (isRealNull(cell.v) && !isInlineStringCell(cell)) ){
                     continue;
                 }
@@ -2337,7 +2337,7 @@ function luckysheetcolsdbclick() {
 
                 for(let r = dataset_row_st; r <= dataset_row_ed; r++){
                     let cell = d[r][c];
-                    
+
                     if(cell == null || (isRealNull(cell.v) && !isInlineStringCell(cell)) ){
                         continue;
                     }
@@ -2382,15 +2382,15 @@ function luckysheetcolsdbclick() {
             }
         }
     }
-   
+
     jfrefreshgridall(Store.flowdata[0].length, Store.flowdata.length, Store.flowdata, cfg, Store.luckysheet_select_save, "resizeC", "columnlen");
 }
 
 /**
- * 
- * @param {String} type:delete type, 
- * @param {*} st_index 
- * @param {*} ed_index 
+ *
+ * @param {String} type:delete type,
+ * @param {*} st_index
+ * @param {*} ed_index
  */
 // Delete row api
 export function deleteRows(type, st_index, ed_index){

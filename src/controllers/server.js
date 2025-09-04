@@ -166,7 +166,13 @@ const server = {
 	        d.k = params.k;
 	        // d.s = params.s;
 	    }
-console.log('操作:',d)
+
+	 // const luckysheetPageInit =	localStorage.getItem('luckysheetPageInit');
+		// if(!luckysheetPageInit){
+		// 	return;
+		// }
+		console.log('操作:',d)
+		// return; //TODO JXH START
 	    // TODO 配置自定义方式同步图片
         const customImageUpdateMethodConfig = luckysheetConfigsetting.imageUpdateMethodConfig
 		if (JSON.stringify(customImageUpdateMethodConfig) !== "{}") {
@@ -439,7 +445,7 @@ console.log('操作:',d)
 	        let r = item.r, c = item.c;
 	        file.data[r][c] = value;
 	        if(file.data[r][c]!=null){
-				file.data[r][c].bg = "#d4ebe170";  //设置单元格背景色 jxh start #d4ebe170 冲突色 ebd4d470
+				//file.data[r][c].bg = "#d4ebe170";  //设置单元格背景色 jxh start #d4ebe170 冲突色 ebd4d470
 			}
 
 
@@ -477,7 +483,7 @@ console.log('操作:',d)
 	            for(let c = c1; c <= c2; c++){
 	                file.data[r][c] = value[r - r1][c - c1];
 					if(file.data[r][c]!=null){
-						file.data[r][c].bg = "#d4ebe170"; //设置单元格背景色 jxh start
+						// file.data[r][c].bg = "#d4ebe170"; //设置单元格背景色 jxh start
 					}
 
 				}

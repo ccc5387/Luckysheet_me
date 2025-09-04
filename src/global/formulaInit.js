@@ -28,7 +28,7 @@ import Store from '../store';
 import locale from '../locale/locale';
 import json from './json';
 import method from './method';
-import {updateCalcChain} from "./api";
+// import {getAllSheets, updateCalcChain} from "./api";
 // import { getSheetIndex } from '../methods/get';
 const luckysheetformula = {
     error: {
@@ -1269,7 +1269,7 @@ const luckysheetformula = {
         }
 
         let curv = Store.flowdata[r][c];
-console.log('updatecell curv:',curv)
+
         // Store old value for hook function
         const oldValue = JSON.stringify(curv);
 
@@ -1772,11 +1772,11 @@ console.log('updatecell curv:',curv)
             step = 1;
         }
 
-        if (txt?.substr(0, 1) == "=") {
+        if (txt.substr(0, 1) == "=") {
             txt = txt.substr(1);
         }
 
-        let funcstack = txt?.split("");
+        let funcstack = txt.split("");
         let i = 0,
             str = "",
             function_str = "",
@@ -1789,7 +1789,7 @@ console.log('updatecell curv:',curv)
             "dquote": 0
         };
 
-        while (i < funcstack?.length) {
+        while (i < funcstack.length) {
             let s = funcstack[i];
 
             if (s == "(" && matchConfig.dquote == 0) {
@@ -2139,11 +2139,11 @@ console.log('updatecell curv:',curv)
             _this.operatorjson = op;
         }
 
-        if (txt?.substr(0, 1) == "=") {
+        if (txt.substr(0, 1) == "=") {
             txt = txt.substr(1);
         }
 
-        let funcstack = txt?.split("");
+        let funcstack = txt.split("");
         let i = 0,
             str = "",
             function_str = "",
@@ -2156,7 +2156,7 @@ console.log('updatecell curv:',curv)
             "dquote": 0 //双引号
         };
 
-        while (i < funcstack?.length) {
+        while (i < funcstack.length) {
             let s = funcstack[i];
 
             if (s == "(" && matchConfig.dquote == 0) {
@@ -3453,11 +3453,11 @@ console.log('updatecell curv:',curv)
             _this.operatorjson = op;
         }
 
-        if (txt?.substr(0, 1) == "=") {
+        if (txt.substr(0, 1) == "=") {
             txt = txt.substr(1);
         }
 
-        let funcstack = txt?.split("");
+        let funcstack = txt.split("");
         let i = 0,
             str = "",
             function_str = "",
@@ -3470,7 +3470,7 @@ console.log('updatecell curv:',curv)
             "braces": 0
         }
 
-        while (i < funcstack?.length) {
+        while (i < funcstack.length) {
             let s = funcstack[i];
 
             if (s == "(" && matchConfig.squote == 0 && matchConfig.dquote == 0 && matchConfig.braces == 0) {
@@ -3638,11 +3638,11 @@ console.log('updatecell curv:',curv)
             _this.operatorjson = op;
         }
 
-        if (txt?.substr(0, 1) == "=") {
+        if (txt.substr(0, 1) == "=") {
             txt = txt.substr(1);
         }
 
-        let funcstack = txt?.split("");
+        let funcstack = txt.split("");
         let i = 0,
             str = "",
             function_str = "";
@@ -3657,7 +3657,7 @@ console.log('updatecell curv:',curv)
         //bracket 0为运算符括号、1为函数括号
         let fn = null, param = [], bracket = [];
 
-        while (i < funcstack?.length) {
+        while (i < funcstack.length) {
             let s = funcstack[i];
 
             if (s == "(" && matchConfig.dquote == 0) {
@@ -3777,9 +3777,6 @@ console.log('updatecell curv:',curv)
         }
     },
     checkBracketNum: function (fp) {
-        if(!fp){
-            return  false;
-        }
         let bra_l = fp.match(/\(/g),
             bra_r = fp.match(/\)/g),
             bra_tl_txt = fp.match(/(['"])(?:(?!\1).)*?\1/g),
@@ -3856,14 +3853,14 @@ console.log('updatecell curv:',curv)
             return "";
         }
 
-        if (txt?.substr(0, 2) == "=+") {
+        if (txt.substr(0, 2) == "=+") {
             txt = txt.substr(2);
         }
-        else if (txt?.substr(0, 1) == "=") {
+        else if (txt.substr(0, 1) == "=") {
             txt = txt.substr(1);
         }
 
-        let funcstack = txt?.split("");
+        let funcstack = txt.split("");
         let i = 0,
             str = "",
             function_str = "";
@@ -3900,7 +3897,7 @@ console.log('updatecell curv:',curv)
         //bracket 0为运算符括号、1为函数括号
         let cal1 = [], cal2 = [], bracket = [];
         let firstSQ = -1;
-        while (i < funcstack?.length) {
+        while (i < funcstack.length) {
             let s = funcstack[i];
 
             if (s == "(" && matchConfig.squote == 0 && matchConfig.dquote == 0 && matchConfig.braces == 0) {
@@ -4201,10 +4198,10 @@ console.log('updatecell curv:',curv)
         };
         file.calcChain.push(cc);
 
-        server.saveParam("fc", index, JSON.stringify(cc), {
-            "op": "add",
-            "pos": file.calcChain.length - 1
-        });
+        // server.saveParam("fc", index, JSON.stringify(cc), {
+        //     "op": "add",
+        //     "pos": file.calcChain.length - 1
+        // });
         setluckysheetfile(luckysheetfile);
     },
     getAllFunctionGroup: function () {
@@ -4277,10 +4274,10 @@ console.log('updatecell curv:',curv)
             for (let i = 0; i < calcChain.length; i++) {
                 let calc = calcChain[i];
                 if (calc.r == r && calc.c == c && calc.index == index) {
-                    server.saveParam("fc", index, JSON.stringify(calc), {
-                        "op": "update",
-                        "pos": i
-                    });
+                    // server.saveParam("fc", index, JSON.stringify(calc), {
+                    //     "op": "update",
+                    //     "pos": i
+                    // });
                     break;
                 }
             }
@@ -4310,10 +4307,10 @@ console.log('updatecell curv:',curv)
         for (let i = 0; i < calcChain.length; i++) {
             let calc = calcChain[i];
             if (calc.r == r && calc.c == c && calc.index == index) {
-                server.saveParam("fc", index, JSON.stringify(calc), {
-                    "op": "update",
-                    "pos": i
-                });
+                // server.saveParam("fc", index, JSON.stringify(calc), {
+                //     "op": "update",
+                //     "pos": i
+                // });
                 return;
             }
         }
@@ -4326,10 +4323,10 @@ console.log('updatecell curv:',curv)
         calcChain.push(cc);
         file.calcChain = calcChain;
 
-        server.saveParam("fc", index, JSON.stringify(cc), {
-            "op": "add",
-            "pos": file.calcChain.length - 1
-        });
+        // server.saveParam("fc", index, JSON.stringify(cc), {
+        //     "op": "add",
+        //     "pos": file.calcChain.length - 1
+        // });
         setluckysheetfile(luckysheetfile);
     },
     isFunctionRangeSave: false,
@@ -4368,11 +4365,11 @@ console.log('updatecell curv:',curv)
             _this.operatorjson = op;
         }
 
-        if (txt?.substr(0, 1) == "=") {
+        if (txt.substr(0, 1) == "=") {
             txt = txt.substr(1);
         }
 
-        let funcstack = txt?.split("");
+        let funcstack = txt.split("");
         let i = 0,
             str = "",
             function_str = "",
@@ -4388,7 +4385,7 @@ console.log('updatecell curv:',curv)
         let luckysheetfile = getluckysheetfile();
 
 
-        while (i < funcstack?.length) {
+        while (i < funcstack.length) {
             let s = funcstack[i];
 
             if (s == "(" && matchConfig.dquote == 0) {
@@ -4570,11 +4567,11 @@ console.log('updatecell curv:',curv)
             _this.operatorjson = op;
         }
 
-        if (txt?.substr(0, 1) == "=") {
+        if (txt.substr(0, 1) == "=") {
             txt = txt.substr(1);
         }
 
-        let funcstack = txt?.split("");
+        let funcstack = txt.split("");
         let i = 0,
             str = "",
             function_str = "",
@@ -4595,7 +4592,7 @@ console.log('updatecell curv:',curv)
         //bracket 0为运算符括号、1为函数括号
         let cal1 = [], cal2 = [], bracket = [];
         let firstSQ = -1;
-        while (i < funcstack?.length) {
+        while (i < funcstack.length) {
             let s = funcstack[i];
 
             if (s == "(" && matchConfig.squote == 0 && matchConfig.dquote == 0 && matchConfig.braces == 0) {
@@ -5072,7 +5069,76 @@ console.log('updatecell curv:',curv)
             this.execFunctionGroup();
         }
     },
-    execFunctionGroup: function (origin_r, origin_c, value, index, data, isForce = false) {
+     updateCalcChain:function() {
+    const calcChain =  this.createCalcChainFromSheetData();
+    console.log('applyCalcChainToSheets- calcChain:',calcChain)
+    // 按工作表分组
+    const sheetsCalcChain = {};
+
+    calcChain.forEach(item => {
+        if (!sheetsCalcChain[item.index]) {
+            sheetsCalcChain[item.index] = [];
+        }
+        sheetsCalcChain[item.index].push(item);
+    });
+
+    // 应用到各个工作表
+    Object.keys(sheetsCalcChain).forEach(sheetIndex => {
+        //   window.luckysheet.setSheetActivate(parseInt(sheetIndex));
+        //  window.luckysheet.setSheetCalcChain(sheetsCalcChain[sheetIndex]);
+        Store.luckysheetfile[sheetIndex].calcChain = sheetsCalcChain[sheetIndex];
+    });
+
+    // 触发全表计算
+    // refreshFormula();
+},
+    getAllSheets:function() {
+        let data = $.extend(true, [], Store.luckysheetfile);
+
+        data.forEach((item, index, arr) => {
+            if(item.data != null && item.data.length > 0){
+                item.celldata = sheetmanage.getGridData(item.data);
+            }
+
+            delete item.load;
+            delete item.freezen;
+
+        })
+
+        return data;
+    },
+     createCalcChainFromSheetData:function() {
+    const allSheets = this.getAllSheets();
+    console.log('allSheets:',allSheets)
+    const calcChain = [];
+
+    allSheets.forEach(sheet => {
+        if (!sheet.celldata) return;
+
+        sheet.celldata.forEach(cell => {
+            if (cell.v && cell.v.f && cell.v.f.startsWith('=')) {
+                calcChain.push({
+                    r: cell.r,
+                    c: cell.c,
+                    index: sheet.index,
+                    func: [
+                        true,       // 初始设为true，表示待计算
+                        cell.v.v,       // 初始计算结果为null
+                        cell.v.f      // 公式字符串
+                    ],
+                    color: "w",   // 默认使用深度优先算法
+                    parent: null,
+                    chidren: {},
+                    times: 0
+                });
+            }
+        });
+    });
+
+    return calcChain;
+},
+
+execFunctionGroup: function (origin_r, origin_c, value, index, data, isForce = false) {
         let _this = this;
 
         if (data == null) {
@@ -5114,7 +5180,7 @@ console.log('updatecell curv:',curv)
         //{ "r": r, "c": c, "index": index, "func": func}
         let calcChains = _this.getAllFunctionGroup(),   formulaObjects = {};
         if(calcChains.length==0){
-            updateCalcChain();
+            this.updateCalcChain();
             calcChains = _this.getAllFunctionGroup(),   formulaObjects = {};
         }
         console.log('calcChains:',calcChains,' store:',Store)
@@ -5900,10 +5966,10 @@ console.log('updatecell curv:',curv)
                 updateValue.f = item.f;
                 const oldValue =Store.flowdata[item.r][item.c].v  ;
                 setcellvalue(item.r, item.c, data, updateValue);
-                server.saveParam("v", item.index, item.v, {
-                    "r": item.r,
-                    "c": item.c
-                });
+                // server.saveParam("v", item.index, item.v, {
+                //     "r": item.r,
+                //     "c": item.c
+                // });
                 // JXH START
                 method.createHookFunction("fnUpdated",  item.r, item.c, oldValue , item.v , data[item.r]);
             }
@@ -5926,10 +5992,10 @@ console.log('updatecell curv:',curv)
                 let calc = calcChain[i];
                 if (calc.r == r && calc.c == c && calc.index == index) {
                     calcChain.splice(i, 1);
-                    server.saveParam("fc", index, null, {
-                        "op": "del",
-                        "pos": i
-                    });
+                    // server.saveParam("fc", index, null, {
+                    //     "op": "del",
+                    //     "pos": i
+                    // });
                     break;
                 }
             }
@@ -5941,10 +6007,10 @@ console.log('updatecell curv:',curv)
                 let calc = dynamicArray[i];
                 if (calc.r == r && calc.c == c && (calc.index == null || calc.index == index)) {
                     dynamicArray.splice(i, 1);
-                    server.saveParam("ac", index, null, {
-                        "op": "del",
-                        "pos": i
-                    });
+                    // server.saveParam("ac", index, null, {
+                    //     "op": "del",
+                    //     "pos": i
+                    // });
                     break;
                 }
             }
@@ -5958,7 +6024,7 @@ console.log('updatecell curv:',curv)
         let _locale = locale();
         let locale_formulaMore = _locale.formulaMore;
         // console.log(txt,r,c)
-        if (txt?.indexOf(_this.error.r) > -1) {
+        if (txt.indexOf(_this.error.r) > -1) {
             return [false, _this.error.r, txt];
         }
 
@@ -6115,7 +6181,7 @@ console.log('updatecell curv:',curv)
         return [true, result, txt];
     },
     testFunction: function (txt, fp) {
-        if (txt?.substr(0, 1) == "=") {
+        if (txt.substr(0, 1) == "=") {
             return true;
         }
         else {
