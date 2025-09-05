@@ -188,6 +188,12 @@ function selectHightlightShow(isRestore = false) {
         refreshMenuButtonFocus();
     }
 
+    // jxh start 不允许选中最后一列id strat
+     console.log('luckysheet_select_save_previous:',Store)
+       if(Store.luckysheet_select_save[0].column[1]==(Store.flowdata[0].length-1)){
+           Store.luckysheet_select_save[0].column[1]=Store.flowdata[0].length-2;
+       }
+    // jxh start 不允许选中最后一列id end
     Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)].luckysheet_select_save = Store.luckysheet_select_save;
             // Hook function, change the range selection box, selectHightlightShowillbe triggered multiple times when mousemove is moused, and thhistoricalvalue is used here to throttle
         const luckysheet_select_save_previous = JSON.stringify(Store.luckysheet_select_save);
@@ -195,8 +201,8 @@ function selectHightlightShow(isRestore = false) {
         if(Store.luckysheet_select_save_previous == null |Store.luckysheet_select_save_previous !== luckysheet_select_save_previous){
             method.createHookFunction('rangeSelect', Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)], Store.luckysheet_select_save);
         }
-
-        Store.luckysheet_select_save_previous = luckysheet_select_save_previous;
+ // console.log('luckysheet_select_save_previous:',luckysheet_select_save_previous)
+        Store.luckysheet_select_save_previous =luckysheet_select_save_previous;
 }
 
 //选区标题栏
