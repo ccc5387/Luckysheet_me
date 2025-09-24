@@ -836,7 +836,7 @@ const sheetmanage = {
                     _this.restoreselect();
                     _this.CacheNotLoadControll = [];
                     _this.restoreCache();
-                    formulaInit.execFunctionGroupForce(luckysheetConfigsetting.forceCalculation);
+                    formula.execFunctionGroupForce(luckysheetConfigsetting.forceCalculation);
                     _this.restoreSheetAll(Store.currentSheetIndex);
 
                     // luckysheetrefreshgrid(0, 0);

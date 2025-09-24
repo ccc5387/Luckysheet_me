@@ -186,8 +186,10 @@ function setcellvalue(r, c, d, v) {
                 }
                 else{
                     let mask = genarate(cell.v);
+                    if(mask){
+                        cell.m = mask[0]?.toString();
+                    }
 
-                    cell.m = mask[0].toString();
                 }
             }
             else{

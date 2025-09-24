@@ -4277,6 +4277,7 @@ console.log('updatecell curv:',curv)
             for (let i = 0; i < calcChain.length; i++) {
                 let calc = calcChain[i];
                 if (calc.r == r && calc.c == c && calc.index == index) {
+                    console.log('0发送fc:',calc)
                     server.saveParam("fc", index, JSON.stringify(calc), {
                         "op": "update",
                         "pos": i
@@ -4310,6 +4311,7 @@ console.log('updatecell curv:',curv)
         for (let i = 0; i < calcChain.length; i++) {
             let calc = calcChain[i];
             if (calc.r == r && calc.c == c && calc.index == index) {
+                console.log('1发送fc:',calc)
                 server.saveParam("fc", index, JSON.stringify(calc), {
                     "op": "update",
                     "pos": i
@@ -5113,9 +5115,11 @@ console.log('updatecell curv:',curv)
 
         //{ "r": r, "c": c, "index": index, "func": func}
         let calcChains = _this.getAllFunctionGroup(),   formulaObjects = {};
+        let notInsertFunc = undefined;
         if(calcChains.length==0){
-            updateCalcChain();
-            calcChains = _this.getAllFunctionGroup(),   formulaObjects = {};
+            notInsertFunc = true;
+           updateCalcChain();// let v = _this.execfunction(calc_funcStr, fo
+           calcChains = _this.getAllFunctionGroup(),   formulaObjects = {};
         }
         console.log('calcChains:',calcChains,' store:',Store)
         let sheets = getluckysheetfile();
@@ -5416,16 +5420,21 @@ console.log('updatecell curv:',curv)
             window.luckysheet_getcelldata_cache = null;
             let calc_funcStr = formulaCell.calc_funcStr;
 
-            let v = _this.execfunction(calc_funcStr, formulaCell.r, formulaCell.c, formulaCell.index);
+            // notInsertFunc 页面第一次初始化公式的时候,不需要发送同步消息!
+            let v = _this.execfunction(calc_funcStr, formulaCell.r, formulaCell.c, formulaCell.index,undefined,notInsertFunc);// 就是这里
 
-            _this.groupValuesRefreshData.push({
-                "r": formulaCell.r,
-                "c": formulaCell.c,
-                "v": v[1],
-                "f": v[2],
-                "spe": v[3],
-                "index": formulaCell.index
-            });
+           // if(!notInsertFunc){
+                _this.groupValuesRefreshData.push({
+                    "isSend":!notInsertFunc,
+                    "r": formulaCell.r,
+                    "c": formulaCell.c,
+                    "v": v[1],
+                    "f": v[2],
+                    "spe": v[3],
+                    "index": formulaCell.index
+                });
+          //  }
+
 
             // _this.execFunctionGroupData[u.r][u.c] = value;
             _this.execFunctionGlobalData[formulaCell.r + "_" + formulaCell.c + "_" + formulaCell.index] = {
@@ -5870,13 +5879,14 @@ console.log('updatecell curv:',curv)
         };
     },
     groupValuesRefreshData: [],
-    groupValuesRefresh: function () {
+    groupValuesRefresh: function (isSend=true) {
         let _this = this;
         let luckysheetfile = getluckysheetfile();
+        console.log('公式初始化计算 groupValuesRefresh:',_this.groupValuesRefreshData)
         if (_this.groupValuesRefreshData.length > 0) {
             for (let i = 0; i < _this.groupValuesRefreshData.length; i++) {
                 let item = _this.groupValuesRefreshData[i];
-
+                isSend =item.isSend;
                 // if(item.i != Store.currentSheetIndex){
                 //     continue;
                 // }
@@ -5900,10 +5910,15 @@ console.log('updatecell curv:',curv)
                 updateValue.f = item.f;
                 const oldValue =Store.flowdata[item.r][item.c].v  ;
                 setcellvalue(item.r, item.c, data, updateValue);
-                server.saveParam("v", item.index, item.v, {
-                    "r": item.r,
-                    "c": item.c
-                });
+                console.log('公式初始化计算 data:',data,' updateValue:',updateValue,' isSend:',isSend)
+                if(isSend){
+                    server.saveParam("v", item.index, item.v, {
+                        "r": item.r,
+                        "c": item.c
+                    });
+                }
+
+
                 // JXH START
                 method.createHookFunction("fnUpdated",  item.r, item.c, oldValue , item.v , data[item.r]);
             }
@@ -5953,6 +5968,7 @@ console.log('updatecell curv:',curv)
         setluckysheetfile(luckysheetfile);
     },
     execfunction: function (txt, r, c, index, isrefresh, notInsertFunc) {
+     console.log('notInsertFunc:',notInsertFunc)
         let _this = this;
 
         let _locale = locale();

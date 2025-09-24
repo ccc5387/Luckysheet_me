@@ -45,7 +45,7 @@ function jfrefreshgrid(data, range, allParam, isRunExecFunction = true, isRefres
         range = Store.luckysheet_select_save;
     }
     range = JSON.parse(JSON.stringify(range));
-
+console.log('初始化更新:',range)
     clearTimeout(refreshCanvasTimeOut);
 
     //关联参数
@@ -1151,17 +1151,17 @@ function jfrefreshgrid_rhcw(rowheight, colwidth, isRefreshCanvas=true){
 
 }
 // 创建一个防抖版本的 refreshGrid 函数
-const debouncedRefreshGrid = _.debounce((scrollWidth, scrollHeight) => {
+const debouncedRefreshGrid = _.debounce((scrollWidth, scrollHeight,isSend) => {
     console.log('触发debouncedRefreshGrid')
-    luckysheetrefreshgrid_0(scrollWidth, scrollHeight);
+    luckysheetrefreshgrid_0(scrollWidth, scrollHeight,isSend);
 }, 16); // 延迟 16ms，约等于一帧的时间
-function luckysheetrefreshgrid(scrollWidth, scrollHeight) {
-    debouncedRefreshGrid(scrollWidth,scrollHeight)
+function luckysheetrefreshgrid(scrollWidth, scrollHeight,isSend) {
+    debouncedRefreshGrid(scrollWidth,scrollHeight,isSend)
 }
 //Refresh the canvas display data according to scrollHeight and scrollWidth
-function luckysheetrefreshgrid_0(scrollWidth, scrollHeight) {
+function luckysheetrefreshgrid_0(scrollWidth, scrollHeight,isSend =true) {
     console.log('触发luckysheetrefreshgrid_0,',Store.luckysheetfile)
-    formula.groupValuesRefresh();
+    formula.groupValuesRefresh(isSend);
 
     if (scrollWidth == null) {
         scrollWidth = $("#luckysheet-cell-main").scrollLeft();
@@ -1347,4 +1347,5 @@ export {
     jfrefreshgrid_pastcut,
     jfrefreshgrid_rhcw,
     luckysheetrefreshgrid,
+    luckysheetrefreshgrid_0
 }

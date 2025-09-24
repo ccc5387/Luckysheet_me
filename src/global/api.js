@@ -16,7 +16,7 @@ import { setAccuracy,setcellvalue } from "./setdata";
 import { orderbydata } from "./sort";
 import { rowlenByRange } from "./getRowlen";
 import { getdatabyselection, getcellvalue } from "./getdata";
-import { luckysheetrefreshgrid, jfrefreshgrid, jfrefreshgrid_rhcw } from "./refresh";
+import { luckysheetrefreshgrid, jfrefreshgrid, jfrefreshgrid_rhcw,luckysheetrefreshgrid_0 } from "./refresh";
 import { luckysheetDeleteCell, luckysheetextendtable, luckysheetdeletetable } from "./extend";
 import { isRealNull, valueIsError, isRealNum, isEditMode, hasPartMC } from "./validate";
 import { isdatetime, diff } from "./datecontroll";
@@ -237,6 +237,164 @@ export function setCellValue(row, column, value, options = {}) {
     }
     else{
         file.data = data;//only update data
+    }
+
+    if (success && typeof success === 'function') {
+        success(data);
+    }
+}
+
+/**
+ * 更新一行后刷新这一行
+ * @param row
+ * @param column
+ * @param value
+ * @param options
+ */
+export function setCellValueSimpleByRow(row, column, value, options = {}) {
+
+    let curv = Store.flowdata[row][column];
+
+    // Store old value for hook function
+    const oldValue = JSON.stringify(curv);
+
+    if (!isRealNum(row) || !isRealNum(column)) {
+        return tooltip.info('The row or column parameter is invalid.', '');
+    }
+
+    let {
+        order = getSheetIndex(Store.currentSheetIndex),
+        isRefresh = true,
+        success
+    } = {...options}
+
+    let file = Store.luckysheetfile[order];
+
+    if(file == null){
+        return tooltip.info("The order parameter is invalid.", "");
+    }
+
+    // /* cell更新前触发  */
+    // if (!method.createHookFunction("cellUpdateBefore", row, column, value, isRefresh)) {
+    //     /* 如果cellUpdateBefore函数返回false 则不执行后续的更新 */
+    //     return;
+    // }
+
+    let data = file.data;
+    console.log('设置公式-开始:',data[row],'column:' ,column,' value:',value)
+    if(isRefresh) {
+        data = $.extend(true, [], file.data);
+    }
+    if(data.length == 0){
+        data = sheetmanage.buildGridData(file);
+    }
+
+    // luckysheetformula.updatecell(row, column, value);
+    let formatList = {
+        //ct:1, //celltype,Cell value format: text, time, etc.
+        bg: 1,//background,#fff000
+        ff: 1,//fontfamily,
+        fc: 1,//fontcolor
+        bl: 1,//Bold
+        it: 1,//italic
+        fs: 1,//font size
+        cl: 1,//Cancelline, 0 Regular, 1 Cancelline
+        un: 1,//underline, 0 Regular, 1 underlines, fonts
+        vt: 1,//Vertical alignment, 0 middle, 1 up, 2 down
+        ht: 1,//Horizontal alignment,0 center, 1 left, 2 right
+        mc: 1, //Merge Cells
+        tr: 1, //Text rotation,0: 0、1: 45 、2: -45、3 Vertical text、4: 90 、5: -90
+        tb: 1, //Text wrap,0 truncation, 1 overflow, 2 word wrap
+        //v: 1, //Original value
+        //m: 1, //Display value
+        rt:1, //text rotation angle 0-180 alignment
+        //f: 1, //formula
+        qp:1 //quotePrefix, show number as string
+    }
+
+    if(value == null || value.toString().length == 0){
+       // formula.delFunctionGroup(row, column);
+        setcellvalue(row, column, data, value);
+    }
+    else if(value instanceof Object){
+        let curv = {};
+        if(isRealNull(data[row][column])){
+            data[row][column] = {};
+        }
+        let cell = data[row][column];
+        if(value.f!=null && value.v==null){
+            curv.f = value.f;
+            if(value.ct!=null){
+                curv.ct = value.ct;
+            }
+            console.log('设置公式-1-before:',data[row] )
+            const dataBefore = data;
+            data = luckysheetformula.updatecell(row, column, curv, false).data;//update formula value
+            //公式在设置的时候会被删除之前的公式,保证只修改这个单元格的公式
+            dataBefore[row][column] = data[row][column];
+            data = dataBefore;
+            console.log('设置公式-1-end:',data[row] )
+        }
+        else{
+            if(value.ct!=null){
+                curv.ct = value.ct;
+            }
+            if(value.f!=null){
+                curv.f = value.f;
+            }
+            if(value.v!=null){
+                curv.v = value.v;
+            }
+            else {
+                curv.v = cell.v;
+            }
+            if(value.m!=null){
+                curv.m = value.m;
+            }
+           // formula.delFunctionGroup(row, column);
+            setcellvalue(row, column, data, curv);//update text value
+            console.log('设置公式-2:',data[row] )
+        }
+        for(let attr in value){
+            let v = value[attr];
+            if(attr in formatList){
+                menuButton.updateFormatCell(data, attr, v, row, row, column, column);//change range format
+            }
+            else {
+                cell[attr] = v;
+            }
+        }
+        data[row][column] = cell;
+        console.log('设置公式-3:',data[row] )
+    }
+    else{
+        if(value.toString().substr(0,1)=="=" || value.toString().substr(0,5)=="<span"){
+            data = luckysheetformula.updatecell(row, column, value, false).data;//update formula value or convert inline string html to object
+
+            console.log('设置公式-4:',data[row] )
+        }
+        else{
+          //  formula.delFunctionGroup(row, column);
+            setcellvalue(row, column, data, value);
+            console.log('设置公式-5:',data[row] )
+        }
+    }
+
+    // /* cell更新后触发  */
+    // setTimeout(() => {
+    //     // Hook function
+    //     method.createHookFunction("cellUpdated", row, column, JSON.parse(oldValue), Store.flowdata[row][column], isRefresh);
+    // }, 0);
+    console.log('设置公式-结束:',data[row],'column:' ,column)
+    if(file.index == Store.currentSheetIndex && isRefresh){
+        // const columnMax = data[0].length-1
+        // 更新这一行
+        jfrefreshgrid(data, [{ "row": [row, row], "column": [column, column] }]);//update data, meanwhile refresh canvas and store data to history
+    }
+    else{
+        file.data = data;//only update data
+
+
     }
 
     if (success && typeof success === 'function') {
@@ -6926,8 +7084,8 @@ export function refreshFormula (success) {
  * @param success
  */
 export function refreshFormulaInit (success) {
-    formulaInit.execFunctionGroupForce(true);
-    luckysheetrefreshgrid()
+    formula.execFunctionGroupForce(true);
+    luckysheetrefreshgrid( null,null,false);
     setTimeout(() => {
         if (success && typeof success === 'function') {
             success();

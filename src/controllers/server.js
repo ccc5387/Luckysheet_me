@@ -194,9 +194,11 @@ const server = {
             }
         } else {
             let msg = pako.gzip(encodeURIComponent(JSON.stringify(d)), {to: "string"});
-            if (_this.websocket != null) {
+            if (_this.websocket != null && _this.websocket.readyState === WebSocket.OPEN) {
                 _this.websocket.send(msg);
-            }
+            }else {
+            	console.log('socket未初始化:',d);
+			}
         }
 
 	},
