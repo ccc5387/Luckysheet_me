@@ -5908,7 +5908,7 @@ console.log('updatecell curv:',curv)
                 }
                 updateValue.v = item.v;
                 updateValue.f = item.f;
-                const oldValue =Store.flowdata[item.r][item.c].v  ;
+                const oldValue =Store.flowdata[item.r][item.c]?.v  ;
                 setcellvalue(item.r, item.c, data, updateValue);
                 console.log('公式初始化计算 data:',data,' updateValue:',updateValue,' isSend:',isSend)
                 if(isSend){
