@@ -5396,8 +5396,8 @@ export default function luckysheetHandler() {
             // jxh start 共享编辑 粘贴 没有广播自动新增行
             // console.log('粘贴之前 Store:',Store,' Store.luckysheet_select_save:',Store.luckysheet_select_save)
 
-            const copyRows = Store.luckysheet_copy_save.copyRange[0]['row'];
-            const  inertRowNum = Store.luckysheet_select_save[0]['row'][0]+(copyRows[1]-copyRows[0]+1)- (Store.flowdata.length)
+            const copyRows = Store.luckysheet_copy_save?.copyRange?.[0]?.['row'];
+            const  inertRowNum =copyRows==undefined? 0: Store.luckysheet_select_save[0]['row'][0]+(copyRows[1]-copyRows[0]+1)- (Store.flowdata.length)
             // console.log('Store.luckysheet_select_save[0][\'row\'][1]:',Store.luckysheet_select_save[0]['row'].toString())
             // console.log(' Store.luckysheet_copy_save.copyRange:', Store.luckysheet_copy_save.copyRange)
             // console.log('Store.flowdata.length-1:',Store.flowdata.length-1)
@@ -5424,11 +5424,17 @@ export default function luckysheetHandler() {
             // }
             //整行剪切没清空 jxh start
             if (
-                true
-              //  txtdata.indexOf("luckysheet_copy_action_table") > - 1 && Store.luckysheet_copy_save["copyRange"] != null && Store.luckysheet_copy_save["copyRange"].length > 0 && isEqual
+                // true
+                 txtdata.indexOf("luckysheet_copy_action_table") > - 1 && Store.luckysheet_copy_save["copyRange"] != null && Store.luckysheet_copy_save["copyRange"].length > 0 && isEqual
             ) {
+                // jxh start 不允许选中最后一列id strat
+                // console.log('粘贴:luckysheet_select_save_previous:',Store)
+                // if(Store.luckysheet_select_save[0].column[1]==(Store.flowdata[0].length-1)){
+                //     Store.luckysheet_select_save[0].column[1]=Store.flowdata[0].length-2;
+                // }
+                // jxh start 不允许选中最后一列id end
                 //剪切板内容 和 luckysheet本身复制的内容 一致
-                console.log('粘贴:',Store.luckysheet_copy_save,' 选择:',Store.luckysheet_select_save)
+                console.log('粘贴:',Store.luckysheet_copy_save,' 选择:',Store.luckysheet_select_save,' LENGTH:',Store.luckysheet_select_save.length)
                 // showLoading('粘贴中...')
                 //  jxh start
                 if (Store.luckysheet_paste_iscut) {

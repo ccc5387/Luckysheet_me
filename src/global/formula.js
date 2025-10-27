@@ -701,7 +701,7 @@ const luckysheetformula = {
         if (txt == null || txt.length == 0) {
             return;
         }
-
+console.log('getcellrange:',txt,' formulaIndex:',formulaIndex)
         let sheettxt = "",
             rangetxt = "",
             sheetIndex = null,
@@ -771,6 +771,7 @@ const luckysheetformula = {
                 row[0] = 0;
             }
             if (isNaN(row[1])) {
+                console.log('sheetdata:',sheetdata)
                 row[1] = sheetdata.length - 1;
             }
             if (row[0] > row[1]) {
@@ -1269,7 +1270,14 @@ const luckysheetformula = {
         }
 
         let curv = Store.flowdata[r][c];
-console.log('updatecell curv:',curv)
+        // const stack = new Error().stack;
+        // const lines = stack.split('\n');
+        // // 第二行通常是调用者的信息
+        // const callerLine = lines[2].trim();
+     //   console.log('Called by:', callerLine);
+console.log('442.4updatecell curv:',curv
+ //   , 'callerLine:',callerLine
+)
         // Store old value for hook function
         const oldValue = JSON.stringify(curv);
 
@@ -5910,7 +5918,16 @@ console.log('updatecell curv:',curv)
                 updateValue.f = item.f;
                 const oldValue =Store.flowdata[item.r][item.c]?.v  ;
                 setcellvalue(item.r, item.c, data, updateValue);
-                console.log('公式初始化计算 data:',data,' updateValue:',updateValue,' isSend:',isSend)
+                // console.log('M不存在的情况-0:',data[item.r][item.c],' updateValue:',updateValue );
+                // if(  !data[item.r][item.c].m){
+                //     // M不存在的情况
+                //     console.log('M不存在的情况-BEFORE data[r][c]:',data[item.r][item.c],' updateValue:',updateValue );
+                //     //再执行一次
+                //     setcellvalue(item.r, item.c, data, updateValue);
+                //     console.log('M不存在的情况-end data[r][c]:',data[item.r][item.c],' updateValue:',updateValue );
+                //
+                // }
+
                 if(isSend){
                     server.saveParam("v", item.index, item.v, {
                         "r": item.r,
@@ -6126,10 +6143,27 @@ console.log('updatecell curv:',curv)
             return [true, result, txt, { type: "dynamicArrayItem", data: dynamicArrayItem }];
         }
 
-        // console.log(result, txt);
+        const result0= result;
+        console.log('公式开始:',result, txt,Store.flowdata );
+        result =  this.formatNumber0(result);//  保留两位小数 jxh start
+          console.log('公式结果:',result, txt,result0);
 
         return [true, result, txt];
     },
+    formatNumber0: function(num) {
+        if (typeof num !== 'number') {
+            // 如果不是数字类型，直接返回（可以根据需要返回 null、undefined 或者原值）
+            return num; // 或者 return null; 或者 return undefined;
+        }
+        if (num % 1 === 0) {
+            // 是整数，直接返回数字（不带小数）
+            return num;
+        } else {
+            // 不是整数，保留两位小数
+            return parseFloat(num.toFixed(2));
+        }
+    },
+
     testFunction: function (txt, fp) {
         if (txt?.substr(0, 1) == "=") {
             return true;
