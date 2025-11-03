@@ -163,6 +163,10 @@ const server = {
 			if(params.k =='dataVerification' ){
 				return;
 			}
+			//筛选 不广播
+			if(params.k =='filter_select' ){
+				return;
+			}
 	        d.k = params.k;
 	        // d.s = params.s;
 	    }

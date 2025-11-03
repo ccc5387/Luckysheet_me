@@ -5124,11 +5124,14 @@ console.log('442.4updatecell curv:',curv
         //{ "r": r, "c": c, "index": index, "func": func}
         let calcChains = _this.getAllFunctionGroup(),   formulaObjects = {};
         let notInsertFunc = undefined;
+
+
         if(calcChains.length==0){
             notInsertFunc = true;
-           updateCalcChain();// let v = _this.execfunction(calc_funcStr, fo
+           updateCalcChain();
            calcChains = _this.getAllFunctionGroup(),   formulaObjects = {};
         }
+
         console.log('calcChains:',calcChains,' store:',Store)
         let sheets = getluckysheetfile();
         let sheetData = {};
