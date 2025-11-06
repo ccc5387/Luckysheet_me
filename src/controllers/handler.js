@@ -5442,8 +5442,8 @@ export default function luckysheetHandler() {
 
                     selection.pasteHandlerOfCutPaste(Store.luckysheet_copy_save);
                      selection.clearcopy(e);
-                    Store.luckysheet_copy_save.copyRange[0].column = Store.luckysheet_select_save[0].column;
-                    Store.luckysheet_copy_save.copyRange[0].row = Store.luckysheet_select_save[0].row;
+                     Store.luckysheet_copy_save.copyRange[0].column = Store.luckysheet_select_save[0].column;
+                     Store.luckysheet_copy_save.copyRange[0].row = Store.luckysheet_select_save[0].row;
                 }
                 else {
                     selection.pasteHandlerOfCopyPaste(Store.luckysheet_copy_save);
