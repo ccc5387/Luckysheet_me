@@ -1950,7 +1950,7 @@ const menuButton = {
                      //  jxh start 隐藏筛选和排序中的单列排序，防止数据排序发生变化
                     // {"text": locale_sort.asc, "value": "asc", "example": '<i class="iconfont luckysheet-iconfont-shengxu" aria-hidden="true"></i>'},
                     // {"text": locale_sort.desc, "value": "desc", "example": '<i class="iconfont luckysheet-iconfont-jiangxu" aria-hidden="true"></i>'},
-                    // {"text": locale_sort.custom+"...", "value": "diysort", "example": '<i class="iconfont luckysheet-iconfont-zidingyipaixu" aria-hidden="true"></i>'},
+             //自定义排序       {"text": locale_sort.custom+"...", "value": "diysort", "example": '<i class="iconfont luckysheet-iconfont-zidingyipaixu" aria-hidden="true"></i>'},
                     // {"text": "", "value": "split", "example": ""},
                     //筛选
                     {"text": locale_filter.filter, "value": "filter", "example": '<i class="iconfont luckysheet-iconfont-shaixuan2" aria-hidden="true"></i>'},
