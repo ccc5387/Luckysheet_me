@@ -10,6 +10,7 @@ import { luckysheet_searcharray } from '../controllers/sheetSearch';
 import {checkProtectionAuthorityNormal,checkProtectionNotEnable} from '../controllers/protection';
 import { getSheetIndex } from '../methods/get';
 import Store from '../store';
+import {updateCalcChain, updateCalcChainSheetIndex} from "./api";
 
 /**
  * 增加行列
@@ -21,7 +22,9 @@ import Store from '../store';
  * @returns
  */
 function luckysheetextendtable(type, index, value, direction, sheetIndex) {
+
     sheetIndex = sheetIndex || Store.currentSheetIndex;
+   Store.luckysheetfile[sheetIndex].calcChain =[];//清空公式链 jxh start 增加行或列后,有些公式的位置没有随之变动
 
     if(type=='row' && !checkProtectionAuthorityNormal(sheetIndex, "insertRows")){
         return;
@@ -118,56 +121,56 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
     }
     cfg["merge"] = merge_new;
 
-    //公式配置变动
-    let calcChain = file.calcChain;
-    let newCalcChain = [];
-    if(calcChain != null && calcChain.length > 0){
-        for(let i = 0; i < calcChain.length; i++){
-            let calc = $.extend(true, {}, calcChain[i]);
-            let calc_r = calc.r, calc_c = calc.c, calc_i = calc.index, calc_funcStr =  getcellFormula(calc_r, calc_c, calc_i);
-
-            if(type == "row"){
-                let functionStr = "=" + formula.functionStrChange(calc_funcStr, "add", "row", direction, index, value);
-
-                if(d[calc_r][calc_c] && d[calc_r][calc_c].f == calc_funcStr){
-                    d[calc_r][calc_c].f = functionStr;
-                }
-
-                if(direction == "lefttop"){
-                    if(calc_r >= index){
-                        calc.r += value;
-                    }
-                }
-                else if(direction == "rightbottom"){
-                    if(calc_r > index){
-                        calc.r += value;
-                    }
-                }
-
-                newCalcChain.push(calc);
-            }
-            else if(type == "column"){
-                let functionStr = "=" + formula.functionStrChange(calc_funcStr, "add", "col", direction, index, value);
-
-                if(d[calc_r][calc_c] && d[calc_r][calc_c].f == calc_funcStr){
-                    d[calc_r][calc_c].f = functionStr;
-                }
-
-                if(direction == "lefttop"){
-                    if(calc_c >= index){
-                        calc.c += value;
-                    }
-                }
-                else if(direction == "rightbottom"){
-                    if(calc_c > index){
-                        calc.c += value;
-                    }
-                }
-
-                newCalcChain.push(calc);
-            }
-        }
-    }
+    // //公式配置变动
+    // let calcChain = file.calcChain;
+    // let newCalcChain = [];
+    // if(calcChain != null && calcChain.length > 0){
+    //     for(let i = 0; i < calcChain.length; i++){
+    //         let calc = $.extend(true, {}, calcChain[i]);
+    //         let calc_r = calc.r, calc_c = calc.c, calc_i = calc.index, calc_funcStr =  getcellFormula(calc_r, calc_c, calc_i);
+    //
+    //         if(type == "row"){
+    //             let functionStr = "=" + formula.functionStrChange(calc_funcStr, "add", "row", direction, index, value);
+    //
+    //             if(d[calc_r][calc_c] && d[calc_r][calc_c].f == calc_funcStr){
+    //                 d[calc_r][calc_c].f = functionStr;
+    //             }
+    //
+    //             if(direction == "lefttop"){
+    //                 if(calc_r >= index){
+    //                     calc.r += value;
+    //                 }
+    //             }
+    //             else if(direction == "rightbottom"){
+    //                 if(calc_r > index){
+    //                     calc.r += value;
+    //                 }
+    //             }
+    //
+    //             newCalcChain.push(calc);
+    //         }
+    //         else if(type == "column"){
+    //             let functionStr = "=" + formula.functionStrChange(calc_funcStr, "add", "col", direction, index, value);
+    //
+    //             if(d[calc_r][calc_c] && d[calc_r][calc_c].f == calc_funcStr){
+    //                 d[calc_r][calc_c].f = functionStr;
+    //             }
+    //
+    //             if(direction == "lefttop"){
+    //                 if(calc_c >= index){
+    //                     calc.c += value;
+    //                 }
+    //             }
+    //             else if(direction == "rightbottom"){
+    //                 if(calc_c > index){
+    //                     calc.c += value;
+    //                 }
+    //             }
+    //
+    //             newCalcChain.push(calc);
+    //         }
+    //     }
+    // }
 
     //筛选配置变动
     let filter_select = file.filter_select;
@@ -938,6 +941,7 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
         }
     }
 
+    let newCalcChain = [];
     // 修改当前sheet页时刷新
     if (file.index == Store.currentSheetIndex) {
         jfrefreshgrid_adRC(
@@ -965,6 +969,58 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
         file.luckysheet_alternateformat_save = newAFarr;
         file.dataVerification = newDataVerification;
         file.hyperlink = newHyperlink;
+    }
+
+    updateCalcChainSheetIndex(sheetIndex);
+    //公式配置变动
+    let calcChain = file.calcChain;
+
+    if(calcChain != null && calcChain.length > 0){
+        for(let i = 0; i < calcChain.length; i++){
+            let calc = $.extend(true, {}, calcChain[i]);
+            let calc_r = calc.r, calc_c = calc.c, calc_i = calc.index, calc_funcStr =  getcellFormula(calc_r, calc_c, calc_i);
+
+            if(type == "row"){
+                let functionStr = "=" + formula.functionStrChange(calc_funcStr, "add", "row", direction, index, value);
+
+                if(d[calc_r][calc_c] && d[calc_r][calc_c].f == calc_funcStr){
+                    d[calc_r][calc_c].f = functionStr;
+                }
+
+                if(direction == "lefttop"){
+                    if(calc_r >= index){
+                        calc.r += value;
+                    }
+                }
+                else if(direction == "rightbottom"){
+                    if(calc_r > index){
+                        calc.r += value;
+                    }
+                }
+
+                newCalcChain.push(calc);
+            }
+            else if(type == "column"){
+                let functionStr = "=" + formula.functionStrChange(calc_funcStr, "add", "col", direction, index, value);
+
+                if(d[calc_r][calc_c] && d[calc_r][calc_c].f == calc_funcStr){
+                    d[calc_r][calc_c].f = functionStr;
+                }
+
+                if(direction == "lefttop"){
+                    if(calc_c >= index){
+                        calc.c += value;
+                    }
+                }
+                else if(direction == "rightbottom"){
+                    if(calc_c > index){
+                        calc.c += value;
+                    }
+                }
+
+                newCalcChain.push(calc);
+            }
+        }
     }
 
     let range = null;
@@ -1012,6 +1068,7 @@ function luckysheetextendtable(type, index, value, direction, sheetIndex) {
             $("#luckysheet-column-count-show").hide();
         }
     }
+
 }
 
 function luckysheetextendData(rowlen, newData) {

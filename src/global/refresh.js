@@ -20,6 +20,7 @@ import { createFilterOptions } from '../controllers/filter';
 import { getSheetIndex } from '../methods/get';
 import Store from '../store';
 import _ from 'lodash';
+import {updateCalcChain} from "./api";
 let refreshCanvasTimeOut = null;
 
 function runExecFunction(range, index, data){
@@ -433,7 +434,7 @@ function jfrefreshgrid_adRC(data, cfg, ctrlType, ctrlValue, calc, filterObj, cf,
     //         }
     //     }
     // }
-
+console.log('calcChain:',calc);
     if(Store.clearjfundo){
         Store.jfundo.length  = 0;
 

@@ -28,7 +28,7 @@ import Store from '../store';
 import locale from '../locale/locale';
 import json from './json';
 import method from './method';
-import {updateCalcChain} from "./api";
+import {updateCalcChain, updateCalcChainSheetIndex} from "./api";
 // import { getSheetIndex } from '../methods/get';
 const luckysheetformula = {
     error: {
@@ -5128,7 +5128,7 @@ console.log('442.4updatecell curv:',curv
 
         if(calcChains.length==0){
             notInsertFunc = true;
-           updateCalcChain();
+           updateCalcChainSheetIndex(index); //只更新当前sheet
            calcChains = _this.getAllFunctionGroup(),   formulaObjects = {};
         }
 
@@ -5988,7 +5988,7 @@ console.log('442.4updatecell curv:',curv
         setluckysheetfile(luckysheetfile);
     },
     execfunction: function (txt, r, c, index, isrefresh, notInsertFunc) {
-     console.log('notInsertFunc:',notInsertFunc)
+    // console.log('notInsertFunc:',notInsertFunc)
         let _this = this;
 
         let _locale = locale();
@@ -6147,7 +6147,7 @@ console.log('442.4updatecell curv:',curv
         }
 
         const result0= result;
-        console.log('公式开始:',result, txt,Store.flowdata );
+       // console.log('公式开始:',result, txt,Store.flowdata );
         result =  this.formatNumber0(result);//  保留两位小数 jxh start
           console.log('公式结果:',result, txt,result0);
 

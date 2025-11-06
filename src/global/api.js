@@ -4,7 +4,7 @@ import { getSheetIndex, getluckysheet_select_save, getluckysheetfile } from "../
 import locale from "../locale/locale";
 import method from './method';
 import formula from './formula';
-import formulaInit from './formulaInit';
+// import formulaInit from './formulaInit';
 import func_methods from "./func_methods";
 import tooltip from "./tooltip";
 import json from "./json";
@@ -269,7 +269,7 @@ export function setCellValueSimpleByRow(row, column, value, options = {}) {
     } = {...options}
 
     let file = Store.luckysheetfile[order];
-
+    // file.data = Store.flowdata; // 有些公式设置完后没有M
     if(file == null){
         return tooltip.info("The order parameter is invalid.", "");
     }
@@ -327,13 +327,19 @@ export function setCellValueSimpleByRow(row, column, value, options = {}) {
             if(value.ct!=null){
                 curv.ct = value.ct;
             }
-            console.log('设置公式-1-before:',data[row] )
+            // const stack = new Error().stack;
+            // const lines = stack.split('\n');
+            // // 第二行通常是调用者的信息
+            // const callerLine = lines[2].trim();
+            console.log('442.4设置公式-1-before:',data[row][column]
+               // ,'callerLine:',callerLine
+            )
             const dataBefore = data;
             data = luckysheetformula.updatecell(row, column, curv, false).data;//update formula value
             //公式在设置的时候会被删除之前的公式,保证只修改这个单元格的公式
             dataBefore[row][column] = data[row][column];
             data = dataBefore;
-            console.log('设置公式-1-end:',data[row] )
+            console.log('442.4设置公式-1-end:',data[row][column] )
         }
         else{
             if(value.ct!=null){
@@ -7093,7 +7099,7 @@ export function refreshFormulaInit (success) {
     })
 }
 function createCalcChainFromSheetData() {
-    const allSheets = getAllSheets();
+    const allSheets = getAllSheets();//主表
     console.log('allSheets:',allSheets)
     const calcChain = [];
 
@@ -7119,7 +7125,7 @@ function createCalcChainFromSheetData() {
             }
         });
     });
-
+console.log('createCalcChainFromSheetData calcChain:',calcChain)
     return calcChain;
 }
 
@@ -7139,16 +7145,62 @@ export function updateCalcChain() {
 
     // 应用到各个工作表
     Object.keys(sheetsCalcChain).forEach(sheetIndex => {
-     //   window.luckysheet.setSheetActivate(parseInt(sheetIndex));
-      //  window.luckysheet.setSheetCalcChain(sheetsCalcChain[sheetIndex]);
+
         Store.luckysheetfile[sheetIndex].calcChain = sheetsCalcChain[sheetIndex];
     });
 
-    // 触发全表计算
-  // refreshFormula();
 }
 
 
+
+// 计算公式链 - 只更新指定的工作表 jxh start
+export function updateCalcChainSheetIndex(sheetIndex) {
+    // 如果没有传入 sheetIndex，则不执行任何操作（或者你可以选择抛出错误/返回）
+    if (sheetIndex === undefined || sheetIndex === null) {
+        console.warn('updateCalcChain: 未提供 sheetIndex 参数');
+        return;
+    }
+
+    // 获取所有表格数据
+    const allSheets = getAllSheets(); // 主表
+    console.log('allSheets:', allSheets);
+
+    const calcChain = [];
+
+    // 遍历所有表格，但只收集指定 sheetIndex 的公式单元格
+    allSheets.forEach(sheet => {
+        // 只处理目标 sheetIndex 的表格
+        if (sheet.index !== sheetIndex || !sheet.celldata) return;
+
+        sheet.celldata.forEach(cell => {
+            if (cell.v && cell.v.f && cell.v.f.startsWith('=')) {
+                calcChain.push({
+                    r: cell.r,
+                    c: cell.c,
+                    index: sheet.index,
+                    func: [
+                        true,       // 初始设为true，表示待计算
+                        cell.v.v,       // 初始计算结果为null
+                        cell.v.f      // 公式字符串
+                    ],
+                    color: "w",   // 默认使用深度优先算法
+                    parent: null,
+                    chidren: {},  // 注意：原代码中拼写为 'chidren'，建议改为 'children'，但这里保持原样
+                    times: 0
+                });
+            }
+        });
+    });
+
+    console.log(`updateCalcChain [sheetIndex=${sheetIndex}] calcChain:`, calcChain);
+
+    // 将计算链设置到指定的工作表中
+    if (Store.luckysheetfile && Store.luckysheetfile[sheetIndex]) {
+        Store.luckysheetfile[sheetIndex].calcChain = calcChain;
+    } else {
+        console.warn(`updateCalcChain: 未找到索引为 ${sheetIndex} 的工作表`);
+    }
+}
 /**
  * 更新sheet数据
  * @param {Array} data 工作簿配置，可以包含多个表

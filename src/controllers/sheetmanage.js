@@ -5,7 +5,7 @@ import { setcellvalue } from '../global/setdata';
 import luckysheetcreatedom from '../global/createdom';
 import tooltip from '../global/tooltip';
 import formula from '../global/formula';
-import formulaInit from '../global/formulaInit';
+// import formulaInit from '../global/formulaInit';
 import { luckysheetrefreshgrid, jfrefreshgrid_rhcw } from '../global/refresh';
 import rhchInit from '../global/rhchInit';
 import editor from '../global/editor';

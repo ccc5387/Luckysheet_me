@@ -1331,10 +1331,10 @@ const selection = {
         let copyRowlChange = copyRange["RowlChange"];
         let copySheetIndex = copyRange["dataSheetIndex"];
 
-        let c_r1 = copyRange["copyRange"][0].row[0],
-            c_r2 = copyRange["copyRange"][0].row[1],
-            c_c1 = copyRange["copyRange"][0].column[0],
-            c_c2 = copyRange["copyRange"][0].column[1];
+        let c_r1 = copyRange?.["copyRange"]?.[0]?.row?.[0],
+            c_r2 = copyRange?.["copyRange"]?.[0]?.row?.[1],
+            c_c1 = copyRange?.["copyRange"]?.[0]?.column?.[0],
+            c_c2 = copyRange?.["copyRange"]?.[0]?.column?.[1];
 
         let arr = [], isSameRow = false;
         for(let i = 0; i < copyRange["copyRange"].length; i++){

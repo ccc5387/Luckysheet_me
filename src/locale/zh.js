@@ -6238,7 +6238,7 @@ export default {
         "desc":"降序",
         "custom":"自定义排序",
 
-        "hasTitle":"数据具有标题行",
+        "hasTitle":"依据这列排序", // 数据具有标题行
         "sortBy":"排序依据",
         "addOthers":"添加其他排序列",
         "close":"关闭",
