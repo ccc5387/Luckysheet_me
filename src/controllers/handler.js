@@ -2329,7 +2329,7 @@ export default function luckysheetHandler() {
 
                     let row_index_original = Store.luckysheet_cell_selected_extend_index[0],
                         col_index_original = Store.luckysheet_cell_selected_extend_index[1];
-
+console.log('下拉 luckysheet_cell_selected_extend_index 1')
                     let row_s = Store.luckysheet_select_save[0]["row"][0],
                         row_e = Store.luckysheet_select_save[0]["row"][1];
                     let col_s = Store.luckysheet_select_save[0]["column"][0],
@@ -4120,7 +4120,7 @@ export default function luckysheetHandler() {
 
             let row_index_original = Store.luckysheet_cell_selected_extend_index[0],
                 col_index_original = Store.luckysheet_cell_selected_extend_index[1];
-
+            console.log('下拉 luckysheet_cell_selected_extend_index 2')
             let last = Store.luckysheet_select_save[Store.luckysheet_select_save.length - 1];
             let row_s = last["row"][0], row_e = last["row"][1];
             let col_s = last["column"][0], col_e = last["column"][1];
@@ -4334,12 +4334,12 @@ export default function luckysheetHandler() {
         event.stopPropagation();
     });
 
-    //选区下拉
+    //选区下拉  .luckysheet-cs-fillhandle 下拉下拉下拉下拉下拉
     $("#luckysheet-cell-main div.luckysheet-cs-fillhandle").mousedown(function (event) {
         if(isEditMode() || Store.allowEdit===false){//此模式下禁用选区下拉
             return;
         }
-
+console.log('下拉11111 mousedown')
         $("#luckysheet-cell-selected").find(".luckysheet-cs-fillhandle")
             .css("cursor", "crosshair")
             .end()
@@ -4377,9 +4377,12 @@ export default function luckysheetHandler() {
 
         event.stopPropagation();
     }).click(function () {
+
+        console.log('下拉22222 click')
         clearTimeout(Store.luckysheet_cell_selected_extend_time);
         event.stopPropagation();
     }).dblclick(function () {
+        console.log('下拉3333 dblclick')
         let last = Store.luckysheet_select_save[0];
 
         let r0 = last.row[0],

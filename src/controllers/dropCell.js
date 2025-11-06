@@ -470,17 +470,34 @@ const luckysheetDropCell = {
         let apply_str_c = applyRange["column"][0], apply_end_c = applyRange["column"][1];
 
         if(direction == "down" || direction == "up"){
-            let asLen = apply_end_r - apply_str_r + 1;
+            const  rowhidden =   Store.luckysheetfile[Store.currentSheetIndex].config.rowhidden;
+
+            // 1. 计算可见目标格子数（非隐藏行）
+            let visibleTargetCount = 0;
+            for (let j = apply_str_r; j <= apply_end_r; j++) {
+                for (let i = apply_str_c; i <= apply_end_c; i++) {
+                    if (!rowhidden || rowhidden[j]!=0) { // 如果当前行 j 不是隐藏的
+                        visibleTargetCount++;
+                    }
+                }
+            }
+            console.log('下拉 visibleTargetCount:',visibleTargetCount);
+            let asLen = visibleTargetCount;// apply_end_r - apply_str_r + 1 ;
 
             for(let i = apply_str_c; i <= apply_end_c; i++){
                 let copyD = copyData[i - apply_str_c];
 
                 let applyData = _this.getApplyData(copyD, csLen, asLen);
-
+                console.log('下拉 applyData:',applyData,' csLen:',csLen,' asLen:',asLen);
                 if(direction == "down"){
+                    let goHidden =0;
                     for(let j = apply_str_r; j <= apply_end_r; j++){
-                        let cell = applyData[j - apply_str_r];
-
+                        if(rowhidden && rowhidden[j]==0){
+                            goHidden++;
+                            continue;// 跳过隐藏行
+                        }//                                                             5
+                        let cell = applyData[j - apply_str_r - goHidden];//                        7  3          3      1
+                        console.log('下拉 rowhidden: cell',cell,' applyData:',applyData,j,apply_str_r, asLen,csLen)
                         if(cell.f != null){
                             let f = "=" + formula.functionCopy(cell.f, "down", j - apply_str_r + 1);
                             let v = formula.execfunction(f, j, i);
@@ -574,8 +591,13 @@ const luckysheetDropCell = {
                     }
                 }
                 if(direction == "up"){
+                    let goHidden =0;
                     for(let j = apply_end_r; j >= apply_str_r; j--){
-                        let cell = applyData[apply_end_r - j];
+                        if(rowhidden && rowhidden[j]==0){
+                            goHidden++;
+                            continue;// 跳过隐藏行
+                        }//
+                        let cell = applyData[apply_end_r - j -goHidden];
 
                         if(cell.f != null){
                             let f = "=" + formula.functionCopy(cell.f, "up", apply_end_r - j + 1);
@@ -2332,7 +2354,7 @@ const luckysheetDropCell = {
             let last = data[data.length - 1]["m"];
             let match = last.match(reg)
             let lastTxt = match[match.length -1];
-            
+
             let num = Math.abs(Number(lastTxt) + step * i);
             let lastIndex = last.lastIndexOf(lastTxt);
             let valueTxt = last.substr(0, lastIndex) + num.toString() + last.substr(lastIndex + lastTxt.length);
