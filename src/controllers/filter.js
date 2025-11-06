@@ -171,10 +171,13 @@ function createFilter() {
 
     $('#luckysheet-filter-selected-sheet' + Store.currentSheetIndex + ', #luckysheet-filter-options-sheet' + Store.currentSheetIndex).remove();
 
-    let last = Store.luckysheet_select_save[0];
-    if (last["row"][0] == last["row"][1] && last["column"][0] == last["column"][1]) {
-        let st_c, ed_c, curR = last["row"][1];
-
+    let last ={row:[0,0],column:[0,0]} // Store.luckysheet_select_save[0];
+    console.log('last:',last)
+    if (
+       true
+       // last["row"][0] == last["row"][1] && last["column"][0] == last["column"][1]
+    ) {
+        let st_c, ed_c, curR =last["row"][1];
         for (let c = 0; c < Store.flowdata[curR].length; c++) {
             let cell = Store.flowdata[curR][c];
 
@@ -190,19 +193,20 @@ function createFilter() {
         }
 
         if (ed_c == null) {
-            ed_c = Store.flowdata[curR].length - 1;
+            ed_c =Store.flowdata[curR].length - 1;
         }
-
-        Store.luckysheet_select_save = [{ "row": [curR, curR], "column": [st_c, ed_c] }];
+          curR = Store.luckysheetfile[Store.currentSheetIndex].data.length-1;   //
+        Store.luckysheet_select_save = [{ "row": [0, curR], "column": [st_c, ed_c] }];
         selectHightlightShow();
 
         Store.luckysheet_shiftpositon = $.extend(true, {}, last);
          luckysheetMoveEndCell("down", "range");
     }
-    else if (last["row"][1] - last["row"][0] < 2) {
-        Store.luckysheet_shiftpositon = $.extend(true, {}, last);
-         luckysheetMoveEndCell("down", "range");
-    }
+    // else if (last["row"][1] - last["row"][0] < 2) {
+    //
+    //     Store.luckysheet_shiftpositon = $.extend(true, {}, last);
+    //      luckysheetMoveEndCell("down", "range");
+    // }
 
     Store.luckysheet_filter_save = $.extend(true, {}, Store.luckysheet_select_save[0]);
 
@@ -1402,6 +1406,9 @@ function initialFilterHandler(){
 
     //清除筛选
     $("#luckysheet-filter-initial").click(function () {
+        Store.jxh.caljs =undefined;
+        Store.jxh.filterdata =undefined;
+        Store.jxh.serveFilter =false;
         if(!checkProtectionAuthorityNormal(Store.currentSheetIndex, "filter")){
             return;
         }
@@ -1506,6 +1513,7 @@ function initialFilterHandler(){
 
     //筛选取消
     $("#luckysheet-filter-cancel").click(function () {
+
         $("#luckysheet-filter-menu, #luckysheet-filter-submenu").hide();
         $("#luckysheet-filter-submenu-1").hide();
     });
@@ -1539,16 +1547,26 @@ function initialFilterHandler(){
         let rowhidden = {};
         let caljs = {};
 
-        if (($("#luckysheet-filter-bycondition").next().is(":visible") || $("#luckysheet-filter-bycondition-1").next().is(":visible"))
-           // && $("#luckysheet-filter-byvalue").next().is(":hidden")
-            && ($("#luckysheet-filter-selected span").data("value") != "null"  ||
-                $("#luckysheet-filter-selected-1 span").data("value") != "null"
-            )) {
+        if (
+            (
+                ($("#luckysheet-filter-bycondition").next().is(":visible") || $("#luckysheet-filter-bycondition-1").next().is(":visible"))
+                &&
+                ($("#luckysheet-filter-selected span").data("value") != "null"  ||  $("#luckysheet-filter-selected-1 span").data("value") != "null" )
+
+            )
+            ||
+            (
+                Store.jxh.serveFilter &&     Store.jxh.caljs
+            )
+
+        ) {
             let $t = $("#luckysheet-filter-selected span");
             let type = $t.data("type"), value = $t.data("value");
 
+console.log('筛选条件: value',value,' type:',type)
             caljs["value"] = value;
             caljs["text"] = $t.text();
+
 
             if (type == "0") {
                 caljs["type"] = "0";
@@ -1564,7 +1582,12 @@ function initialFilterHandler(){
                 caljs["value1"] = $("#luckysheet-filter-menu .luckysheet-filter-selected-input").eq(0).find("input").val();
             }
 
+            if(Store.jxh.serveFilter){
 
+                caljs = Store.jxh.caljs;
+                type =  Store.jxh.caljs['type'];
+                value = Store.jxh.caljs['value'];
+            }
             // console.log('st_r:',st_r,' ed_r:',ed_r)
             for (let r = st_r + 1; r <= ed_r; r++) {
                 if(r in rowhiddenother){
@@ -1852,15 +1875,28 @@ function initialFilterHandler(){
             let value_1 = $("#luckysheet-filter-selected-1 span").data("value");
             let type_1 = $("#luckysheet-filter-selected-1 span").data("type");
             caljs["value1-1"] = $("#luckysheet-filter-menu .luckysheet-filter-selected-input-1").eq(0).find("input").val();
+            caljs["type_1"] = type_1;
             if(type_1 == "2"){
                 let $input = $("#luckysheet-filter-menu .luckysheet-filter-selected-input2-2 input");
                 caljs["value1-1"] = $input.eq(0).val();
                 caljs["value2-1"] = $input.eq(1).val();
             }
-            const iSyu  = document.getElementById('jxh-bycondition-radio-yu').checked;
+            let iSyu  = document.getElementById('jxh-bycondition-radio-yu').checked;
+            caljs["iSyu"] = iSyu;
               console.log('条件2的选项:',value_1, ' iSyu:', iSyu,' value1-1:',caljs["value1-1"]);
             //填了值
              console.log('rowhidden:',rowhidden)
+
+            if(Store.jxh.serveFilter){
+
+                caljs = Store.jxh.caljs;
+                value_1 =  Store.jxh.caljs['value_1'];
+                type_1 = Store.jxh.caljs['type_1'];
+                iSyu =  caljs["iSyu"];
+            }else {
+                Store.jxh.caljs = caljs;
+            }
+
             if(value_1){
                 tj2_filter(st_r, ed_r, rowhiddenother , cindex, value_1, caljs, rowhidden,iSyu);
             }
@@ -1868,7 +1904,7 @@ function initialFilterHandler(){
 
         }
         else {
-            // console.log('进这里了error')
+             console.log('筛选 进这里了error')
             $("#luckysheet-filter-byvalue-select .ListBox input[type='checkbox']").each(function(i, e){
                 if($(e).is(":visible") && $(e).is(":checked")){
                     return true;
@@ -1898,7 +1934,14 @@ function initialFilterHandler(){
                     filterdata[itemV] = "1";
                 }
             });
-
+             if(Store.jxh.serveFilter){
+                 //数据同步时，模拟点击的筛选，重新触发一次
+                 filterdata = Store.jxh.filterdata;
+                 Store.jxh.serveFilter =false;
+             }else {
+                 Store.jxh.filterdata=filterdata;
+             }
+            console.log('筛选 进这里了error filterdata',filterdata);
             for (let r = st_r + 1; r <= ed_r; r++) {
                 if(r in rowhiddenother){
                     continue;

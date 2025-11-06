@@ -152,6 +152,9 @@ const server = {
 	    	if(params.k =='colhidden'|| params.k =='rowhidden'){
                return;
 			}
+			if(params.k =='columnlen' || params.k =='rowlen' ){
+				return;
+			}
 	        d.k = params.k;
 	    }
 	    else if (type == "all") {
@@ -167,10 +170,20 @@ const server = {
 			if(params.k =='filter_select' ){
 				return;
 			}
+			if(params.k =='filter' ){
+				return;
+			}
+
+			if(params.k =='config' ){
+				return;
+			}
 	        d.k = params.k;
 	        // d.s = params.s;
 	    }
-
+		else if (type == "fsc") {
+			//取消筛选不广播
+			return;
+		}
 	 // const luckysheetPageInit =	localStorage.getItem('luckysheetPageInit');
 		// if(!luckysheetPageInit){
 		// 	return;
@@ -514,6 +527,13 @@ const server = {
 
 	            setTimeout(function () {
 	                luckysheetrefreshgrid();
+	                //执行筛选方法 TODO
+					if(Store.currentSheetIndex==0){
+						console.log('筛选:',Store.luckysheetfile)
+						Store.jxh.serveFilter = true;
+						document.getElementById('luckysheet-filter-confirm').click();//模拟点击
+					}
+
 	            }, 1);
 			}
 	    }
