@@ -188,7 +188,8 @@ const server = {
 		// if(!luckysheetPageInit){
 		// 	return;
 		// }
-		console.log('操作:',d)
+		  console.log('操作:',d)
+
 		// return; //TODO JXH START
 	    // TODO 配置自定义方式同步图片
         const customImageUpdateMethodConfig = luckysheetConfigsetting.imageUpdateMethodConfig

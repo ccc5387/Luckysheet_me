@@ -237,6 +237,14 @@ export function setCellValue(row, column, value, options = {}) {
     }
     else{
         file.data = data;//only update data
+
+        //即使不刷新页面,更新的数据也要同步
+        const  range =  [{ "row": [row, row], "column": [column, column] }];
+        for(let s = 0; s < range.length; s++){
+            if(server.allowUpdate){ //共享编辑模式
+                server.historyParam(Store.flowdata, Store.currentSheetIndex, range[s]);
+            }
+        }
     }
 
     if (success && typeof success === 'function') {
@@ -400,7 +408,13 @@ export function setCellValueSimpleByRow(row, column, value, options = {}) {
     else{
         file.data = data;//only update data
 
-
+        //即使不刷新页面,更新的数据也要同步
+        const  range =  [{ "row": [row, row], "column": [column, column] }];
+        for(let s = 0; s < range.length; s++){
+            if(server.allowUpdate){ //共享编辑模式
+                server.historyParam(Store.flowdata, Store.currentSheetIndex, range[s]);
+            }
+        }
     }
 
     if (success && typeof success === 'function') {
@@ -536,6 +550,14 @@ export function setCellValueSimple(row, column, value, options = {}) {
     }
     else{
         file.data = data;//only update data
+        //即使不刷新页面,更新的数据也要同步
+        const  range =  [{ "row": [row, row], "column": [column, column] }];
+        for(let s = 0; s < range.length; s++){
+            if(server.allowUpdate){ //共享编辑模式
+                server.historyParam(Store.flowdata, Store.currentSheetIndex, range[s]);
+            }
+        }
+
     }
 
     if (success && typeof success === 'function') {
