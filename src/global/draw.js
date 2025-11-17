@@ -796,7 +796,7 @@ function luckysheetDrawMainOptimized_gpt(scrollWidth, scrollHeight, drawWidth, d
 
 }
 function luckysheetDrawMain(scrollWidth, scrollHeight, drawWidth, drawHeight, offsetLeft, offsetTop, columnOffsetCell, rowOffsetCell, mycanvas) {
-    luckysheetDrawMainOptimized_gpt(scrollWidth, scrollHeight, drawWidth, drawHeight, offsetLeft, offsetTop, columnOffsetCell, rowOffsetCell, mycanvas)
+    luckysheetDrawMain_old(scrollWidth, scrollHeight, drawWidth, drawHeight, offsetLeft, offsetTop, columnOffsetCell, rowOffsetCell, mycanvas)
 }
 function luckysheetDrawMain_old(scrollWidth, scrollHeight, drawWidth, drawHeight, offsetLeft, offsetTop, columnOffsetCell, rowOffsetCell, mycanvas) {
 
