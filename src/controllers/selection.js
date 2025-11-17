@@ -695,8 +695,65 @@ const selection = {
 
             let RowlChange = false;
             let offsetMC = {};
+            const  rowhidden =   Store.luckysheetfile[Store.currentSheetIndex].config.rowhidden;
+            console.log('隐藏行处理: rowhidden：',rowhidden)
             for (let h = minh; h <= maxh; h++) {
                 let x = [].concat(d[h]);
+                // ✅ 判断当前行 h 是否为隐藏行（rowhidden[h] == 0 表示隐藏）
+                if (rowhidden && rowhidden[h] == 0) {
+                    maxh++;
+                    minh++;
+//                     console.log('隐藏行处理: 进来了：')
+//                     // ✅ 当前行是隐藏行，不直接跳过，而是准备缓存要粘贴的数据
+//
+//                     // 1. 缓存当前行 h 所有列的待粘贴数据（即本来要贴到这一行的内容）
+//                     let pendingPasteData = {}; // 用对象存 { 列号 c: 要粘贴的 value }
+//                     for (let c = minc; c <= maxc; c++) {
+//                         if (data[h - minh] != null && data[h - minh][c - minc] != null) {
+//                             pendingPasteData[c] = data[h - minh][c - minc]; // 缓存该列的值
+//                         }
+//                     }
+//
+//                     // 2. 从当前隐藏行的下一行开始，寻找第一个非隐藏行
+//                     let k = h + 1; // 从 h+1 开始找
+//                     let foundTargetRow = false;
+//                     console.log('隐藏行处理: k：',k, ' maxh:',maxh)
+//                     while (k <= maxh) {
+//                         if (!rowhidden || rowhidden[k] != 0) { // 找到第一个非隐藏行 k
+//                             foundTargetRow = true;
+//                             // 3. 找到了非隐藏行 k，把之前缓存的所有列数据粘贴到 k 行对应列上
+//                             let x_k = [].concat(d[k]); // 拷贝目标行 k 的数据
+//
+//                             for (let c = minc; c <= maxc; c++) {
+//                                 if (pendingPasteData[c] !== undefined) {
+//                                     let value = pendingPasteData[c]; // 取出之前缓存的要贴的值
+//                                     x_k[c] = $.extend(true, {}, value); // 深拷贝并赋值给目标行 k 的第 c 列
+//                                 }
+//                             }
+//
+//                             d[k] = x_k; // 更新目标行 k 的数据
+// console.log('隐藏行处理: k',k, '  d[k]:', d[k])
+//                             // ✅ 如果你有处理 merge / border / 行高 等，也需要同步处理（下面可补充，目前暂未处理）
+//
+//                             break; // 找到第一个非隐藏行并处理后，跳出循环
+//                         }
+//                         k++;
+//                     }
+//
+//                     // 4. 如果从 h+1 到 maxh 都没有找到非隐藏行，则放弃粘贴这一批数据（可记录日志）
+//                     if (!foundTargetRow) {
+//                         console.warn(`粘贴数据：第 ${h} 行是隐藏行，且后面没有非隐藏行，数据未粘贴`);
+//                         // 当前策略：不粘贴，也不报错
+//                     }
+//
+//                     // 5. 当前行 h 是隐藏行，无论是否找到目标行，都不进行粘贴操作
+//                     // 保持原值不变
+//                     d[h] = x;
+                    continue; // 跳过当前隐藏行的后续正常粘贴逻辑（不再走下面的正常粘贴流程）
+                }
+                // ✅ ======================
+                // ✅ 正常行（非隐藏行）的粘贴逻辑，保持你原来的代码不变
+                // ✅ ======================
 
                 let currentRowLen = Store.defaultrowlen;
                 if(cfg["rowlen"][h] != null){
@@ -1002,9 +1059,63 @@ const selection = {
         }
 
         let offsetMC = {};
+        const  rowhidden =   Store.luckysheetfile[Store.currentSheetIndex].config.rowhidden;
         for (let h = minh; h <= maxh; h++) {
             let x = [].concat(d[h]);
+            // ✅ 判断当前行 h 是否为隐藏行（rowhidden[h] == 0 表示隐藏）
+            if (rowhidden && rowhidden[h] == 0) {
+                maxh++;
+                minh++;
+                // // ✅ 当前行是隐藏行，不直接跳过，而是缓存要粘贴的所有列数据
+                //
+                // // 1. 缓存当前行 h 所有列的待粘贴数据（即 copyData 中对应 h - minh 行的数据）
+                // let pendingPasteData = {}; // 用对象存 { 列号 c: 要粘贴的 value }
+                // for (let c = minc; c <= maxc; c++) {
+                //     if (copyData[h - minh] != null && copyData[h - minh][c - minc] != null) {
+                //         pendingPasteData[c] = copyData[h - minh][c - minc]; // 缓存该列要贴的值
+                //     }
+                // }
+                //
+                // // 2. 从当前隐藏行 h 的下一行开始，寻找第一个非隐藏行
+                // let k = h + 1; // 从 h+1 开始找
+                // let foundTargetRow = false;
+                // while (k <= maxh) {
+                //     if (!rowhidden || rowhidden[k] != 0) { // 找到第一个非隐藏行 k
+                //         foundTargetRow = true;
+                //         // 3. 找到了非隐藏行 k，把之前缓存的所有列数据粘贴到 k 行对应列上
+                //         let x_k = [].concat(d[k]); // 拷贝目标行 k 的数据
+                //
+                //         for (let c = minc; c <= maxc; c++) {
+                //             if (pendingPasteData[c] !== undefined) {
+                //                 let value = pendingPasteData[c]; // 取出之前缓存的要贴的值
+                //                 x_k[c] = $.extend(true, {}, value); // 深拷贝并赋值给目标行 k 的第 c 列
+                //             }
+                //         }
+                //
+                //         d[k] = x_k; // 更新目标行 k 的数据
+                //
+                //         // ✅ 如果你有处理 merge / 边框等，也可以在这里同步调整（比如更新 mc.r = k 等，根据需求可选）
+                //
+                //         break; // 找到第一个非隐藏行并处理后，跳出循环
+                //     }
+                //     k++;
+                // }
+                //
+                // // 4. 如果从 h+1 到 maxh 都没有找到非隐藏行，则放弃粘贴这一批数据（可记录日志）
+                // if (!foundTargetRow) {
+                //     console.warn(`剪切粘贴：第 ${h} 行是隐藏行，且后面没有非隐藏行，数据未粘贴`);
+                //     // 当前策略：不粘贴，也不报错，继续下一行
+                // }
+                //
+                // // 5. 当前行 h 是隐藏行，无论是否找到目标行，都不进行粘贴操作
+                // // 保持原值不变
+                // d[h] = x;
+                continue; // 跳过当前隐藏行的后续正常粘贴逻辑（不执行下面的正常粘贴流程）
+            }
 
+            // ✅ ======================
+            // ✅ 正常行（非隐藏行）的粘贴逻辑，保持你原来的代码不变
+            // ✅ ======================
             for (let c = minc; c <= maxc; c++) {
                 if(borderInfoCompute[(c_r1 + h - minh) + "_" + (c_c1 + c - minc)]){
                     let bd_obj = {
@@ -1443,9 +1554,65 @@ const selection = {
                 let offsetCol = mtc - c_c1;
 
                 let offsetMC = {};
+                const  rowhidden =   Store.luckysheetfile[Store.currentSheetIndex].config.rowhidden;
+                console.log('隐藏行处理: rowhidden',rowhidden,' copyData:',copyData)
                 for (let h = mth; h < maxrowCache; h++) {
                     let x = [].concat(d[h]);
+                    console.log('隐藏行处理: maxrowCache',' h - mth:',(h - mth),' H:',h,' mth:',mth)
+                    // ✅ 判断当前行 h 是否为隐藏行（rowhidden[h] == 0 表示隐藏）
+                    if (rowhidden && rowhidden[h] == 0) {
+                        maxrowCache ++;
+                        mth++;
+                        // // ✅ 当前行是隐藏行，不直接跳过，而是缓存要粘贴的所有列数据
+                        // console.log('隐藏行处理: 进来了', )
+                        // // 1. 缓存当前行 h 所有列的待粘贴数据（即 copyData 中对应 h - mth 行的数据）
+                        // let pendingPasteData = {}; // 用对象存 { 列号 c: 要粘贴的 value }
+                        // for (let c = mtc; c < maxcellCahe; c++) {
+                        //     if (copyData[h - mth] != null && copyData[h - mth][c - mtc] != null) {
+                        //         pendingPasteData[c] = copyData[h - mth][c - mtc]; // 缓存该列要贴的值
+                        //     }
+                        // }
+                        //
+                        // // 2. 从当前隐藏行 h 的下一行开始，寻找第一个非隐藏行
+                        // let k = h + 1; // 从 h+1 开始找
+                        // let foundTargetRow = false;
+                        // while (k < maxrowCache) { // 注意边界：不能超过 maxrowCache
+                        //     if (!rowhidden || rowhidden[k] != 0) { // 找到第一个非隐藏行 k
+                        //         foundTargetRow = true;
+                        //         // 3. 找到了非隐藏行 k，把之前缓存的所有列数据粘贴到 k 行对应列上
+                        //         let x_k = [].concat(d[k]); // 拷贝目标行 k 的数据
+                        //
+                        //         for (let c = mtc; c < maxcellCahe; c++) {
+                        //             if (pendingPasteData[c] !== undefined) {
+                        //                 let value = pendingPasteData[c]; // 取出之前缓存的要贴的值
+                        //                 x_k[c] = $.extend(true, {}, value); // 深拷贝并赋值给目标行 k 的第 c 列
+                        //             }
+                        //         }
+                        //
+                        //         d[k] = x_k; // 更新目标行 k 的数据
+                        //         console.log('隐藏行处理: k',k,' d[k]:',d[k] )
+                        //         // ✅ 如果你有处理 merge / 边框等，也可以在这里同步调整（比如更新 mc.r = k 等，根据需求可选）
+                        //
+                        //         break; // 找到第一个非隐藏行并处理后，跳出循环
+                        //     }
+                        //     k++;
+                        // }
+                        //
+                        // // 4. 如果从 h+1 到 maxrowCache - 1 都没有找到非隐藏行，则放弃粘贴这一批数据（可记录日志）
+                        // if (!foundTargetRow) {
+                        //     console.warn(`复制粘贴：第 ${h} 行是隐藏行，且后面没有非隐藏行，数据未粘贴`);
+                        //     // 当前策略：不粘贴，也不报错，继续下一行
+                        // }
 
+                        // 5. 当前行 h 是隐藏行，无论是否找到目标行，都不进行粘贴操作
+                        // 保持原值不变
+                        // d[h] = x;
+                        continue; // 跳过当前隐藏行的后续正常粘贴逻辑（不执行下面的正常粘贴流程）
+                    }
+
+                    // ✅ ======================
+                    // ✅ 正常行（非隐藏行）的粘贴逻辑，保持你原来的代码不变
+                    // ✅ ======================
                     for (let c = mtc; c < maxcellCahe; c++) {
                         if(borderInfoCompute[(c_r1 + h - mth) + "_" + (c_c1 + c - mtc)]){
                             let bd_obj = {
@@ -1717,8 +1884,64 @@ const selection = {
                 }
 
                 let offsetMC = {};
+                const  rowhidden =   Store.luckysheetfile[Store.currentSheetIndex].config.rowhidden;
+
                 for (let h = mth; h < maxrowCache; h++) {
                     let x = [].concat(d[h]);
+                    // ✅ 判断当前行 h 是否为隐藏行（rowhidden[h] == 0 表示隐藏）
+                    if (rowhidden && rowhidden[h] == 0) {
+                        maxrowCache++;
+                        mth++;
+                        // // ✅ 当前行是隐藏行，不直接跳过，而是缓存要粘贴的所有列数据
+                        //
+                        // // 1. 缓存当前行 h 所有列的待粘贴数据（即 copyData 中对应 h - mth 行的数据）
+                        // let pendingPasteData = {}; // 用对象存 { 列号 c: 要粘贴的 value }
+                        // for (let c = mtc; c < maxcellCahe; c++) {
+                        //     if (copyData[h - mth] != null && copyData[h - mth][c - mtc] != null) {
+                        //         pendingPasteData[c] = copyData[h - mth][c - mtc]; // 缓存该列要贴的值
+                        //     }
+                        // }
+                        //
+                        // // 2. 从当前隐藏行 h 的下一行开始，寻找第一个非隐藏行
+                        // let k = h + 1; // 从 h+1 开始找
+                        // let foundTargetRow = false;
+                        // while (k < maxrowCache) { // 注意边界：不能超过 maxrowCache
+                        //     if (!rowhidden || rowhidden[k] != 0) { // 找到第一个非隐藏行 k
+                        //         foundTargetRow = true;
+                        //         // 3. 找到了非隐藏行 k，把之前缓存的所有列数据粘贴到 k 行对应列上
+                        //         let x_k = [].concat(d[k]); // 拷贝目标行 k 的数据
+                        //
+                        //         for (let c = mtc; c < maxcellCahe; c++) {
+                        //             if (pendingPasteData[c] !== undefined) {
+                        //                 let value = pendingPasteData[c]; // 取出之前缓存的要贴的值
+                        //                 x_k[c] = $.extend(true, {}, value); // 深拷贝并赋值给目标行 k 的第 c 列
+                        //             }
+                        //         }
+                        //
+                        //         d[k] = x_k; // 更新目标行 k 的数据
+                        //
+                        //         // ✅ 如果你有处理 merge / 边框等，也可以在这里同步调整（比如更新 mc.r = k 等，根据需求可选）
+                        //
+                        //         break; // 找到第一个非隐藏行并处理后，跳出循环
+                        //     }
+                        //     k++;
+                        // }
+                        //
+                        // // 4. 如果从 h+1 到 maxrowCache - 1 都没有找到非隐藏行，则放弃粘贴这一批数据（可记录日志）
+                        // if (!foundTargetRow) {
+                        //     console.warn(`格式刷粘贴：第 ${h} 行是隐藏行，且后面没有非隐藏行，数据未粘贴`);
+                        //     // 当前策略：不粘贴，也不报错，继续下一行
+                        // }
+                        //
+                        // // 5. 当前行 h 是隐藏行，无论是否找到目标行，都不进行粘贴操作
+                        // // 保持原值不变
+                        // d[h] = x;
+                        continue; // 跳过当前隐藏行的后续正常粘贴逻辑（不执行下面的正常粘贴流程）
+                    }
+
+                    // ✅ ======================
+                    // ✅ 正常行（非隐藏行）的粘贴逻辑，保持你原来的代码不变
+                    // ✅ ======================
 
                     for (let c = mtc; c < maxcellCahe; c++) {
                         if(borderInfoCompute[(c_r1 + h - mth) + "_" + (c_c1 + c - mtc)]){

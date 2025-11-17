@@ -863,8 +863,17 @@ const server = {
 
 	            setTimeout(function () {
 	                luckysheetrefreshgrid();
+					//重新执行筛选
+					//执行筛选方法 TODO
+					if(Store.currentSheetIndex==0){
+						console.log('筛选:',Store.luckysheetfile)
+						Store.jxh.serveFilter = true;
+						document.getElementById('luckysheet-filter-confirm').click();//模拟点击
+					}
 	            }, 1);
 	        }
+
+
 	    }
 	    else if(type == "f"){ //筛选
 	        let op = item.op, pos = item.pos;
