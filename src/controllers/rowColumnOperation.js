@@ -1114,7 +1114,7 @@ export function rowColumnOperationInitial(){
 
         value = parseInt(value);
 
-        if (value < 1 || value > 100) {
+        if (value < 1 || value > 5) {
             if(isEditMode()){
                 alert(locale_info.tipInputNumberLimit);
             }
@@ -1345,8 +1345,8 @@ export function rowColumnOperationInitial(){
         }
 
         value = parseInt(value);
-
-        if (value < 1 || value > 100) {
+        //限制一次最多新增5行
+        if (value < 1 || value > 5) {
             if(isEditMode()){
                 alert(locale_info.tipInputNumberLimit);
             }
