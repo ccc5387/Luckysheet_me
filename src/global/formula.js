@@ -28,7 +28,7 @@ import Store from '../store';
 import locale from '../locale/locale';
 import json from './json';
 import method from './method';
-import {updateCalcChain, updateCalcChainSheetIndex} from "./api";
+import {updateCalcChain, updateCalcChainSheetIndex, updateCalcChainSheetIndexDebounce} from "./api";
 // import { getSheetIndex } from '../methods/get';
 const luckysheetformula = {
     error: {
@@ -4301,6 +4301,9 @@ console.log('442.4updatecell curv:',curv
         if (index == null) {
             index = Store.currentSheetIndex;
         }
+        //更新公式链
+        updateCalcChainSheetIndexDebounce(index); //只更新当前sheet
+
 
         // let func = getcellFormula(r, c, index);
         // if (func == null || func.length==0) {
@@ -4319,7 +4322,7 @@ console.log('442.4updatecell curv:',curv
         for (let i = 0; i < calcChain.length; i++) {
             let calc = calcChain[i];
             if (calc.r == r && calc.c == c && calc.index == index) {
-                console.log('1发送fc:',calc)
+                console.log('1发送fc:',JSON.stringify(calc),' calcChain:',calcChain)
                 server.saveParam("fc", index, JSON.stringify(calc), {
                     "op": "update",
                     "pos": i
@@ -5126,11 +5129,19 @@ console.log('442.4updatecell curv:',curv
         let notInsertFunc = undefined;
 
 
-        if(calcChains.length==0){
+        if(calcChains.length==0  ){
             notInsertFunc = true;
            updateCalcChainSheetIndex(index); //只更新当前sheet
            calcChains = _this.getAllFunctionGroup(),   formulaObjects = {};
         }
+
+        // if(calcChains.length>0 && calcChains[calcChains.length-1].func==null){
+        //     //更新公式链
+        //     notInsertFunc = true;
+        //     updateCalcChainSheetIndex(index); //只更新当前sheet
+        //     calcChains = _this.getAllFunctionGroup(),   formulaObjects = {};
+        // }
+
 
         console.log('calcChains:',calcChains,' store:',Store)
         let sheets = getluckysheetfile();
@@ -5891,6 +5902,7 @@ console.log('442.4updatecell curv:',curv
     },
     groupValuesRefreshData: [],
     groupValuesRefresh: function (isSend=true) {
+
         let _this = this;
         let luckysheetfile = getluckysheetfile();
         console.log('公式初始化计算 groupValuesRefresh:',_this.groupValuesRefreshData)

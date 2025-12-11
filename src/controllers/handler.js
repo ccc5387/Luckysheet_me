@@ -5449,6 +5449,7 @@ console.log('下拉11111 mousedown')
                      Store.luckysheet_copy_save.copyRange[0].row = Store.luckysheet_select_save[0].row;
                 }
                 else {
+                    console.log('粘贴 pasteHandlerOfCopyPaste:' )
                     selection.pasteHandlerOfCopyPaste(Store.luckysheet_copy_save);
                 }
                 // hideLoading()

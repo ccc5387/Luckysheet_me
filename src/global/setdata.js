@@ -217,6 +217,7 @@ function setcellvalue(r, c, d, v) {
     }
 
     d[r][c] = cell;
+    console.log('收到 单个单元格数据更新 公式 结果:',cell)
 }
 
 //new runze 根据亿万格式autoFormatw和精确度accuracy 转换成 w/w0/w0.00 or 0/0.0格式

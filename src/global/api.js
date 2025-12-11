@@ -16,7 +16,7 @@ import { setAccuracy,setcellvalue } from "./setdata";
 import { orderbydata } from "./sort";
 import { rowlenByRange } from "./getRowlen";
 import { getdatabyselection, getcellvalue } from "./getdata";
-import { luckysheetrefreshgrid, jfrefreshgrid, jfrefreshgrid_rhcw } from "./refresh";
+import {luckysheetrefreshgrid, jfrefreshgrid, jfrefreshgrid_rhcw, luckysheetrefreshgrid_0} from "./refresh";
 import { luckysheetDeleteCell, luckysheetextendtable, luckysheetdeletetable } from "./extend";
 import { isRealNull, valueIsError, isRealNum, isEditMode, hasPartMC } from "./validate";
 import { isdatetime, diff } from "./datecontroll";
@@ -7173,7 +7173,11 @@ export function updateCalcChain() {
 
 }
 
+import { debounce } from 'lodash';
 
+export const updateCalcChainSheetIndexDebounce = debounce((sheetIndexd) => {
+    updateCalcChainSheetIndex(sheetIndexd);
+}, 50); // 延迟 16ms，约等于一帧的时间
 
 // 计算公式链 - 只更新指定的工作表 jxh start
 export function updateCalcChainSheetIndex(sheetIndex) {

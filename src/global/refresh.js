@@ -179,6 +179,7 @@ console.log('初始化更新:',range)
         }
 
         if(server.allowUpdate){ //共享编辑模式
+            console.log('粘贴 共享编辑模式:',Store.flowdata)
             server.historyParam(Store.flowdata, Store.currentSheetIndex, range[s]);
         }
         // 刷新图表
@@ -1162,6 +1163,8 @@ function luckysheetrefreshgrid(scrollWidth, scrollHeight,isSend) {
 //Refresh the canvas display data according to scrollHeight and scrollWidth
 function luckysheetrefreshgrid_0(scrollWidth, scrollHeight,isSend =true) {
     console.log('触发luckysheetrefreshgrid_0,',Store.luckysheetfile)
+
+
     formula.groupValuesRefresh(isSend);
 
     if (scrollWidth == null) {

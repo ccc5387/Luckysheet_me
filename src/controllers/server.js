@@ -21,6 +21,8 @@ import json from '../global/json';
 import luckysheetConfigsetting from './luckysheetConfigsetting';
 import {customImageUpdate} from './imageUpdateCtrl';
 import method from '../global/method';
+import {setcellvalue} from "../global/setdata";
+import {updateCalcChainSheetIndex, updateCalcChainSheetIndexDebounce} from "../global/api";
 let shsPageInit =[];
 const server = {
     gridKey: null,
@@ -32,6 +34,7 @@ const server = {
 		retryTimer:null,
     allowUpdate: false, //共享编辑模式
     historyParam: function(data, sheetIndex, range) {
+		// console.log('粘贴 historyParam:',data)
     	let _this = this;
 
 	    let r1 = range.row[0], r2 = range.row[1];
@@ -39,6 +42,7 @@ const server = {
 
 	    if(r1 == r2 && c1 == c2){ //单个单元格更新
 	        let v = data[r1][c1];
+			console.log('粘贴 saveParam v:',v,' range:',range)
 	        _this.saveParam("v", sheetIndex, v, { "r": r1, "c": c1 });
 	    }
 	    else{ //范围单元格更新
@@ -124,8 +128,14 @@ const server = {
 	        d.c = params.c;
 	    }
 	    else if (type == "fc") {
+
 	        d.op = params.op;
 	        d.pos = params.pos;
+			if(d && d.v && !d.v.includes('func')){
+				return;
+			}
+			console.log('操作 发送公式',d)
+
 	    }
 	    else if (type == "drc" || type == "arc" || type == "h" || type == "wh") {
 	        d.rc = params.rc;
@@ -188,7 +198,8 @@ const server = {
 		// if(!luckysheetPageInit){
 		// 	return;
 		// }
-		  console.log('操作:',d)
+		  console.log('操作:',JSON.stringify(d))
+		console.trace()
 
 		// return; //TODO JXH START
 	    // TODO 配置自定义方式同步图片
@@ -250,7 +261,7 @@ const server = {
 				Store.result = result
 				let data = new Function("return " + result.data)();
         method.createHookFunction('cooperativeMessage', data)
-				console.info(data);
+				console.info('收到',data);
 				let type = data.type;
 				let {message,id} = data;
 				// 用户退出时，关闭协同编辑时其提示框
@@ -456,17 +467,60 @@ const server = {
 	    if(["v","rv","cg","all","fc","drc","arc","f","fsc","fsr","sh","c"].includes(type) && file == null){
 	        return;
 	    }
-
+  console.log('收到 type：',type,' item:',item)
 	    if(type == "v"){ //单个单元格数据更新
 	        if(file.data == null || file.data.length == 0){
 	            return;
 	        }
 
 	        let r = item.r, c = item.c;
-	        file.data[r][c] = value;
-	        if(file.data[r][c]!=null){
-				//file.data[r][c].bg = "#d4ebe170";  //设置单元格背景色 jxh start #d4ebe170 冲突色 ebd4d470
+	        if(typeof file.data[r][c]  != 'number'){
+				file.data[r][c] = value;
+				console.log('收到 单个单元格数据更新：value',value,'    file.data[r][c] :', file.data[r][c] )
 			}
+			if(typeof file.data[r][c]  === 'number'){
+				let file = Store.luckysheetfile[getSheetIndex(index)];
+				let data = file.data;
+				if (data == null) {
+					return;
+				}
+
+				let calcChain = file.calcChain;
+				let fc =[];
+				if(calcChain){
+					for(let a = 0; a < calcChain.length; a++){
+						if(r == calcChain[a].r && c == calcChain[a].c && index == calcChain[a].index){
+							fc = calcChain[a].func;
+						}
+					}
+				}
+
+
+				// let updateValue = {};
+				// updateValue.v = item.v;
+				// updateValue.f = fc ;
+				if(fc!=null && fc.length>0){
+					console.log('收到 单个单元格数据更新 公式:',fc[fc.length-1])
+					file.data[r][c] =  {
+						"m": item.v,
+						"v": item.v,
+						// "bg": "rgba(202,247,255,0.25)",
+						"ct": {
+							"fa": "0.00",
+							"t": "n"
+						},
+						"f": fc[fc.length-1]
+					}
+					//setcellvalue(item.r, item.c, data, updateValue);
+				}
+
+
+			}
+
+
+	       // if(file.data[r][c]!=null){
+				//file.data[r][c].bg = "#d4ebe170";  //设置单元格背景色 jxh start #d4ebe170 冲突色 ebd4d470
+			//}
 
 
 	        if(index == Store.currentSheetIndex){//更新数据为当前表格数据
@@ -502,6 +556,7 @@ const server = {
 	        for(let r = r1; r <= r2; r++){
 	            for(let c = c1; c <= c2; c++){
 	                file.data[r][c] = value[r - r1][c - c1];
+	                console.log('收到rv更新:',value[r - r1][c - c1])
 					if(file.data[r][c]!=null){
 						// file.data[r][c].bg = "#d4ebe170"; //设置单元格背景色 jxh start
 					}
@@ -538,6 +593,13 @@ const server = {
 	            }, 1);
 			}
 	    }
+		else if(type == "rv_end"){
+         //更新公式链
+			if(index==0){
+				updateCalcChainSheetIndex(index)
+			}
+
+		}
 	    else if(type == "cg"){ //config更新（rowhidden，rowlen，columnlen，merge，borderInfo）
 	        let k = item.k;
 
@@ -683,6 +745,7 @@ const server = {
 			}
 	    }
 	    else if(type == "fc"){ //函数链calc
+
 	        let op = item.op, pos = item.pos;
 
 	        if(getObjType(value) != "object"){
@@ -695,6 +758,7 @@ const server = {
 
 	        if(op == "add"){
 	            calcChain.push(value);
+
 	        }
 	        else if(op == "del"){
 	            for(let a = 0; a < calcChain.length; a++){
@@ -703,13 +767,21 @@ const server = {
 	                }
 	            }
 	        }
-	        // else if(op == "update"){
-	        //     for(let a = 0; a < calcChain.length; a++){
-	        //         if(r == calcChain[a].r && c == calcChain[a].c && index == calcChain[a].index){
-	        //             calcChain[a].func = func;
-	        //         }
-	        //     }
-	        // }
+	        else if(op == "update"){
+	        	let upsuccess= false;
+	            for(let a = 0; a < calcChain.length; a++){
+	                if(r == calcChain[a].r && c == calcChain[a].c && index == calcChain[a].index){
+	                    // calcChain[a].func = func;
+						upsuccess =true;
+	                }
+	            }
+                if(!upsuccess){
+                	//不存在
+					calcChain.push(value);
+
+				}
+				console.log('收到公式: ',value,' calcChain:',calcChain)
+	        }
 
 	        setTimeout(function () {
 	            luckysheetrefreshgrid();
