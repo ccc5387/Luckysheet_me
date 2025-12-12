@@ -52,6 +52,7 @@ const server = {
 	        let timeR = Math.floor(1000 / collen);
 	        let n = Math.ceil(rowlen / timeR); //分批次更新，一次最多1000个单元格
 
+			console.log('范围单元格更新 data:',' range:',JSON.stringify(range))
 	        for(let i = 0; i < n; i++){
 	            let str = r1 + timeR * i;
 
@@ -555,11 +556,15 @@ const server = {
 
 	        for(let r = r1; r <= r2; r++){
 	            for(let c = c1; c <= c2; c++){
-	                file.data[r][c] = value[r - r1][c - c1];
-	                console.log('收到rv更新:',value[r - r1][c - c1])
-					if(file.data[r][c]!=null){
-						// file.data[r][c].bg = "#d4ebe170"; //设置单元格背景色 jxh start
+					console.log('收到rv更新:',value[r - r1][c - c1]);
+					if(value==null || value[r - r1]==null || value[r - r1][c - c1]==null ){
+						continue;
 					}
+	                file.data[r][c] = value[r - r1][c - c1];
+
+					//if(file.data[r][c]!=null){
+						// file.data[r][c].bg = "#d4ebe170"; //设置单元格背景色 jxh start
+					//}
 
 				}
 	        }

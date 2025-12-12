@@ -903,7 +903,9 @@ const luckysheetDropCell = {
             "dataVerification": dataVerification
         }
         console.log('dropCell: applyRange',applyRange,' Store.luckysheet_select_save:',Store.luckysheet_select_save)
-        jfrefreshgrid(d, Store.luckysheet_select_save, allParam);
+        jfrefreshgrid(d,
+           [applyRange]   //Store.luckysheet_select_save
+            , allParam);
 
         selectHightlightShow();
     },

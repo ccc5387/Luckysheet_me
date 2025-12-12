@@ -187,13 +187,30 @@ function selectHightlightShow(isRestore = false) {
         /* 刷新当前状态栏 */
         refreshMenuButtonFocus();
     }
+    // 筛选的情况下，某些时候luckysheet_select_save不正确修正
+   try{
+        if(Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)].filter &&
+            Object.keys(Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)].filter).length>0 &&
+            Store.luckysheet_select_save[0].row[0]!==  Store.luckysheet_select_save[0].row_focus
+        ){
+            const len= Store.luckysheet_select_save[0].row[1] - Store.luckysheet_select_save[0].row[0];
+            Store.luckysheet_select_save[0].row=[Store.luckysheet_select_save[0].row_focus, (Store.luckysheet_select_save[0].row_focus + len)]
+        }
+   }catch (e) {
+
+   }finally {
+
+   }
+    // 筛选的情况下，某些时候luckysheet_select_save不正确修正
 
     // jxh start 不允许选中最后一列id strat
-     console.log('luckysheet_select_save_previous:',Store)
+    console.log('luckysheet_select_save_previous:',Store.luckysheet_select_save[0])
        if(Store.luckysheet_select_save[0].column[1]==(Store.flowdata[0].length-1)){
            Store.luckysheet_select_save[0].column[1]=Store.flowdata[0].length-2;
        }
     // jxh start 不允许选中最后一列id end
+
+
     Store.luckysheetfile[getSheetIndex(Store.currentSheetIndex)].luckysheet_select_save = Store.luckysheet_select_save;
             // Hook function, change the range selection box, selectHightlightShowillbe triggered multiple times when mousemove is moused, and thhistoricalvalue is used here to throttle
         const luckysheet_select_save_previous = JSON.stringify(Store.luckysheet_select_save);
