@@ -4302,7 +4302,7 @@ console.log('442.4updatecell curv:',curv
             index = Store.currentSheetIndex;
         }
         //更新公式链
-        updateCalcChainSheetIndexDebounce(index); //只更新当前sheet
+       updateCalcChainSheetIndexDebounce(index); //只更新当前sheet
 
 
         // let func = getcellFormula(r, c, index);
@@ -4313,7 +4313,7 @@ console.log('442.4updatecell curv:',curv
 
         let luckysheetfile = getluckysheetfile();
         let file = luckysheetfile[getSheetIndex(index)];
-
+        let data = file.data;
         let calcChain = file.calcChain;
         if (calcChain == null) {
             calcChain = [];
@@ -4322,7 +4322,15 @@ console.log('442.4updatecell curv:',curv
         for (let i = 0; i < calcChain.length; i++) {
             let calc = calcChain[i];
             if (calc.r == r && calc.c == c && calc.index == index) {
-                console.log('1发送fc:',JSON.stringify(calc),' calcChain:',calcChain)
+                console.log('1发送fc:',calc,' data[r][c].f:',data[r][c].f);
+                // 修正版本
+                const funcArray = calc?.func;
+                const lastFunc = funcArray?.[funcArray?.length - 1];
+                if(data[r][c].f && data[r][c].f == lastFunc) {
+                   console.error('公式未变 不发送 calc:', calc, ' data[r][c].f:', data[r][c].f);
+                    continue;
+                }
+               console.log('公式变 发送 calc:', calc, ' data[r][c].f:', data[r][c].f);
                 server.saveParam("fc", index, JSON.stringify(calc), {
                     "op": "update",
                     "pos": i
@@ -5944,10 +5952,16 @@ console.log('442.4updatecell curv:',curv
                 // }
 
                 if(isSend){
-                    server.saveParam("v", item.index, item.v, {
-                        "r": item.r,
-                        "c": item.c
-                    });
+                    if(oldValue ==  item.v){
+                       console.error('值未变，不发送 item:',item, ' oldValue:',oldValue)
+                    }else {
+                       console.log('值变， 发送 item:',item, ' oldValue:',oldValue)
+                        server.saveParam("v", item.index, item.v, {
+                            "r": item.r,
+                            "c": item.c
+                        });
+                    }
+
                 }
 
 
