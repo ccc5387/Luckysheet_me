@@ -894,8 +894,12 @@ function arrayRemoveItem(array, item) {
  * @param str
  * @returns {*}
  */
+import he from 'he';
+
 function removeAllWhitespace(str) {
-    return str.replace(/\s/g, '');
+    // 自动解码 HTML 实体
+    const decoded = he.decode(str); // 完整解码所有 HTML 实体
+    return decoded.replace(/\s/g, '');
 }
 
 export {
