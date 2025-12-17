@@ -888,8 +888,18 @@ function arrayRemoveItem(array, item) {
         return '-' + group.toLowerCase();
     });
 }
-  
+
+/**
+ * 去除所有空白字符（包括换行、制表符、空格等）
+ * @param str
+ * @returns {*}
+ */
+function removeAllWhitespace(str) {
+    return str.replace(/\s/g, '');
+}
+
 export {
+    removeAllWhitespace,
     isJsonString,
     common_extend,
     replaceHtml,

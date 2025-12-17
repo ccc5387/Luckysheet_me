@@ -36,7 +36,7 @@ import {
     showrightclickmenu,
     luckysheetactiveCell,
     luckysheetContainerFocus,
-    $$, showLoading, hideLoading
+    $$, showLoading, hideLoading, removeAllWhitespace
 } from '../utils/util';
 import { getSheetIndex, getRangetxt } from '../methods/get';
 import {
@@ -5381,13 +5381,21 @@ console.log('下拉11111 mousedown')
                           const storeValue = v.replace(/\n/g,'').replace(/\s/g,' ')
                           if(cpData != storeValue){
                             isEqual = false;
-                            console.log('进这里了:',)
+                              console.log('粘贴 Store 进这里了: cpData:',cpData,'  storeValue:',storeValue)
                             break;
                           }
                         }
                         else{
                           if(cpDataArr[r - copy_r1][c - copy_c1] != v){
-                            isEqual = false;
+                            const  a = removeAllWhitespace(cpDataArr[r - copy_r1][c - copy_c1]);
+                              const  b = removeAllWhitespace(v);
+                              console.log('粘贴 Store 进这里了 2: a',cpDataArr[r - copy_r1][c - copy_c1] ,' b :',v,' aa:',a,' bb:',b)
+                              if(a!=b){
+                                  console.log('粘贴 Store 进这里了3: a',a ,' b :',b)
+                                  isEqual = false;
+                              }
+
+
                             break;
                           }
                         }
@@ -5411,6 +5419,7 @@ console.log('下拉11111 mousedown')
                 server.saveParam("arc", Store.currentSheetIndex, {"index":Store.flowdata.length-1 , "len": inertRowNum, "direction": 'rightbottom',"data":[] ,'merge':Store.config["merge"] }, { "rc": 'r' });
             }
 
+            console.log('txtdata:',txtdata);
             // hook
             if(!method.createHookFunction('rangePasteBefore',Store.luckysheet_select_save,txtdata)){
                 return;
@@ -5426,6 +5435,7 @@ console.log('下拉11111 mousedown')
             //     selection.pasteHandlerOfCopyPaste(Store.luckysheet_copy_save);
             // }
             //整行剪切没清空 jxh start
+            console.log('粘贴 Store:',Store,' isEqual:',isEqual)
             if (
                 // true
                  txtdata.indexOf("luckysheet_copy_action_table") > - 1 && Store.luckysheet_copy_save["copyRange"] != null && Store.luckysheet_copy_save["copyRange"].length > 0 && isEqual
@@ -5437,7 +5447,7 @@ console.log('下拉11111 mousedown')
                 // }
                 // jxh start 不允许选中最后一列id end
                 //剪切板内容 和 luckysheet本身复制的内容 一致
-                console.log('粘贴:',Store.luckysheet_copy_save,' 选择:',Store.luckysheet_select_save,' LENGTH:',Store.luckysheet_select_save.length)
+                console.log('粘贴进1:',Store.luckysheet_copy_save,' 选择:',Store.luckysheet_select_save,' LENGTH:',Store.luckysheet_select_save.length)
                 // showLoading('粘贴中...')
                 //  jxh start
                 if (Store.luckysheet_paste_iscut) {
