@@ -4247,7 +4247,7 @@ console.log('下拉 luckysheet_cell_selected_extend_index 1')
 
                 for (let r = row_s; r <= row_e; r++) {
                     for (let c = col_s; c <= col_e; c++) {
-                        let cell = Store.flowdata[r][c];
+                        let cell = Store.flowdata[r]?.[c];
 
                         if (cell != null && cell.mc != null) {
                             hasMc = true;
