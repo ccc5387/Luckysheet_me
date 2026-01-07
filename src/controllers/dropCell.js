@@ -470,7 +470,7 @@ const luckysheetDropCell = {
         let apply_str_c = applyRange["column"][0], apply_end_c = applyRange["column"][1];
 
         if(direction == "down" || direction == "up"){
-            const  rowhidden =   Store.luckysheetfile[Store.currentSheetIndex].config.rowhidden;
+            const  rowhidden =   Store.luckysheetfile[Store.currentSheetIndex].config?.rowhidden;
 
             // 1. 计算可见目标格子数（非隐藏行）
             let visibleTargetCount = 0;
