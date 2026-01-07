@@ -128,9 +128,9 @@ const selection = {
                 }
 
                 for(let copyC = c1; copyC <= c2; copyC++){
-                    if (Store.config["colhidden"] != null && Store.config["colhidden"][copyC] != null) {
-                        continue;
-                    }
+                    // if (Store.config["colhidden"] != null && Store.config["colhidden"][copyC] != null) {
+                    //     continue;
+                    // }
 
                     if(!colIndexArr.includes(copyC)){
                         colIndexArr.push(copyC);
@@ -199,9 +199,9 @@ const selection = {
                     }
                 }
 
-                if (Store.config["colhidden"] != null && Store.config["colhidden"][c] != null) {
-                    continue;
-                }
+                // if (Store.config["colhidden"] != null && Store.config["colhidden"][c] != null) {
+                //     continue;
+                // }
 
                 let column = '<td ${span} style="${style}">';
 
@@ -695,7 +695,7 @@ const selection = {
 
             let RowlChange = false;
             let offsetMC = {};
-            const  rowhidden =   Store.luckysheetfile[Store.currentSheetIndex].config.rowhidden;
+            const  rowhidden =   Store.luckysheetfile[Store.currentSheetIndex].config?.rowhidden;
             console.log('隐藏行处理: rowhidden：',rowhidden)
             for (let h = minh; h <= maxh; h++) {
                 let x = [].concat(d[h]);
@@ -1059,7 +1059,7 @@ const selection = {
         }
 
         let offsetMC = {};
-        const  rowhidden =   Store.luckysheetfile[Store.currentSheetIndex].config.rowhidden;
+        const  rowhidden =   Store.luckysheetfile[Store.currentSheetIndex].config?.rowhidden;
         for (let h = minh; h <= maxh; h++) {
             let x = [].concat(d[h]);
             // ✅ 判断当前行 h 是否为隐藏行（rowhidden[h] == 0 表示隐藏）
@@ -1554,8 +1554,8 @@ const selection = {
                 let offsetCol = mtc - c_c1;
 
                 let offsetMC = {};
-                const  rowhidden =   Store.luckysheetfile[Store.currentSheetIndex].config.rowhidden;
-                console.log('隐藏行处理: rowhidden',rowhidden,' copyData:',copyData)
+                const  rowhidden =   Store.luckysheetfile[Store.currentSheetIndex].config?.rowhidden;
+                console.log('粘贴 隐藏行处理: rowhidden',rowhidden,' copyData:',copyData)
                 for (let h = mth; h < maxrowCache; h++) {
                     let x = [].concat(d[h]);
                     console.log('隐藏行处理: maxrowCache',' h - mth:',(h - mth),' H:',h,' mth:',mth)
@@ -1884,7 +1884,7 @@ const selection = {
                 }
 
                 let offsetMC = {};
-                const  rowhidden =   Store.luckysheetfile[Store.currentSheetIndex].config.rowhidden;
+                const  rowhidden =   Store.luckysheetfile[Store.currentSheetIndex].config?.rowhidden;
 
                 for (let h = mth; h < maxrowCache; h++) {
                     let x = [].concat(d[h]);
