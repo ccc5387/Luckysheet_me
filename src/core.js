@@ -176,7 +176,12 @@ luckysheet.create = function (setting) {
 
         //需要更新数据给后台时，建立WebSocket连接
         if(server.allowUpdate){
-            server.openWebSocket();
+            showloading('连接中...');
+           setTimeout(()=>{
+                server.openWebSocket();
+               hideloading();
+            },2000)
+
         }
     }
     else {
@@ -190,7 +195,11 @@ luckysheet.create = function (setting) {
 
             //需要更新数据给后台时，建立WebSocket连接
             if(server.allowUpdate){
-                server.openWebSocket();
+                showloading('连接中...');
+                setTimeout(()=>{
+                    server.openWebSocket();
+                    hideloading();
+                },2000)
             }
         });
 
