@@ -324,8 +324,15 @@ const luckysheetFreezen = {
 
             let row_px = Store.visibledatarow[row], freezen_px = Store.visibledatarow[freezen_rowindex];
 
-            if (row_px <= freezen_px+left) {
-                setTimeout(function () {$("#luckysheet-scrollbar-y").scrollTop(0);}, 100);
+            // if (row_px <= freezen_px+left) {
+            //     setTimeout(function () {$("#luckysheet-scrollbar-y").scrollTop(0);}, 100);
+            // }
+            if (row_px <= freezen_px + left) {
+                // 如果正在拖动/扩展选区或是多选（按住 Ctrl 导致的多个区），不要打断用户交互
+                if (!Store.luckysheet_cell_selected_move && !Store.luckysheet_cell_selected_extend && Store.luckysheet_select_save.length <= 1) {
+                    let minScrollTop = _this.freezenhorizontaldata ? _this.freezenhorizontaldata[2] : 0;
+                    setTimeout(function () { $("#luckysheet-scrollbar-y").scrollTop(minScrollTop); }, 100);
+                }
             }
         }
     },
