@@ -107,7 +107,7 @@ export default function luckysheetHandler() {
     $("#luckysheet-sheet-container-c").mousewheel(function (event, delta) {
         let scrollNum = event.deltaFactor<40?1:(event.deltaFactor<80?2:3);
         let scrollLeft = $(this).scrollLeft();
-        if(event.deltaY != 0){
+        if(event.deltaY != 0 && event.shiftKey){
             if(event.deltaY <0){
                 scrollLeft = scrollLeft + 10*scrollNum;
 
@@ -194,6 +194,26 @@ export default function luckysheetHandler() {
         let rowscroll = 0;
 
         let scrollNum = event.deltaFactor<40?1:(event.deltaFactor<80?2:3);
+        let absDeltaX = Math.abs(event.deltaX);
+        let absDeltaY = Math.abs(event.deltaY);
+
+        // touchpad 在纵向滚动时可能夹带极小 deltaX，优先忽略这种噪声，避免横向滚动被误触发
+        if (event.deltaY == 0 && event.deltaX != 0 && absDeltaX < 2) {
+            return;
+        }
+
+        // 冻结首行场景下，纵向滚动偶发夹带 deltaX，导致先横向回弹；按住 Shift 仍可显式横向滚动
+        if (
+            event.deltaY == 0 &&
+            event.deltaX != 0 &&
+            !event.shiftKey &&
+            luckysheetFreezen.freezenhorizontaldata != null &&
+            luckysheetFreezen.freezenverticaldata == null &&
+            absDeltaY <= absDeltaX
+        ) {
+            return;
+        }
+
         //一次滚动三行或三列
         if(event.deltaY != 0){
             let row_ed,step=Math.round(scrollNum/Store.zoomRatio);
