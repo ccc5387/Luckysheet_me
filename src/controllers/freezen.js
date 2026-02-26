@@ -301,7 +301,10 @@ const luckysheetFreezen = {
             let column_px = Store.visibledatacolumn[column], freezen_px = Store.visibledatacolumn[freezen_colindex];
 
             if (column_px <= freezen_px+top) {
-                setTimeout(function () { $("#luckysheet-scrollbar-x").scrollLeft(0); }, 100);
+                // 如果正在拖动/扩展选区或是多选（按住 Ctrl 导致的多个区），不要打断用户交互
+                if (!Store.luckysheet_cell_selected_move && !Store.luckysheet_cell_selected_extend && Store.luckysheet_select_save.length <= 1) {
+                    setTimeout(function () { $("#luckysheet-scrollbar-x").scrollLeft(0); }, 100);
+                }
             }
         }
 
